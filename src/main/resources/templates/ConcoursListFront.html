@@ -7,23 +7,29 @@
 	<div th:replace="common/header :: navbar-candidat"></div>
 	<div class="container">
 		<h1>Liste des Concours</h1>
-	<table class="table">
-		<thead>
-			<tr>
-				<th>date_css</th>
-				<th>nom_ccs</th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="concour : ${listConcours}">
-				<td th:text="${concour.date_css}">date_css</td>
-				<td th:text="${concour.nom_ccs}">nom_ccs</td>
-				<td><a th:href="@{'/details/' + ${concour.ccs_ID}}">Details</a></td>
-			</tr>
-		</tbody>
-	</table>
+		<table class="table">
+			<thead>
+				<div class="row">
+					<div class="col">
+						<h6>date_css</h6>
+					</div>
+					<div class="col">
+						<h6>nom_ccs</h6>
+					</div>
+					<div class="col"></div>
+					<div class="col"></div>
+				</div>
+			</thead>
+			<tbody>
+				<tr th:each="concour : ${listConcours}">
+					<td th:text="${concour.date_css}">date_css</td>
+					<td th:text="${concour.nom_ccs}">nom_ccs</td>
+					<td><a th:href="@{'/details/' + ${concour.ccs_ID}}" class="form-control">Details</a></td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 	<div th:replace="common/header :: footer"></div>
 </body>
+
 </html>
