@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns="http://www.w3.org/1000/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="common/header :: header"></head>
+
+<body>
+	<div th:replace="common/header :: navbar-candidat"></div>
+	<div class="container">
+		<h1>Liste des Concours</h1>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>date_css</th>
+				<th>nom_ccs</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="concour : ${listConcours}">
+				<td th:text="${concour.date_css}">date_css</td>
+				<td th:text="${concour.nom_ccs}">nom_ccs</td>
+				<td><a th:href="@{'/details/' + ${concour.ccs_ID}}">Details</a></td>
+			</tr>
+		</tbody>
+	</table>
+	</div>
+	<div th:replace="common/header :: footer"></div>
+</body>
+</html>

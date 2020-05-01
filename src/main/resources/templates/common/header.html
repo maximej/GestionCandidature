@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="header">
+	<title>GeekJob.com</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+	<div th:fragment="header">
+		<div>
+			<img src="#" th:src="Logo.png" alt="Logo" style="position: absolute; margin-top: 300; margin-left: 300;">
+			<h1 class="jumbotron text-center">GeekJob.com</h1>
+		</div>
+	</div>
+
+	<div th:fragment="navbar-candidat">
+		<nav class="navbar navbar-expand-sm  bg-light">
+			<ul class="navbar-nav">
+				<li class="nav-item">
+					<a class="nav-link" href="#" th:href="ConcoursListFront">Concours</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#">Espace Client</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#">Candidatures</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+
+	<div th:fragment="navbar-recruteur">
+		<nav class="navbar navbar-expand-sm  bg-light">
+			<ul class="navbar-nav">
+				<li class="nav-item">
+					<a class="nav-link" href="#" th:href="ConcoursListBack">Concours</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#">Espace Client</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#">Candidatures</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+
+	<div th:fragment="footer">
+		<div class="footer-copyright text-center py-3">© 2020 Copyright :
+			<a href="https://geekjob.com/"> GeekJob.com</a>
+		</div>
+	</div>
+</body>
+
+</html>
