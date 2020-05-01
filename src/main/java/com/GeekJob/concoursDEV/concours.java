@@ -38,7 +38,7 @@ public class concours {
 		try {
 			this.date_css=new SimpleDateFormat("dd/MM/yyyy").parse(date_css);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 	}
