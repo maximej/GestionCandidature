@@ -10,12 +10,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 public class concours {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int ccs_ID;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date date_css;
 	private String nom_ccs;
 	private String description_ccs;
@@ -30,17 +33,11 @@ public class concours {
 	public void setCcs_ID(int ccs_ID) {
 		this.ccs_ID = ccs_ID;
 	}
-	public String getDate_css() {
-		SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yy");
-		return formater.format(date_css);
+	public Date getDate_css() {
+		return date_css;
 	}
-	public void setDate_css(String date_css) {
-		try {
-			this.date_css=new SimpleDateFormat("dd/MM/yyyy").parse(date_css);
-		} catch (ParseException e) {
-
-			e.printStackTrace();
-		}
+	public void setDate_css(Date date_css) {
+			this.date_css=date_css;
 	}
 	public String getNom_ccs() {
 		return nom_ccs;
