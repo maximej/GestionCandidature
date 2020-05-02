@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+
 @Controller
 public class ControllerConcours {
 
@@ -83,6 +84,13 @@ public class ControllerConcours {
 		return mav;
 	}
 
+	@RequestMapping("/new")
+	public String showNewProductPage(Model model) {
+		concours concours = new concours();
+		model.addAttribute("concours", concours);
+		return "NouveauConcours";
+	}
+	
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public String saveconcours(@ModelAttribute("product") concours concours) {
 		service.save(concours);

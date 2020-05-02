@@ -20,7 +20,7 @@
 				<tr th:each="concour : ${listConcours}">
 					<td th:text="${#dates.format(concour.date_css, 'dd-MM-yyyy')}">date_css</td>
 					<td th:text="${concour.nom_ccs}">nom_ccs</td>
-					<td><a th:href="@{'/details/' + ${concour.ccs_ID}}" class="form-control">Details</a></td>
+					<td><a th:href="@{'/details/' + ${concour.ccs_ID}}" class="btn btn-primary btn-xs">Details</a></td>
 				</tr>
 			</tbody>
 		</table>

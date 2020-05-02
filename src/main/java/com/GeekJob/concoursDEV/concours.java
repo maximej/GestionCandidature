@@ -16,7 +16,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class concours {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int ccs_ID;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date date_css;
@@ -24,7 +24,7 @@ public class concours {
 	private String description_ccs;
 	private int statut_css;
 	private Blob image_css;
-	private String Recruteur_ID;
+	private Integer Recruteur_ID;
 	
 	
 	public int getCcs_ID() {
@@ -64,11 +64,21 @@ public class concours {
 		this.image_css = image_css;
 	}
 	
-	public String getRecruteur_ID() {
+	public Integer getRecruteur_ID() {
 		return Recruteur_ID;
 	}
-	public void setRecruteur_ID(String recruteur_ID) {
+	public void setRecruteur_ID(Integer recruteur_ID) {
 		Recruteur_ID = recruteur_ID;
+	}
+	
+	public concours() {
+		super();
+		date_css = new Date();
+		nom_ccs = " ";
+		description_ccs = " ";
+		statut_css = 401;
+		image_css = null;
+		Recruteur_ID = 1;
 	}	
 	
 }

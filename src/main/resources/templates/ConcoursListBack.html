@@ -21,15 +21,15 @@
 					<td th:text="${#dates.format(concour.date_css, 'dd-MM-yyyy')}">date_css</td>
 					<td th:text="${concour.nom_ccs}">nom_ccs</td>
 					<td>
-						<a th:href="@{'/edit/' + ${concour.ccs_ID}}" class="form-control">Edit</a>
+						<a th:href="@{'/edit/' + ${concour.ccs_ID}}" class="btn btn-success btn-xs">Edit</a>
 					</td>
 					<td>
-						<a th:href="@{'/delete/' + ${concour.ccs_ID}}"
-							class="form-control">Delete</a>
+						<a th:href="@{'/delete/' + ${concour.ccs_ID}}" class="btn btn-danger btn-xs">Delete</a>
 					</td>
 				</tr>
 			</tbody>
 		</table>
+		<a href="new">Nouveau Concours</a>
 	</div>
 	<div th:replace="common/header :: footer"></div>
 </body>
