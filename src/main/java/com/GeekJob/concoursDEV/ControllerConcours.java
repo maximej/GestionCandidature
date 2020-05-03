@@ -1,5 +1,8 @@
 package com.GeekJob.concoursDEV;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,19 +47,18 @@ public class ControllerConcours {
 		mav.addObject("concoursDemande", concoursDemande);
 
 		// Conversion de blob au image
-		java.sql.Blob blob = concoursDemande.getImage_css();
-		mav.addObject("concoursImage", blob);
-		// InputStream in;
-		// try {
-		// in = blob.getBinaryStream();
-		// BufferedImage img = ImageIO.read(in);
-		// File outputfile = new File("image.jpg");
-		// ImageIO.write(img, "jpg", outputfile);
-		// mav.addObject("concoursImage", outputfile.getPath());
-		// System.out.println(outputfile.getPath());
-		// } catch (SQLException | IOException e) {
-		// e.printStackTrace();
-		// }
+		java.sql.Blob b = concoursDemande.getImage_css();
+		mav.addObject("concoursImage", b);
+		byte barr[];
+		try {
+			barr = b.getBytes(1,(int)b.length());
+			FileOutputStream fout=new FileOutputStream("concours_image.png");
+			fout.write(barr);
+			fout.close();
+		} catch (SQLException | IOException e) {
+			e.printStackTrace();
+		} 
+		
 		return mav;
 	}
 
