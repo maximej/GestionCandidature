@@ -16,8 +16,8 @@ public class ConcoursService {
 		return ccs.findAll();
 	}
 	
-	public void save(concours concours) {
-		ccs.save(concours);
+	public void save(concours concour) {
+		ccs.save(concour);
 	}
 	
 	public concours get(Integer id) {

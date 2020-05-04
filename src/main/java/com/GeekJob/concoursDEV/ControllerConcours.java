@@ -1,7 +1,7 @@
 package com.GeekJob.concoursDEV;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.List;
@@ -30,6 +30,14 @@ public class ControllerConcours {
 	public String viewHomePage() {
 		return "index";
 	}
+	
+//	@RequestMapping(value = "/logo" , produces = MediaType.IMAGE_PNG_VALUE)
+//	public ResponseEntity<byte[]> getImage() throws IOException {
+//	    InputStream in = getClass().getResourceAsStream("/resources/Logo.png");
+//	    final HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.IMAGE_PNG);
+//        return new ResponseEntity<byte[]>(new byte[in.available()], headers, HttpStatus.OK);
+//	}
 
 	@RequestMapping("/concoursListe")
 	public String viewListeConcours(Model model) {
@@ -73,34 +81,18 @@ public class ControllerConcours {
 		ModelAndView mav = new ModelAndView("ModifieConcours");
 		concours concoursDemande = service.get(id);
 		mav.addObject("concoursDemande", concoursDemande);
-
-		// Conversion de blob au image
-		java.sql.Blob blob = concoursDemande.getImage_css();
-		mav.addObject("concoursImage", blob);
-		// InputStream in;
-		// try {
-		// in = blob.getBinaryStream();
-		// BufferedImage img = ImageIO.read(in);
-		// File outputfile = new File("image.jpg");
-		// ImageIO.write(img, "jpg", outputfile);
-		// mav.addObject("concoursImage", outputfile.getPath());
-		// System.out.println(outputfile.getPath());
-		// } catch (SQLException | IOException e) {
-		// e.printStackTrace();
-		// }
-
 		return mav;
 	}
 
 	@RequestMapping("/new")
-	public String showNewProductPage(Model model) {
+	public String NewconcoursPage(Model model) {
 		concours concours = new concours();
 		model.addAttribute("concours", concours);
 		return "NouveauConcours";
 	}
 	
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public String saveconcours(@ModelAttribute("product") concours concours) {
+	public String saveconcours(@ModelAttribute("concours") concours concours) {
 		service.save(concours);
 		return "redirect:/";
 	}

@@ -1,6 +1,10 @@
 package com.GeekJob.concoursDEV;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Blob;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,6 +13,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.sql.rowset.serial.SerialBlob;
+import javax.sql.rowset.serial.SerialException;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -60,8 +66,12 @@ public class concours {
 	public Blob getImage_css() {
 		return image_css;
 	}
-	public void setImage_css(Blob image_css) {
-		this.image_css = image_css;
+	public void setImage_css(String URL) {
+		try {
+			this.image_css = new SerialBlob(Files.readAllBytes(Paths.get(URL)));
+		} catch (SQLException | IOException e) {
+			e.printStackTrace();
+		};
 	}
 	
 	public Integer getRecruteur_ID() {
