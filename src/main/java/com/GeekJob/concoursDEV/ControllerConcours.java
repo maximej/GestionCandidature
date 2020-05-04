@@ -2,10 +2,15 @@ package com.GeekJob.concoursDEV;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -45,22 +50,23 @@ public class ControllerConcours {
 		ModelAndView mav = new ModelAndView("detailsConcours");
 		concours concoursDemande = service.get(id);
 		mav.addObject("concoursDemande", concoursDemande);
-
-		// Conversion de blob au image
-		java.sql.Blob b = concoursDemande.getImage_css();
-		mav.addObject("concoursImage", b);
-		byte barr[];
-		try {
-			barr = b.getBytes(1,(int)b.length());
-			FileOutputStream fout=new FileOutputStream("concours_image.png");
-			fout.write(barr);
-			fout.close();
-		} catch (SQLException | IOException e) {
-			e.printStackTrace();
-		} 
-		
 		return mav;
 	}
+	
+	@RequestMapping(value = "/image/{id}", produces = MediaType.IMAGE_PNG_VALUE)
+    public ResponseEntity<byte[]> getImage(@PathVariable(name = "id") int id) throws IOException {
+    	concours cImageDemande = service.get(id);
+        byte[] imageContent = null;
+		try {
+			Blob b = cImageDemande.getImage_css();
+			imageContent = b.getBytes(1, (int)b.length());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+        final HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_PNG);
+        return new ResponseEntity<byte[]>(imageContent, headers, HttpStatus.OK);
+    }
 
 	@RequestMapping("/edit/{id}")
 	public ModelAndView editConcours(@PathVariable(name = "id") int id) {
@@ -98,7 +104,6 @@ public class ControllerConcours {
 		service.save(concours);
 		return "redirect:/";
 	}
-
 
 	@RequestMapping("/delete/{id}")
 	public String deleteconcours(@PathVariable(name = "id") int id) {

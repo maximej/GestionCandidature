@@ -9,8 +9,11 @@
 	<div class="container">
 
 		<form action="#" th:action="@{/postuler}" th:object="${concoursDemande}" method="post">
-			<h1 class="text-uppercase" th:text="*{nom_ccs}"></h1><img id="img" src="#" th:src="concours_image"
-				alt="Concours image" width="150" height="150" />
+			<h1 class="text-uppercase" th:text="*{nom_ccs}"></h1>
+			<span th:if="@{'/image/'+ *{ccs_ID}}">
+				<img id="img" src="#" th:src="@{'/image/'+ *{ccs_ID}}" alt="Concours image" width="150" height="150" />
+			</span>
+			<span th:unless="@{'/image/'+ *{ccs_ID}}"></span>
 			<table class="table">
 				<tr>
 					<td>Concours ID :</td>

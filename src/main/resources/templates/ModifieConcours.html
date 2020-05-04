@@ -37,7 +37,7 @@
 					</tr>
 					<tr>
 						<td>Image :</td>
-						<td><img src="#" th:src="@{data:image/bmp;base64,${concoursImage}}" alt="Concours image" width="150" height="150" />
+						<td><img src="#" th:src="@{'/image/'+ *{ccs_ID}}" alt="Concours image" width="150" height="150" />
 						<input type="file" name="files" class="btn btn-success btn-xs"></td>
 					</tr>
 					<tr>
