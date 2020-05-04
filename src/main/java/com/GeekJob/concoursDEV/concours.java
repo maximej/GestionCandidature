@@ -68,6 +68,7 @@ public class concours {
 	}
 	public void setImage_css(String URL) {
 		try {
+			System.out.print(URL);
 			this.image_css = new SerialBlob(Files.readAllBytes(Paths.get(URL)));
 		} catch (SQLException | IOException e) {
 			e.printStackTrace();
@@ -75,9 +76,11 @@ public class concours {
 	}
 	
 	public Integer getRecruteur_ID() {
+		System.out.print("-------------------------------------."+Recruteur_ID);
 		return Recruteur_ID;
 	}
 	public void setRecruteur_ID(Integer recruteur_ID) {
+		System.out.print(recruteur_ID);
 		Recruteur_ID = recruteur_ID;
 	}
 	

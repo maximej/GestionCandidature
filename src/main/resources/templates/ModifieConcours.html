@@ -11,8 +11,9 @@
 				if (curFiles.length > 0) {
 					for (const file of curFiles) {
 						if (validFileType(file)) {
-							// document.getElementById("test").innerHTML = URL.createObjectURL(file);
 							document.getElementById("image_css").setAttribute('src', URL.createObjectURL(file));
+							document.getElementById("image_css").setAttribute('th:src', URL.createObjectURL(file));
+							document.getElementById("image_css").setAttribute('th:field', "*{image_css}");
 						}
 					}
 				}
@@ -80,8 +81,7 @@
 			</table>
 			</div>
 		</form>
-
-		<div th:replace="common/header :: footer"></div>
 	</div>
+	<div th:replace="common/header :: footer"></div>
 </body>
 </html>
