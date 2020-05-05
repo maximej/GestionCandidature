@@ -19,9 +19,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.GeekJob.concoursDEV.entity.Candidat;
 import com.GeekJob.concoursDEV.entity.concours;
+import com.GeekJob.concoursDEV.service.CandidatService;
 import com.GeekJob.concoursDEV.service.ConcoursService;
 
 
@@ -36,6 +39,7 @@ public class ControllerConcours {
 	public String viewHomePage() {
 		return "index";
 	}
+	
 	
 	@RequestMapping(value = "/logo", method = RequestMethod.GET,
             produces = MediaType.IMAGE_JPEG_VALUE)
@@ -114,6 +118,31 @@ public class ControllerConcours {
 		return "redirect:/concoursListe";
 	}
 
+
 	
-	/////////////////////////////////////////////////Maragatham/////////////////////////////////////////////////
+	/////////////////////////////////////////////////Maxime/////////////////////////////////////////////////
+
+	@Autowired
+	private CandidatService serviceCda;
+	
+	@RequestMapping("/profil")
+	public String vueProfilCandidat() {
+		
+		return "profil";
+	}
+	
+	@RequestMapping("/nouveauCandidat")
+	public String NouveauCandidatPage(Model model) {
+		Candidat monCda = new Candidat();
+		model.addAttribute("Candidat", monCda);
+		return "NouveauCandidat";
+	}
+	
+	@RequestMapping(value = "/saveCda", method = RequestMethod.POST)
+	public String saveCda(@ModelAttribute("Candidat") Candidat monCda) {
+		serviceCda.save(monCda);
+		return "redirect:/profil";
+	}
+	
+
 }
