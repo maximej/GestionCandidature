@@ -1,4 +1,4 @@
-package com.GeekJob.concoursDEV;
+package com.GeekJob.concoursDEV.entity;
 
 import java.io.IOException;
 import java.nio.file.Files;

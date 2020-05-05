@@ -1,4 +1,4 @@
-package com.GeekJob.concoursDEV;
+package com.GeekJob.concoursDEV.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.GeekJob.concoursDEV.entity.concours;
+import com.GeekJob.concoursDEV.service.ConcoursService;
 
 
 @Controller

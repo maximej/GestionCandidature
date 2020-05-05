@@ -5,7 +5,7 @@
 	<div th:replace="common/header :: navbar-candidat"></div>
 
 	<div class="container" style="background-image:'BgGeekJobs2.jpg';">
-		<form action="/">
+		<form action="#">
 			<div class="form-group">
 				<label for="email">Email:</label> 
 				<input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
@@ -20,8 +20,8 @@
 			</div>
 			<div class="row">
 				<div class="col"></div>
-				<div class="col"><button type="submit" class="btn btn-primary btn-lg">Candidat</button></div>
-				<div class="col"><button type="submit" class="btn btn-success btn-lg">Recruteur</button></div>
+				<div class="col"><button type="submit" class="btn btn-primary btn-lg" formaction="#" th:formaction="@{/loginCda}">Candidat</button></div>
+				<div class="col"><button type="submit" class="btn btn-success btn-lg" formaction="#" th:formaction="@{/loginRcu}">Recruteur</button></div>
 				<div class="col"></div>
 			</div>
 		</form>
