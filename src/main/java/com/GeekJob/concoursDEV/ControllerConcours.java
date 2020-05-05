@@ -102,13 +102,13 @@ public class ControllerConcours {
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public String saveconcours(@ModelAttribute("concours") concours concours) {
 		service.save(concours);
-		return "redirect:/";
+		return "redirect:/concoursListe";
 	}
 
 	@RequestMapping("/delete/{id}")
 	public String deleteconcours(@PathVariable(name = "id") int id) {
 		service.delete(id);
-		return "redirect:/";
+		return "redirect:/concoursListe";
 	}
 
 	

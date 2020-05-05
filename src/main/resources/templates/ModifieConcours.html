@@ -41,47 +41,53 @@
 					<table class="table-borderless">
 						<tr>
 							<td>Concours ID :</td>
-							<td colspan="2"><input type="text" class="form-control" th:field="*{ccs_ID}"
-									readonly="readonly" /></td>
+							<td colspan="2">
+								<input type="text" class="form-control" th:field="*{ccs_ID}" readonly="readonly" />
+							</td>
 						</tr>
 						<tr>
 							<td>Nom du Concours :</td>
-							<td colspan="2"><input type="text" class="form-control" th:field="*{nom_ccs}" /></td>
+							<td colspan="2">
+								<input type="text" class="form-control" th:field="*{nom_ccs}" required />
+							</td>
 						</tr>
 						<tr>
 							<td>Date :</td>
-							<td colspan="2"><input type="date" class="form-control" th:field="*{date_css}" /></td>
+							<td colspan="2">
+								<input type="date" class="form-control" th:field="*{date_css}" required />
+							</td>
 						</tr>
 						<tr>
 							<td>Description :</td>
-							<td colspan="2"><textarea type="text" height="50" class="form-control"
-									th:field="*{description_ccs}" /></td>
-					</tr>
-					<tr>
-						<td>Statut :</td>
-						<td colspan="2"><input type="text" class="form-control" th:field="*{statut_css}" /></td>
-					</tr>
-					<tr>
-						<td>Concours créé par :</td>
-						<td colspan="2"><input type="text" class="form-control" th:field="*{Recruteur_ID}" /></td>
-					</tr>
-					<tr>
-						<td>Image :</td>
-						<td>
-							<img th:id="image_css" th:name="image_css" src="#" th:src="@{'/image/'+ *{ccs_ID}}" alt="Concours image" width="150" height="150"/>
-							<input id ="imageFile" type="file" name="files" class="btn btn-default btn-xs" accept=".png, .jpg, .jpeg">
-						</td>
-							
-					</tr>
-					<tr>
-						<td></td>
-						<td ><button id = "svBtn" type="submit" class="btn btn-success btn-xs" >Enregistrer</button></td>
-						<td><button type="button" class="btn btn-primary" onclick="window.history.back();">Abandonner les modifications</button></td>
-					</tr>
-			</table>
-			</div>
-		</form>
-	</div>
+							<td colspan="2">
+								<textarea type="text" height="50" class="form-control" th:field="*{description_ccs}" />
+							</td>
+						</tr>
+						<tr>
+							<td>Statut :</td>
+							<td colspan="2"><input type="number" class="form-control" th:field="*{statut_css}" min="401" max="403" required/></td>
+						</tr>
+						<tr>
+							<td>Concours créé par :</td>
+							<td colspan="2"><input type="text" class="form-control" th:field="*{Recruteur_ID}" required/></td>
+						</tr>
+						<tr>
+							<td>Image :</td>
+							<td>
+								<img th:id="image_css" th:name="image_css" src="#" th:src="@{'/image/'+ *{ccs_ID}}" alt="Concours image" width="150" height="150"/>
+								<input id ="imageFile" type="file" name="files" class="btn btn-default btn-xs" accept=".png, .jpg, .jpeg">
+							</td>
+								
+						</tr>
+						<tr>
+							<td></td>
+							<td><button id = "svBtn" type="submit" class="btn btn-success btn-xs" >Enregistrer</button></td>
+							<td><button type="button" class="btn btn-primary" onclick="window.history.back();">Abandonner les modifications</button></td>
+						</tr>
+					</table>
+				</div>
+			</form>
+		</div>
 	<div th:replace="common/header :: footer"></div>
 </body>
 </html>
