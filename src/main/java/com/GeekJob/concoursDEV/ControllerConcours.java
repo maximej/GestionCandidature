@@ -25,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class ControllerConcours {
 
+	/////////////////////////////////////////////////Maragatham/////////////////////////////////////////////////
 	@Autowired
 	private ConcoursService service;
 
@@ -109,4 +110,7 @@ public class ControllerConcours {
 		service.delete(id);
 		return "redirect:/";
 	}
+
+	
+	/////////////////////////////////////////////////Maragatham/////////////////////////////////////////////////
 }

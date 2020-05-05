@@ -6,5 +6,4 @@ $(document).ready(function () {
 		$('#deleteModal #delref').attr('href', href);
 		$('#deleteModal').modal();
 	});
-
 });
