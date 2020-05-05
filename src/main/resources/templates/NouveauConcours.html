@@ -13,40 +13,40 @@
 				<table class="table-borderless">
 					<tr>
 						<td>Nom du Concours :</td>
-						<td><input type="text" class="form-control" th:field="*{nom_ccs}" /></td>
+						<td colspan="2"><input type="text" class="form-control" th:field="*{nom_ccs}" /></td>
 					</tr>
 					<tr>
 						<td>Date :</td>
-						<td><input type="date" class="form-control" th:field="*{date_css}" /></td>
+						<td colspan="2"><input type="date" class="form-control" th:field="*{date_css}" /></td>
 					</tr>
 					<tr>
 						<td>Description :</td>
-						<td><textarea type="text" height="50" class="form-control" th:field="*{description_ccs}" /></td>
+						<td colspan="2"><textarea type="text" height="50" class="form-control" th:field="*{description_ccs}" /></td>
 					</tr>
 					<tr>
 						<td>Statut :</td>
-						<td><input type="text" class="form-control" th:field="*{statut_css}" /></td>
+						<td colspan="2"><input type="text" class="form-control" th:field="*{statut_css}" /></td>
 					</tr>
 					<tr>
 						<td>Concours créé par :</td>
-						<td><input type="text" class="form-control" th:field="*{Recruteur_ID}" /></td>
+						<td colspan="2"><input type="text" class="form-control" th:field="*{Recruteur_ID}" /></td>
 					</tr>
 					<tr>
 						<td>Image :</td>
 						<td><img src="#" th:src="@{data:image/bmp;base64,${concoursImage}}" alt="Concours image" width="150" height="150" />
-						<input type="file" name="files" class="btn btn-success btn-xs"></td>					
+						<input type="file" name="files" class="btn btn-default btn-xs"></td>					
 					</tr>
 					<tr>
 					</tr>
 					<tr>
+						<td></td>	
 						<td><button type="submit" class="btn btn-success btn-xs">Enregistrer</button></td>
 						<td><button type="button" class="btn btn-primary" onclick="window.history.back();">Cancel</button></td>
 					</tr>
 			</table>
 			</div>
 		</form>
-
-		<div th:replace="common/header :: footer"></div>
 	</div>
+	<div th:replace="common/header :: footer"></div>
 </body>
 </html>
