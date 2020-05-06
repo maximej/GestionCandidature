@@ -19,15 +19,8 @@ public class VilleService {
 		return mesVilles.findAll();
 	}
 	
-	public void save(Ville maVille) {
-		mesVilles.save(maVille);
-	}
-	
 	public Ville get(Integer id) {
 		return mesVilles.findById(id).get();
 	}
-	
-	public void delete(Integer id) {
-		mesVilles.deleteById(id);
-	}
+
 }

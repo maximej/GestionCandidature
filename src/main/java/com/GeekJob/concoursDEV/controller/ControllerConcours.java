@@ -27,6 +27,7 @@ import com.GeekJob.concoursDEV.entity.Adresse;
 import com.GeekJob.concoursDEV.entity.Candidat;
 import com.GeekJob.concoursDEV.entity.Ville;
 import com.GeekJob.concoursDEV.entity.concours;
+import com.GeekJob.concoursDEV.repository.VilleI;
 import com.GeekJob.concoursDEV.service.AdresseService;
 import com.GeekJob.concoursDEV.service.CandidatService;
 import com.GeekJob.concoursDEV.service.ConcoursService;
@@ -122,7 +123,6 @@ public class ControllerConcours {
 	@Autowired
 	private CandidatService serviceCda;
 	private VilleService serviceVilles;
-	private AdresseService servAd;
 
 
 	
@@ -134,6 +134,7 @@ public class ControllerConcours {
 	
 	@RequestMapping("/ville")
 	public String listeV(Model model) {
+		VilleService serviceVilles = new VilleService();
 		model.addAttribute("listVilles", serviceVilles.listAll());
 		return "VilleListBack";
 	}
@@ -162,7 +163,20 @@ public class ControllerConcours {
 
 	@RequestMapping(value = "/saveCda", method = RequestMethod.POST)
 	public String saveCda(@ModelAttribute("Candidat") Candidat monCda) {
-		
+		serviceCda.save(monCda);
+		return "redirect:/profil";
+	}
+	
+	@RequestMapping("/updateCda/{id}")
+	public ModelAndView updateCda(@PathVariable(name = "id") int id) {
+		ModelAndView mav = new ModelAndView("NouveauCandidat");
+		Candidat monCda = serviceCda.get(id);
+		mav.addObject("Candidat", monCda);
+		return mav;
+	}
+	
+	@RequestMapping(value = "/uploadCv", method = RequestMethod.POST)
+	public String updateCv(@ModelAttribute("Candidat") Candidat monCda) {
 		serviceCda.save(monCda);
 		return "redirect:/profil";
 	}

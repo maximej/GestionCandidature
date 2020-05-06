@@ -28,12 +28,10 @@ public class Ville{
     private List<Adresse> adresse;
 	
 	public Ville() {
-		
-	}	
+			}	
 	
 	public Ville(int id) {
 		this.ville_id = id;
-
 	}	
 	
 	public Ville(int ville_id, String ville_departement, String ville_nom_reel, String ville_code_postal) {
