@@ -39,6 +39,7 @@ public class Candidat {
 	private String facebook;
 	private String instagram;
 	private String twitter;
+	private String cv;
 	private String biographie;
 	private int etude;
 	
@@ -149,6 +150,17 @@ public class Candidat {
 	public void setBiographie(String biographie) {
 		this.biographie = biographie;
 	}
+	
+	public String getCv() {
+		return cv;
+	}
+
+
+
+	public void setCv(String cv) {
+		this.cv = cv;
+	}
+
 	
 	
 	

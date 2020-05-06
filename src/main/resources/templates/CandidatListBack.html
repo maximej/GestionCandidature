@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns="http://www.w3.org/1000/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="common/header :: header"></head>
+
+<body>
+	<div th:replace="common/header :: navbar-recruteur"></div>
+	<div class="container">
+		<h1>Liste des Candidats</h1>
+		<div style="display: flex; justify-content: space-around"><a href="new" class="btn btn-primary btn-xs">Nouveau
+				Concours</a></div>
+		<table class="table">
+			<thead>
+				<div class="row">
+					<div class="col">
+						<h6>Nom</h6>
+					</div>
+
+				</div>
+			</thead>
+			<tbody>
+				<tr th:each="Candidat : ${listCda}">
+					<td th:text="${Candidat.nom_cda}">nom_ccs</td>
+					<td th:text="${Candidat?.monAdresse?.rue}">nom_ccs</td>
+			<!--		<td th:text="${Candidat?.monAdresse?.maVille?.ville_nom_reel}">nom_ccs</td>
+				--></tr>
+			</tbody>
+		</table>
+	</div>
+	<div th:replace="common/header :: footer"></div>
+	<!-- Modal script -->
+	<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					Confirmez vous la supression ?
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Non</button>
+					<a href="" class="btn btn-danger" id="delref">Oui</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

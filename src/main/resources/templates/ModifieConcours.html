@@ -1,66 +1,66 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns="http://www.w3.org/1000/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-	<head th:replace="common/header :: header"></head>
-	<script>
-		$(document).ready().click(function () {
-			const input = document.getElementById("imageFile");
-			input.addEventListener('change', updateURL);
-			function updateURL() {
-				const curFiles = input.files;
-				if (curFiles.length > 0) {
-					for (const file of curFiles) {
-						if (validFileType(file)) {
-							document.getElementById("image_css").setAttribute('src', URL.createObjectURL(file));
-							document.getElementById("image_css").setAttribute('th:src', URL.createObjectURL(file));
-							document.getElementById("image_css").setAttribute('th:field', "*{image_css}");
-						}
+<head th:replace="common/header :: header"></head>
+<script>
+	$(document).ready().click(function () {
+		const input = document.getElementById("imageFile");
+		input.addEventListener('change', updateURL);
+		function updateURL() {
+			const curFiles = input.files;
+			if (curFiles.length > 0) {
+				for (const file of curFiles) {
+					if (validFileType(file)) {
+						document.getElementById("image_css").setAttribute('src', URL.createObjectURL(file));
+						document.getElementById("image_css").setAttribute('th:src', URL.createObjectURL(file));
+						document.getElementById("image_css").setAttribute('th:field', "*{image_css}");
 					}
 				}
 			}
+		}
 
-			const fileTypes = [
-				"image/jpeg",
-				"image/pjpeg",
-				"image/png"
-			];
+		const fileTypes = [
+			"image/jpeg",
+			"image/pjpeg",
+			"image/png"
+		];
 
-			function validFileType(file) {
-				return fileTypes.includes(file.type);
-			}
-		});
-	</script>
+		function validFileType(file) {
+			return fileTypes.includes(file.type);
+		}
+	});
+</script>
 
-	<body>
-		<div th:replace="common/header :: navbar-recruteur"></div>
-		<div class="container">
+<body>
+	<div th:replace="common/header :: navbar-recruteur"></div>
+	<div class="container">
 
-			<form action="#" th:action="@{/save}" th:object="${concoursDemande}" method="post">
-				<div class="container">
-					<h1 class="text-uppercase" th:text="*{nom_ccs}"></h1>
-					<table class="table-borderless">
-						<tr>
-							<td>Concours ID :</td>
-							<td colspan="2">
-								<input type="text" class="form-control" th:field="*{ccs_ID}" readonly="readonly" />
-							</td>
-						</tr>
-						<tr>
-							<td>Nom du Concours :</td>
-							<td colspan="2">
-								<input type="text" class="form-control" th:field="*{nom_ccs}" required />
-							</td>
-						</tr>
-						<tr>
-							<td>Date :</td>
-							<td colspan="2">
-								<input type="date" class="form-control" th:field="*{date_css}" required />
-							</td>
-						</tr>
-						<tr>
-							<td>Description :</td>
-							<td colspan="2">
-								<textarea type="text" height="50" class="form-control" th:field="*{description_ccs}" />
+		<form action="#" th:action="@{/save}" th:object="${concoursDemande}" method="post">
+			<div class="container">
+				<h1 class="text-uppercase" th:text="*{nom_ccs}"></h1>
+				<table class="table-borderless">
+					<tr>
+						<td>Concours ID :</td>
+						<td colspan="2">
+							<input type="text" class="form-control" th:field="*{ccs_ID}" readonly="readonly" />
+						</td>
+					</tr>
+					<tr>
+						<td>Nom du Concours :</td>
+						<td colspan="2">
+							<input type="text" class="form-control" th:field="*{nom_ccs}" required />
+						</td>
+					</tr>
+					<tr>
+						<td>Date :</td>
+						<td colspan="2">
+							<input type="date" class="form-control" th:field="*{date_css}" required />
+						</td>
+					</tr>
+					<tr>
+						<td>Description :</td>
+						<td colspan="2">
+							<textarea type="text" height="50" class="form-control" th:field="*{description_ccs}" />
 							</td>
 						</tr>
 						<tr>
