@@ -19,6 +19,10 @@ public class ConcoursService {
 		return ccs.findAll();
 	}
 	
+	public List<concours> listAllCda() {
+		return ccs.findBystatutccs(401);
+	}
+	
 	public void save(concours concour) {
 		ccs.save(concour);
 	}
@@ -28,7 +32,8 @@ public class ConcoursService {
 	}
 	
 	public void delete(Integer id) {
-		ccs.deleteById(id);
+		concours concour = ccs.findById(id).get();
+		concour.setStatutccs(403);
 	}
 	
 	public concours getlast() {

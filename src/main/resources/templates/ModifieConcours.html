@@ -13,7 +13,8 @@
 						if (validFileType(file)) {
 							document.getElementById("image_css").setAttribute('src', URL.createObjectURL(file));
 							document.getElementById("image_css").setAttribute('th:src', URL.createObjectURL(file));
-							document.getElementById("image_css").setAttribute('th:field', "*{image_css}");
+							let imgtrans = new Blob(file, {type: "image/png"});
+							document.getElementById("imageFile").setAttribute('th:field', "*{image_css}");
 						}
 					}
 				}
@@ -28,6 +29,7 @@
 			function validFileType(file) {
 				return fileTypes.includes(file.type);
 			}
+
 		});
 	</script>
 
@@ -35,7 +37,7 @@
 		<div th:replace="common/header :: navbar-recruteur"></div>
 		<div class="container">
 
-			<form action="#" th:action="@{/save}" th:object="${concoursDemande}" method="post">
+			<form action="#" th:action="@{'/save/' + ${imgtrans}}" th:object="${concoursDemande}" method="post">
 				<div class="container">
 					<h1 class="text-uppercase" th:text="*{nom_ccs}"></h1>
 					<table class="table-borderless">
@@ -61,7 +63,7 @@
 							<td>Description :</td>
 							<td colspan="2">
 								<textarea type="text" height="50" class="form-control" th:field="*{description_ccs}" />
-							</td>
+								</td>
 						</tr>
 						<tr>
 							<td>Statut :</td>
@@ -77,7 +79,6 @@
 								<img th:id="image_css" th:name="image_css" src="#" th:src="@{'/image/'+ *{ccs_ID}}" alt="Concours image" width="150" height="150"/>
 								<input id ="imageFile" type="file" name="files" class="btn btn-default btn-xs" accept=".png, .jpg, .jpeg">
 							</td>
-								
 						</tr>
 						<tr>
 							<td></td>

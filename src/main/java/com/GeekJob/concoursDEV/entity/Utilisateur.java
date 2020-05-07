@@ -11,7 +11,7 @@ public class Utilisateur {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int utilisateur_ID ;
 	private String email;
-	private String mot_de_passe;
+	private String motdepasse;
 	private int Statut_util;
 	
 	public int getUtilisateur_ID() {
@@ -26,11 +26,11 @@ public class Utilisateur {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getMot_de_passe() {
-		return mot_de_passe;
+	public String getMotdepasse() {
+		return motdepasse;
 	}
-	public void setMot_de_passe(String mot_de_passe) {
-		this.mot_de_passe = mot_de_passe;
+	public void setMotdepasse(String mot_de_passe) {
+		this.motdepasse = mot_de_passe;
 	}
 	public int getStatut_util() {
 		return Statut_util;
@@ -39,10 +39,10 @@ public class Utilisateur {
 		Statut_util = statut_util;
 	}
 	
-	public Utilisateur(String email, String mot_de_passe, int statut_util) {
+	public Utilisateur(String email, String motdepasse, int statut_util) {
 		super();
 		this.email = email;
-		this.mot_de_passe = mot_de_passe;
+		this.motdepasse = motdepasse;
 		Statut_util = statut_util;
 	}
 	public Utilisateur() {

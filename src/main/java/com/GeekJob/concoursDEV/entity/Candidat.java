@@ -1,7 +1,14 @@
 package com.GeekJob.concoursDEV.entity;
 
-
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.sql.Blob;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +17,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.sql.rowset.serial.SerialBlob;
+import javax.sql.rowset.serial.SerialException;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -30,6 +39,7 @@ public class Candidat {
 	private String facebook;
 	private String instagram;
 	private String twitter;
+	private String cv;
 	private String biographie;
 	private int etude;
 	
@@ -140,6 +150,17 @@ public class Candidat {
 	public void setBiographie(String biographie) {
 		this.biographie = biographie;
 	}
+	
+	public String getCv() {
+		return cv;
+	}
+
+
+
+	public void setCv(String cv) {
+		this.cv = cv;
+	}
+
 	
 	
 	

@@ -14,16 +14,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StreamUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.GeekJob.concoursDEV.entity.Adresse;
 import com.GeekJob.concoursDEV.entity.Candidat;
+import com.GeekJob.concoursDEV.entity.Utilisateur;
+import com.GeekJob.concoursDEV.entity.Ville;
 import com.GeekJob.concoursDEV.entity.concours;
 import com.GeekJob.concoursDEV.service.CandidatService;
 import com.GeekJob.concoursDEV.service.ConcoursService;
+import com.GeekJob.concoursDEV.service.UtilisateurService;
+import com.GeekJob.concoursDEV.service.VilleService;
 
 @Controller
 public class ControllerConcours {
@@ -31,6 +38,7 @@ public class ControllerConcours {
 	///////////////////////////////////////////////// Maragatham/////////////////////////////////////////////////
 	@Autowired
 	private ConcoursService service;
+	private UtilisateurService serviceUtil;
 
 	@RequestMapping("/")
 	public String viewHomePage() {
@@ -55,7 +63,7 @@ public class ControllerConcours {
 
 	@RequestMapping("/concoursListecadidat")
 	public String viewListeConcourfront(Model model) {
-		List<concours> listConcours = service.listAll();
+		List<concours> listConcours = service.listAllCda();
 		model.addAttribute("listConcours", listConcours);
 		return "ConcoursListFront";
 	}
@@ -84,7 +92,7 @@ public class ControllerConcours {
 	}
 
 	@RequestMapping("/edit/{id}")
-	public ModelAndView editConcours(@PathVariable(name = "id") int id) {
+	public ModelAndView ModifieConcours(@PathVariable(name = "id") int id) {
 		ModelAndView mav = new ModelAndView("ModifieConcours");
 		concours concoursDemande = service.get(id);
 		mav.addObject("concoursDemande", concoursDemande);
@@ -98,8 +106,10 @@ public class ControllerConcours {
 		return "NouveauConcours";
 	}
 
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public String saveconcours(@ModelAttribute("concours") concours concours) {
+	@RequestMapping(value = "/save/{imgblob}", method = RequestMethod.POST)
+	public String saveconcours(@ModelAttribute("concours") concours concours,
+			@PathVariable(name = "imgblob") Blob imgblob) {
+		concours.setImage_css((Blob) imgblob);
 		service.save(concours);
 		return "redirect:/concoursListe";
 	}
@@ -110,11 +120,73 @@ public class ControllerConcours {
 		return "redirect:/concoursListe";
 	}
 
+	@Controller
+	@RequestMapping("/sessionattributes")
+	@SessionAttributes("login")
+	public class LoginControllerWithSessionAttributes {
+	    // ... other methods
+	}
+	
+	@GetMapping("/login")
+	public String showForm(
+	  Model model,
+	  @ModelAttribute("login") Utilisateur user) {
+	  
+//	    if (user != null) {
+//	        model.addAttribute("todo", todos.peekLast());
+//	    } else {
+//	        model.addAttribute("todo", new TodoItem());
+//	    }
+	    return "sessionattributesform";
+	}
+	
+	@RequestMapping("/loginCda/{email}/{mdp}")
+	public ModelAndView validUser(@PathVariable(name = "email") String email, @PathVariable(name = "mdp") String mdp) {
+		ModelAndView mav = new ModelAndView("AccueilCda");
+		Utilisateur vUtil = serviceUtil.getValidCda(email, mdp);
+		if(vUtil != null) {
+			mav.addObject(vUtil);
+			return mav;
+		}
+		mav = new ModelAndView("index");
+		mav.addObject("msg", "Email ou Mot de passe Invalide");
+		return mav;
+	}
+	
+	@RequestMapping("/loginRcu/{email}/{mdp}")
+	public ModelAndView validRecruteur(@PathVariable(name = "email") String email, @PathVariable(name = "mdp") String mdp) {
+		ModelAndView mav = new ModelAndView("AccueilRcu");
+		Utilisateur vUtil = serviceUtil.getValidCda(email, mdp);
+		if(vUtil != null) {
+			mav.addObject(vUtil);
+			return mav;
+		}
+		mav = new ModelAndView("index");
+		mav.addObject("msg", "Email ou Mot de passe Invalide");
+		return mav;
+	}
+
 /////////////////////////////////////////////////Maxime/////////////////////////////////////////////////
 
 	@Autowired
 	private CandidatService serviceCda;
+	private VilleService serviceVilles;
 
+
+	
+	@RequestMapping("/cdaListe")
+	public String listeCda(Model model) {
+		model.addAttribute("listCda", serviceCda.listAll());
+		return "CandidatListBack";
+	}
+	
+	@RequestMapping("/ville")
+	public String listeV(Model model) {
+		VilleService serviceVilles = new VilleService();
+		model.addAttribute("listVilles", serviceVilles.listAll());
+		return "VilleListBack";
+	}
+	
 	@RequestMapping("/profil")
 	public String vueProfilCandidat() {
 
@@ -124,12 +196,35 @@ public class ControllerConcours {
 	@RequestMapping("/nouveauCandidat")
 	public String NouveauCandidatPage(Model model) {
 		Candidat monCda = new Candidat();
+		Adresse monAdresse = new Adresse();
+		Ville maVille = new Ville();
+		monAdresse.setVille(maVille);
+		monCda.setMonAdresse(monAdresse);
+
 		model.addAttribute("Candidat", monCda);
+		
+	//	List<Ville> mesVilles = serviceVilles.listAll();
+	 //   model.addAttribute("mesVilles", serviceVilles.listAll());
+	    
 		return "NouveauCandidat";
 	}
 
 	@RequestMapping(value = "/saveCda", method = RequestMethod.POST)
 	public String saveCda(@ModelAttribute("Candidat") Candidat monCda) {
+		serviceCda.save(monCda);
+		return "redirect:/profil";
+	}
+	
+	@RequestMapping("/updateCda/{id}")
+	public ModelAndView updateCda(@PathVariable(name = "id") int id) {
+		ModelAndView mav = new ModelAndView("NouveauCandidat");
+		Candidat monCda = serviceCda.get(id);
+		mav.addObject("Candidat", monCda);
+		return mav;
+	}
+	
+	@RequestMapping(value = "/uploadCv", method = RequestMethod.POST)
+	public String updateCv(@ModelAttribute("Candidat") Candidat monCda) {
 		serviceCda.save(monCda);
 		return "redirect:/profil";
 	}

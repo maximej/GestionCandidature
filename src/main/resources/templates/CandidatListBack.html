@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns="http://www.w3.org/1000/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="common/header :: header"></head>
+
+<body>
+	<div th:replace="common/header :: navbar-recruteur"></div>
+	<div class="container">
+		<h1>Liste des Candidats</h1>
+
+		<table class="table">
+			<thead>
+				<div class="row">
+					<div class="col">
+						<th text="Nom">Nom</th>
+					</div>
+					<div class="col">
+						<th text="Adresse">Adresse</th>
+					</div>
+					<div class="col">
+						<th text="Ville">Ville</th>
+					</div>
+				</div>
+			</thead>
+			<tbody>
+
+				<tr th:each="Candidat : ${listCda}">
+					<td th:text="${Candidat.nom_cda}">nom_ccs</td>
+					<td th:text="${Candidat?.monAdresse?.rue}">nom_ccs</td>
+					<td th:text="${Candidat?.monAdresse?.maVille?.ville_nom_reel}">nom_ccs</td>
+						<td>
+						<a th:href="@{'/updateCda/' + ${Candidat.cda_ID}}" class="btn btn-success btn-xs">Modifier</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div style="display: flex; justify-content: space-around"><a href="nouveauCandidat"
+			class="btn btn-primary btn-xs">Nouveau
+			Candidat</a></div>
+	<div th:replace="common/header :: footer"></div>
+
+</body>
+
+</html>
