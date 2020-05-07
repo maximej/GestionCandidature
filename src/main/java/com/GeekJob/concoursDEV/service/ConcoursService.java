@@ -30,4 +30,9 @@ public class ConcoursService {
 	public void delete(Integer id) {
 		ccs.deleteById(id);
 	}
+	
+	public concours getlast() {
+		int c = (int) ccs.count();
+		return ccs.getOne(c);
+	}
 }
