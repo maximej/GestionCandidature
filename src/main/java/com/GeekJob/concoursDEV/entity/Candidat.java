@@ -187,8 +187,4 @@ public class Candidat {
 	public void setCv(String cv) {
 		this.cv = cv;
 	}
-
-	
-	
-	
 }

@@ -1,28 +1,45 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-<head th:fragment="header">
-	<title>GeekJob.com</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-	<script type="text/javascript" th:src="@{js/main.js}" src="../../static/js/main.js"></script>
-</head>
+	<head th:fragment="header">
+		<title>GeekJob.com</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+		<script type="text/javascript" th:src="@{js/main.js}" src="../../static/js/main.js"></script>
+	</head>
 
-<body>
+	<body>
 
-	<div th:fragment="header">
-		<div class="row">
-			<div class="col"><a href="#" th:href="@{/}"><img src="#" th:src="@{/logo}"  alt="Logo" ></a></div>
-			<div class="col">
-				<h1 style="position: relative; top: 55px; left: 100px;">GeekJob.com</h1>
+		<div th:fragment="header">
+			<div class="row">
+				<div class="col"><a href="#" th:href="@{/}"><img src="#" th:src="@{/logo}" alt="Logo"></a></div>
+				<div class="col">
+					<h1 class="align-middle" style="position: relative; top: 55px;">GeekJob.com</h1>
+				</div>
+				<div class="col"><span id="userLogin" class="align-bottom"></span>
+					<script>
+						// Check browser support
+						if (typeof (Storage) !== "undefined") {
+							// Store
+							//sessionStorage.setItem("lastname", "Smith");
+							// Retrieve
+							if (sessionStorage.getItem("login")) {
+								document.getElementById("userLogin").innerHTML = sessionStorage.getItem("login");
+							}else{
+								document.getElementById("userLogin").innerHTML = "Se connecter"
+							}
+						} else {
+							document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Storage...";
+						}
+					</script>
+				</div>
 			</div>
-			<div class="col"></div>
 		</div>
-	</div>
+
 
 	<div th:fragment="navbar-candidat">
 		<nav class="navbar navbar-expand-sm  bg-light">
@@ -56,12 +73,13 @@
 		</nav>
 	</div>
 
-	<div th:fragment="footer">
-		<hr>
-		<div class="footer-copyright text-center py-3">© 2020 Copyright :
-			<a href="#" th:href="@{/}"> GeekJob.com</a>
+	
+		<div th:fragment="footer">
+			<hr>
+			<div class="footer-copyright text-center py-3">© 2020 Copyright :
+				<a href="#" th:href="@{/}"> GeekJob.com</a>
+			</div>
 		</div>
-	</div>
-</body>
+	</body>
 
 </html>

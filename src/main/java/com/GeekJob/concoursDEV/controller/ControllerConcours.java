@@ -2,10 +2,12 @@ package com.GeekJob.concoursDEV.controller;
 
 import java.awt.print.Printable;
 import java.io.IOException;
+
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 import java.sql.Blob;
 import java.util.Date;
 import java.sql.SQLException;
@@ -39,19 +41,24 @@ import org.springframework.web.servlet.ModelAndView;
 import com.GeekJob.concoursDEV.entity.Adresse;
 import com.GeekJob.concoursDEV.entity.Candidat;
 import com.GeekJob.concoursDEV.entity.Ville;
+
+import com.GeekJob.concoursDEV.entity.Candidat;
+
 import com.GeekJob.concoursDEV.entity.concours;
+
 import com.GeekJob.concoursDEV.repository.VilleI;
 import com.GeekJob.concoursDEV.service.AdresseService;
+
 import com.GeekJob.concoursDEV.service.CandidatService;
 import com.GeekJob.concoursDEV.service.ConcoursService;
 import com.GeekJob.concoursDEV.service.VilleService;
 
 import ch.qos.logback.core.Context;
 
+
 @Controller
 public class ControllerConcours {
 
-	///////////////////////////////////////////////// Maragatham/////////////////////////////////////////////////
 	@Autowired
 	private ConcoursService service;
 
