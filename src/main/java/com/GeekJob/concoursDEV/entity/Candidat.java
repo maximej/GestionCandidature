@@ -42,6 +42,9 @@ public class Candidat {
 	private String cv;
 	private String biographie;
 	private int etude;
+	private int Statut_cda;
+	private int Utilisateur_ID;
+
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "adresse_id")
@@ -53,6 +56,30 @@ public class Candidat {
 	
 	
 	
+	public int getStatut_cda() {
+		return Statut_cda;
+	}
+
+
+
+	public void setStatut_cda(int statut_cda) {
+		Statut_cda = statut_cda;
+	}
+
+
+
+	public int getUtilisateur_ID() {
+		return Utilisateur_ID;
+	}
+
+
+
+	public void setUtilisateur_ID(int utilisateur_ID) {
+		Utilisateur_ID = utilisateur_ID;
+	}
+
+
+
 	public int getCda_ID() {
 		return cda_ID;
 	}

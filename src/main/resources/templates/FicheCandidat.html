@@ -4,14 +4,18 @@
 <head th:replace="common/header :: header"></head>
 
 <body>
+
 	<div th:replace="common/header :: navbar-candidat"></div>
 	<div class="container">
 		<h1 class="text-uppercase" text="Création d'un nouveau profil de Candidat"></h1>
 
-		<form action="#" th:action="@{/saveCda}" th:object="${Candidat}" method="post">
+		<form action="#" autocomplete="off" th:action="@{/saveCda}" th:object="${Candidat}" method="post">
 			<div class="container">
 				<h2 text="Votre état-civil"> </h2>
 				<div class="form-group">
+					<input id="id_F" type="hidden" th:field="*{cda_ID}">
+					<input id="stat_F" type="hidden" th:field="*{Statut_cda}">
+
 					<div class="row">
 						<div class="col">
 							<label for="genre_F">Votre civilité : </label>
@@ -78,11 +82,11 @@
 
 				<div class="form-group">
 					<div class="row">
-						<div class="col">
+					<!--	<div class="col">
 							<label for="cv_F">Fichier CV, format pdf, png, ou jpeg, 15 mo max : </label>
 							<input id="cv_F" type="file" class="form-control-file" th:field="*{cv}"
 								placeholder="Votre numéro de téléphonne" />
-						</div>
+						</div>-->
 						<div class="col">
 							<label for="etudes_F">Votre niveau d'études : </label>
 							<select id="etudes_F" class="custom-select" th:field="*{etude}">
@@ -126,19 +130,29 @@
 							<input id="comp_F" type="text" class="form-control" th:field="*{monAdresse.complement}"
 								placeholder="Complément d'adresse" maxlength="255" />
 						</div>
-					</div>
 
 
-					<!---
+
 						<div class="col">
 							<label for="ville_F">Ville : </label>
-							<select id="ville_F" class="custom-select" th:field="*{genre}">
-								<option th:each="Ville: ${mesVilles}"
-									th:text="${Ville.ville_nom_reel}" th:value=" ${Ville.ville_id}">
-								</option>
-							</select>
+							<div class="autocomplete" style="width:300px;">
+								<input id="ville_F" type="text" class="form-control" 
+									placeholder="Ville">
+																<!--	th:field="*{monAdresse.maVille.ville_nom_reel}"-->
+
+							</div>
+
 						</div>
--->
+
+						<!--
+						<label for="ville_F">Ville : </label>
+						<select id="ville_F" class="custom-select" th:field="*{genre}">
+							<option th:each="Ville: ${mesVilles}" th:text="${Ville.ville_nom_reel}"
+								th:value=" ${Ville.ville_id}">
+							</option>
+						</select>-->
+					</div>
+
 
 				</div>
 			</div>
@@ -146,12 +160,18 @@
 			<div style="display: flex; justify-content: space-around">
 				<td><button type="submit" class="btn btn-success btn-xs">Enregistrer</button></td>
 			</div>
-	</div>
-	</form>
+		</form>
 
 
 	</div>
 	<div th:replace="common/header :: footer"></div>
 </body>
+<script type="text/javascript" th:inline="javascript">
+	var jsaVilles = [];
+	/*[# th:each="villes : ${mesVilles}"]*/
+	jsaVilles.push("[(${villes.ville_nom_reel})]");
+	/*[/]*/
+	autocomplete(document.getElementById("ville_F"), jsaVilles);
+</script>
 
 </html>
