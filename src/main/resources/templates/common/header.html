@@ -23,11 +23,13 @@
 					</div>
 					<div class="col">
 						<span th:if="${session.CdaLogin != null}">
-							<h6 class="d-flex justify-content-end" th:text="'Session Candidat : ' +${session.CdaLogin.email}"></h6>
+							<h6 class="d-flex justify-content-end"
+								th:text="'Session Candidat : ' +${session.CdaLogin.email}"></h6>
 							<h6 class="d-flex justify-content-end"><a th:href="@{/logout}">Se déconnecter</a></h6>
 						</span>
 						<span th:if="${session.RcuLogin != null}">
-							<h6 class="d-flex justify-content-end" th:text="'Session Recruteur : ' + ${session.RcuLogin.email}"></h6>
+							<h6 class="d-flex justify-content-end"
+								th:text="'Session Recruteur : ' + ${session.RcuLogin.email}"></h6>
 							<h6 class="d-flex justify-content-end"><a th:href="@{/logout}">Se déconnecter</a></h6>
 						</span>
 						<span th:if="${session.RcuLogin == null and session.CdaLogin == null}">
@@ -55,7 +57,7 @@
 					</ul>
 				</nav>
 			</span>
-			<span th:if="${session.RcuLogin != null}">
+			<span th:if="${session.RcuLogin != null }">
 				<nav class="navbar navbar-expand-sm  bg-light">
 					<ul class="navbar-nav">
 						<li class="nav-item">
@@ -70,9 +72,18 @@
 						<li class="nav-item">
 							<a class="nav-link" href="#">Mon profil</a>
 						</li>
+						<span th:if="${session.RcuLogin.email == 'admin@GeekJob.com'}">
+							<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Recruteurs</a>
+								<div class="dropdown-menu">
+									<a class="dropdown-item" href="#" th:href="@{/rcuListe}">Recruteurs Liste</a>
+									<a class="dropdown-item" href="#" th:href="@{/nouveauRcu}">Nouveau Recruteur</a>
+								</div>
+							</li>
+						</span>
 					</ul>
 				</nav>
 			</span>
+
 			<span th:if="${session.RcuLogin == null and session.CdaLogin == null}">
 				<nav class="navbar navbar-expand-sm  bg-light">
 					<ul class="navbar-nav">

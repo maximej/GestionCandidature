@@ -133,7 +133,7 @@ public class ControllerConcours {
 		model.addAttribute("listConcours", listConcours);
 		return "ConcoursListBack";
 	}
-
+	
 	@RequestMapping("/concoursListecadidat")
 	public String viewListeConcourfront(Model model) {
 		List<concours> listConcours = service.listAllCda();
@@ -178,22 +178,7 @@ public class ControllerConcours {
 		model.addAttribute("concours", concours);
 		return "NouveauConcours";
 	}
-	
-	@RequestMapping("/nouveauRcu")
-	public String newRcu(Model model) {
-		Recruteur recruteur = new Recruteur();
-		model.addAttribute("recruteur", recruteur);
-		return "NouveauRecruteur";
-	}
-	
-	@RequestMapping(value = "/saveRcu", method = RequestMethod.POST)
-	public String saveRcu(@ModelAttribute("recruteur") Recruteur recruteur) {
-		recruteur.getUtilRcu().setStatut_util(recruteur.getStatutrcu());
-		Utilisateur u =  serviceUtil.save(recruteur.getUtilRcu());
-		recruteur.setUtilisateur_ID(u.getUtilisateur_ID());
-		serviceRcu.save(recruteur);
-		return "redirect:/";
-	}
+
 	
 	@RequestMapping(value = "/save/{imgbArray}", method = RequestMethod.POST)
 	public String saveconcours(@ModelAttribute("concours") concours concours,
@@ -221,12 +206,43 @@ public class ControllerConcours {
 		return "redirect:/concoursListe";
 	}
 
-	@Controller
-	@RequestMapping("/sessionattributes")
-	@SessionAttributes("login")
-	public class LoginControllerWithSessionAttributes {
-		// ... other methods
+	/////////Recruteur/////////
+	@RequestMapping("/nouveauRcu")
+	public String newRcu(Model model) {
+		Recruteur recruteur = new Recruteur();
+		model.addAttribute("recruteur", recruteur);
+		return "NouveauRecruteur";
 	}
+	
+	@RequestMapping("/rcuListe")
+	public String viewListeRecruteurs(Model model) {
+		List<Recruteur> listRcu = serviceRcu.listAll();
+		model.addAttribute("listRcu", listRcu);
+		return "RecruteursListBack";
+	}
+	
+	@RequestMapping(value = "/saveRcu", method = RequestMethod.POST)
+	public String saveRcu(@ModelAttribute("recruteur") Recruteur recruteur) {
+		recruteur.getUtilRcu().setStatut_util(recruteur.getStatutrcu());
+		Utilisateur u =  serviceUtil.save(recruteur.getUtilRcu());
+		recruteur.setUtilisateur_ID(u.getUtilisateur_ID());
+		serviceRcu.save(recruteur);
+		return "redirect:/";
+	}
+	
+	@RequestMapping("/deleteRcu/{id}")
+	public String deleterecruteur(@PathVariable(name = "id") int id) {
+		serviceRcu.delete(id);
+		return "redirect:/rcuListe";
+	}
+	/////////Recruteur/////////
+	
+//	@Controller
+//	@RequestMapping("/sessionattributes")
+//	@SessionAttributes("login")
+//	public class LoginControllerWithSessionAttributes {
+//		// ... other methods
+//	}
 
 ///////////////////////////////////////////////// Maxime/////////////////////////////////////////////////
 
