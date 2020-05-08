@@ -10,7 +10,7 @@
 
 			<span th:if="${msg != null}">Email ou Mot de passe Invalide</span>
 			<div class="col"><span id="userLogin" class="align-bottom"></span>
-				<span th:if="${session.CdaLogin == null}">
+				<span th:if="${session.CdaLogin == null and session.RcuLogin == null}">
 					<form action="#" method="post">
 						<div class="form-group">
 							<label for="email">Email:</label>
@@ -27,18 +27,45 @@
 								</div> -->
 						<div class="row">
 							<div class="col"></div>
-							<div class="col"><button type="submit" class="btn btn-primary btn-lg" formaction="#"
-									th:formaction="@{/loginCda}">Candidat</button></div>
-							<div class="col"><button type="submit" class="btn btn-success btn-lg" formaction="#"
-									th:formaction="@{/loginRcu}">Recruteur</button></div>
+							<div class="col">
+								<div class="d-flex justify-content-center">
+								<button type="submit" class="btn btn-primary btn-lg" formaction="#"
+									th:formaction="@{/loginCda}">Candidat
+								</button>
+								</div>
+							</div>
+							<div class="col">
+								<div class="d-flex justify-content-center">
+								<button type="submit" class="btn btn-success btn-lg" formaction="#"
+									th:formaction="@{/loginRcu}">Recruteur
+								</button>
+								</div>
+							</div>
+							<div class="col"></div>
+
+						</div>
+						<div class="row">
+							<div class="col"></div>
+							<div class="col">
+								<div class="d-flex justify-content-center">
+									<a href="nouveauCandidat">Nouveau Candidat</a>
+								</div>
+								
+							</div>
+							<div class="col">
+								<div class="d-flex justify-content-center">
+									<a href="#">Nouveau Recruteur</a>
+								</div>
+								
+							</div>
 							<div class="col"></div>
 						</div>
 					</form>
 				</span>
 			</div>
 
-
-			<a href="concoursListe">Liste de concours</a>
+			<h1>About Us</h1>
+			Welcome to GeekJob
 		</div>
 
 		<div th:replace="common/header :: footer"></div>
