@@ -51,7 +51,7 @@
 	</script>
 
 	<body>
-		<div th:replace="common/header :: navbar-recruteur"></div>
+		<div th:replace="common/header :: navbar"></div>
 		<div class="container">
 
 			<form action="#" th:action="@{'/save/' + ${imgtrans}}" th:object="${concoursDemande}" method="post">

@@ -65,6 +65,12 @@ public class ControllerConcours {
 	@RequestMapping(value = "/loginCda", method = RequestMethod.POST)
 	public String validUser(@RequestParam String email, @RequestParam String motdepasse, HttpSession session,
 			Model model) {
+		if (session.getAttribute("CdaLogin") != null) {
+			session.removeAttribute("CdaLogin");
+			}
+		if (session.getAttribute("RcuLogin") != null) {
+			session.removeAttribute("RcuLogin");
+			}
 		Utilisateur vUtil = serviceUtil.getValidCda(email, motdepasse);
 		if (vUtil != null) {
 			session.setAttribute("CdaLogin", vUtil);
@@ -79,10 +85,16 @@ public class ControllerConcours {
 	@RequestMapping(value = "/loginRcu", method = RequestMethod.POST)
 	public String validRcu(@RequestParam String email, @RequestParam String motdepasse, HttpSession session,
 			Model model) {
+		if (session.getAttribute("CdaLogin") != null) {
+			session.removeAttribute("CdaLogin");
+			}
+		if (session.getAttribute("RcuLogin") != null) {
+			session.removeAttribute("RcuLogin");
+			}
 		Utilisateur vUtil = serviceUtil.getValidRcu(email, motdepasse);
 		if (vUtil != null) {
 			session.setAttribute("RcuLogin", vUtil);
-			return "redirect:/";
+			return "redirect:/concoursListe";
 		}
 		model.addAttribute("msg", "Invalide");
 		return "index";
