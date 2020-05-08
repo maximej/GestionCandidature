@@ -15,67 +15,72 @@
 	<body>
 
 		<div th:fragment="header">
-			<div class="row">
-				<div class="col"><a href="#" th:href="@{/}"><img src="#" th:src="@{/logo}" alt="Logo"></a></div>
-				<div class="col">
-					<h1 class="align-middle" style="position: relative; top: 55px;">GeekJob.com</h1>
-				</div>
-				<div class="col">
-				<span th:if="${session.CdaLogin != null}">
-					<h6 th:text="'Session Candidat : ' +${session.CdaLogin.email}"></h6>
-					<a th:href="@{/logout}">Se déconnecter</a>
-				</span>
-				<span th:if="${session.RcuLogin != null}">
-					<h6 th:text="'Session Recruteur : ' + ${session.RcuLogin.email}"></h6>
-					<a th:href="@{/logout}">Se déconnecter</a>
-				</span>
+			<div class="container">
+				<div class="row">
+					<div class="col"><a href="#" th:href="@{/}"><img src="#" th:src="@{/logo}" alt="Logo"></a></div>
+					<div class="col">
+						<h1 class="align-middle" style="position: relative; top: 55px;">GeekJob.com</h1>
+					</div>
+					<div class="col">
+						<span th:if="${session.CdaLogin != null}">
+							<h6 class="d-flex justify-content-end" th:text="'Session Candidat : ' +${session.CdaLogin.email}"></h6>
+							<h6 class="d-flex justify-content-end"><a th:href="@{/logout}">Se déconnecter</a></h6>
+						</span>
+						<span th:if="${session.RcuLogin != null}">
+							<h6 class="d-flex justify-content-end" th:text="'Session Recruteur : ' + ${session.RcuLogin.email}"></h6>
+							<h6 class="d-flex justify-content-end"><a th:href="@{/logout}">Se déconnecter</a></h6>
+						</span>
+					</div>
 				</div>
 			</div>
 		</div>
 
 		<div th:fragment="navbar">
 			<span th:if="${session.CdaLogin != null}">
-			<nav class="navbar navbar-expand-sm  bg-light">
-				<ul class="navbar-nav">
-					<li class="nav-item">
-						<a class="nav-link" href="#" th:href="@{/concoursListecadidat}">Concours</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="#" th:href="@{/profil}">Espace Candidat</a>
-					</li>
-					
-					<li class="nav-item">
-						<a class="nav-link" href="#">Candidatures</a>
-					</li>
-				</ul>
-			</nav>
+				<nav class="navbar navbar-expand-sm  bg-light">
+					<ul class="navbar-nav">
+						<li class="nav-item">
+							<a class="nav-link" href="#" th:href="@{/concoursListecadidat}">Concours</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#" th:href="@{/profil}">Espace Candidat</a>
+						</li>
+
+						<li class="nav-item">
+							<a class="nav-link" href="#">Candidatures</a>
+						</li>
+					</ul>
+				</nav>
 			</span>
 			<span th:if="${session.RcuLogin != null}">
 				<nav class="navbar navbar-expand-sm  bg-light">
-				<ul class="navbar-nav">
-					<li class="nav-item">
-						<a class="nav-link" href="#" th:href="@{/concoursListe}">Concours</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="#">Espace Client</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="#">Candidatures</a>
-					</li>
-				</ul>
-			</nav>
+					<ul class="navbar-nav">
+						<li class="nav-item">
+							<a class="nav-link" href="#" th:href="@{/concoursListe}">Concours</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">Candidatures</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#" th:href="@{/cdaListe}">Candidats</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">Mon profil</a>
+						</li>
+					</ul>
+				</nav>
 			</span>
 			<span th:if="${session.RcuLogin == null and session.CdaLogin == null}">
 				<nav class="navbar navbar-expand-sm  bg-light">
-				<ul class="navbar-nav">
-					<li class="nav-item">
-						<a class="nav-link" href="#" th:href="@{/concoursListecadidat}">Concours</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="#">About GeekJob</a>
-					</li>
-				</ul>
-			</nav>
+					<ul class="navbar-nav">
+						<li class="nav-item">
+							<a class="nav-link" href="#" th:href="@{/concoursListecadidat}">Concours</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">About GeekJob</a>
+						</li>
+					</ul>
+				</nav>
 			</span>
 		</div>
 
