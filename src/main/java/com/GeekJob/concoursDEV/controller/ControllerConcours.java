@@ -60,24 +60,34 @@ public class ControllerConcours {
 
 	@Autowired
 	private UtilisateurService serviceUtil;
-	
+
 	@Autowired
 	private RecruteurService serviceRcu;
+
+	@RequestMapping(value = "/logo", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+	public ResponseEntity<byte[]> getImage() throws IOException {
+
+		ClassPathResource imgFile = new ClassPathResource("static/Logo.png");
+		byte[] bytes = StreamUtils.copyToByteArray(imgFile.getInputStream());
+
+		return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(bytes);
+	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String viewHomePage(Model model) {
 		return "index";
 	}
 
+/////////Login check methods/////////
 	@RequestMapping(value = "/loginCda", method = RequestMethod.POST)
 	public String validUser(@RequestParam String email, @RequestParam String motdepasse, HttpSession session,
 			Model model) {
 		if (session.getAttribute("CdaLogin") != null) {
 			session.removeAttribute("CdaLogin");
-			}
+		}
 		if (session.getAttribute("RcuLogin") != null) {
 			session.removeAttribute("RcuLogin");
-			}
+		}
 		Utilisateur vUtil = serviceUtil.getValidCda(email, motdepasse);
 		if (vUtil != null) {
 			session.setAttribute("CdaLogin", vUtil);
@@ -94,10 +104,10 @@ public class ControllerConcours {
 			Model model) {
 		if (session.getAttribute("CdaLogin") != null) {
 			session.removeAttribute("CdaLogin");
-			}
+		}
 		if (session.getAttribute("RcuLogin") != null) {
 			session.removeAttribute("RcuLogin");
-			}
+		}
 		Utilisateur vUtil = serviceUtil.getValidRcu(email, motdepasse);
 		if (vUtil != null) {
 			session.setAttribute("RcuLogin", vUtil);
@@ -111,29 +121,23 @@ public class ControllerConcours {
 	public String logout(HttpSession session) {
 		if (session.getAttribute("CdaLogin") != null) {
 			session.removeAttribute("CdaLogin");
-			}
+		}
 		if (session.getAttribute("RcuLogin") != null) {
 			session.removeAttribute("RcuLogin");
-			}
+		}
 		return "index";
 	}
 
-	@RequestMapping(value = "/logo", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
-	public ResponseEntity<byte[]> getImage() throws IOException {
+/////////Login check methods/////////
 
-		ClassPathResource imgFile = new ClassPathResource("static/Logo.png");
-		byte[] bytes = StreamUtils.copyToByteArray(imgFile.getInputStream());
-
-		return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(bytes);
-	}
-
+/////////Concours methods/////////
 	@RequestMapping("/concoursListe")
 	public String viewListeConcours(Model model) {
 		List<concours> listConcours = service.listAll();
 		model.addAttribute("listConcours", listConcours);
 		return "ConcoursListBack";
 	}
-	
+
 	@RequestMapping("/concoursListecadidat")
 	public String viewListeConcourfront(Model model) {
 		List<concours> listConcours = service.listAllCda();
@@ -179,7 +183,6 @@ public class ControllerConcours {
 		return "NouveauConcours";
 	}
 
-	
 	@RequestMapping(value = "/save/{imgbArray}", method = RequestMethod.POST)
 	public String saveconcours(@ModelAttribute("concours") concours concours,
 			@PathVariable(name = "imgbArray") byte[] imgbArray) {
@@ -206,43 +209,54 @@ public class ControllerConcours {
 		return "redirect:/concoursListe";
 	}
 
-	/////////Recruteur/////////
+/////////Concours methods/////////
+
+///////// Recruteur/////////
 	@RequestMapping("/nouveauRcu")
 	public String newRcu(Model model) {
 		Recruteur recruteur = new Recruteur();
 		model.addAttribute("recruteur", recruteur);
 		return "NouveauRecruteur";
 	}
-	
+
 	@RequestMapping("/rcuListe")
 	public String viewListeRecruteurs(Model model) {
 		List<Recruteur> listRcu = serviceRcu.listAll();
 		model.addAttribute("listRcu", listRcu);
 		return "RecruteursListBack";
 	}
-	
+
+	@RequestMapping("/editRcu/{id}")
+	public ModelAndView ModifieRecruteur(@PathVariable(name = "id") int id) {
+		ModelAndView mav = new ModelAndView("ModifieRecruteur");
+		Recruteur recruteurDemande = serviceRcu.get(id);
+		mav.addObject("recruteurDemande", recruteurDemande);
+		return mav;
+	}
+
 	@RequestMapping(value = "/saveRcu", method = RequestMethod.POST)
 	public String saveRcu(@ModelAttribute("recruteur") Recruteur recruteur) {
-		recruteur.getUtilRcu().setStatut_util(recruteur.getStatutrcu());
-		Utilisateur u =  serviceUtil.save(recruteur.getUtilRcu());
-		recruteur.setUtilisateur_ID(u.getUtilisateur_ID());
-		serviceRcu.save(recruteur);
-		return "redirect:/";
+		// Check existing user
+		if (serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail()) == null) {
+			recruteur.getUtilRcu().setStatut_util(recruteur.getStatutrcu());
+			Utilisateur u = serviceUtil.save(recruteur.getUtilRcu());
+			recruteur.setUtilisateurId(u.getUtilisateurId());
+			serviceRcu.save(recruteur);
+		}else {
+			serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail()).setStatut_util(recruteur.getStatutrcu());
+			serviceRcu.findByRcuID(recruteur.getRcuID()).setStatutrcu(recruteur.getStatutrcu());
+			serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail()).setMotdepasse(recruteur.getUtilRcu().getMotdepasse());
+			serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail()).setStatut_util(recruteur.getStatutrcu());
+		}
+		return "redirect:/rcuListe";
 	}
-	
+
 	@RequestMapping("/deleteRcu/{id}")
 	public String deleterecruteur(@PathVariable(name = "id") int id) {
 		serviceRcu.delete(id);
 		return "redirect:/rcuListe";
 	}
-	/////////Recruteur/////////
-	
-//	@Controller
-//	@RequestMapping("/sessionattributes")
-//	@SessionAttributes("login")
-//	public class LoginControllerWithSessionAttributes {
-//		// ... other methods
-//	}
+///////// Recruteur/////////
 
 ///////////////////////////////////////////////// Maxime/////////////////////////////////////////////////
 

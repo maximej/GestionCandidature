@@ -56,4 +56,8 @@ public class UtilisateurService {
 		return util.findByEmailIgnoreCaseAndMotdepasse(email, motdepasse);
 		
 	}
+	public Utilisateur findByEmailIgnoreCase(String email) {
+		return util.findByEmailIgnoreCase(email);
+	}
+
 }

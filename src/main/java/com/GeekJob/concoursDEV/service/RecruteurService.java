@@ -41,4 +41,9 @@ public class RecruteurService {
 		return RcuList.getOne(c);
 	}
 
+	public Recruteur findByRcuID(int rcuID) {
+		return RcuList.findByRcuID(rcuID).get();
+	}
+
+	
 }

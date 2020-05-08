@@ -6,4 +6,6 @@ import com.GeekJob.concoursDEV.entity.Utilisateur;
 
 public interface UtilisateurI extends JpaRepository<Utilisateur, Integer>{
 	Utilisateur findByEmailIgnoreCaseAndMotdepasse(String email, String motdepasse);
+	Utilisateur findByutilisateurId(int utilisateurId);
+	Utilisateur findByEmailIgnoreCase(String email);
 }

@@ -7,27 +7,27 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "utilisateur")
+@Table(name = "utilisateur",schema = "targetSchemaName")
 public class Utilisateur {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int utilisateur_ID;
+	private int utilisateurId;
 	private String email;
 	private String motdepasse;
 	private int Statut_util;
 
 	@Override
 	public String toString() {
-		return "Utilisateur [utilisateur_ID=" + utilisateur_ID + ", email=" + email + ", motdepasse=" + motdepasse
+		return "Utilisateur [utilisateurId=" + utilisateurId + ", email=" + email + ", motdepasse=" + motdepasse
 				+ ", Statut_util=" + Statut_util + "]";
 	}
 
-	public int getUtilisateur_ID() {
-		return utilisateur_ID;
+	public int getUtilisateurId() {
+		return utilisateurId;
 	}
 
-	public void setUtilisateur_ID(int utilisateur_ID) {
-		this.utilisateur_ID = utilisateur_ID;
+	public void setUtilisateurId(int utilisateur_ID) {
+		this.utilisateurId = utilisateur_ID;
 	}
 
 	public String getEmail() {
@@ -56,7 +56,7 @@ public class Utilisateur {
 
 	public Utilisateur(int utilisateur_ID, String email, String motdepasse, int statut_util) {
 		super();
-		this.utilisateur_ID = utilisateur_ID;
+		this.utilisateurId = utilisateur_ID;
 		this.email = email;
 		this.motdepasse = motdepasse;
 		Statut_util = statut_util;

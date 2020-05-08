@@ -9,17 +9,17 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "recruteur")
+@Table(name = "recruteur", schema = "targetSchemaName")
 public class Recruteur {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int rcuID;
 	private int statutrcu;
-	private int utilisateur_ID;
+	private int utilisateurId;
 	
 	@ManyToOne
-	@JoinColumn(name = "utilisateur_ID", insertable=false, updatable=false)
+	@JoinColumn(name = "utilisateurId", insertable=false, updatable=false)
 	private Utilisateur utilRcu;
 	
 	public Utilisateur getUtilRcu() {
@@ -41,18 +41,18 @@ public class Recruteur {
 	public void setStatutrcu(int statutrcu) {
 		this.statutrcu = statutrcu;
 	}
-	public int getUtilisateur_ID() {
-		return utilisateur_ID;
+	public int getUtilisateurId() {
+		return utilisateurId;
 	}
-	public void setUtilisateur_ID(int utilisateur_ID) {
-		this.utilisateur_ID = utilisateur_ID;
+	public void setUtilisateurId(int utilisateur_ID) {
+		this.utilisateurId = utilisateur_ID;
 	}
 	
 	public Recruteur(int rcu_ID, int statutrcu, int utilisateur_ID) {
 		super();
 		this.rcuID = rcu_ID;
 		this.statutrcu = statutrcu;
-		this.utilisateur_ID = utilisateur_ID;
+		this.utilisateurId = utilisateur_ID;
 	}
 	public Recruteur() {
 		super();
