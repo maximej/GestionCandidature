@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.GeekJob.concoursDEV.entity.Recruteur;
 import com.GeekJob.concoursDEV.entity.Utilisateur;
 import com.GeekJob.concoursDEV.repository.UtilisateurI;
 
@@ -24,12 +25,16 @@ public class UtilisateurService {
 		List<Utilisateur> users = util.findAll();
 		return users.get(users.size() - 1);
 	}
+	
+	public Utilisateur save(Utilisateur utilisateur) {
+		return util.save(utilisateur);
+	}
 
 	public Utilisateur getValidCda(String email, String mdp) {
 		List<Utilisateur> listUtil = util.findAll();
 		for (Utilisateur utilisateur : listUtil) {
 			if ((utilisateur.getEmail().equalsIgnoreCase(email)) && (utilisateur.getMotdepasse().equals(mdp))
-					&& (utilisateur.getStatut_util() == 1)) {
+					&& (utilisateur.getStatut_util() == 201)) {
 				return utilisateur;
 			}
 		}
@@ -40,7 +45,7 @@ public class UtilisateurService {
 		List<Utilisateur> listUtil = util.findAll();
 		for (Utilisateur utilisateur : listUtil) {
 			if ((utilisateur.getEmail().equalsIgnoreCase(email)) && (utilisateur.getMotdepasse().equals(mdp))
-					&& (utilisateur.getStatut_util() == 2)) {
+					&& (utilisateur.getStatut_util() == 301)) {
 				return utilisateur;
 			}
 		}

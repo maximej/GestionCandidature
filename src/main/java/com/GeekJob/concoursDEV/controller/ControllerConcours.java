@@ -39,13 +39,17 @@ import javax.sql.rowset.serial.SerialException;
 
 import com.GeekJob.concoursDEV.entity.Adresse;
 import com.GeekJob.concoursDEV.entity.Candidat;
+import com.GeekJob.concoursDEV.entity.Recruteur;
 import com.GeekJob.concoursDEV.entity.Utilisateur;
 import com.GeekJob.concoursDEV.entity.Ville;
 import com.GeekJob.concoursDEV.entity.concours;
 import com.GeekJob.concoursDEV.service.CandidatService;
 import com.GeekJob.concoursDEV.service.ConcoursService;
+import com.GeekJob.concoursDEV.service.RecruteurService;
 import com.GeekJob.concoursDEV.service.UtilisateurService;
 import com.GeekJob.concoursDEV.service.VilleService;
+
+import ch.qos.logback.classic.pattern.Util;
 
 @Controller
 public class ControllerConcours {
@@ -56,6 +60,9 @@ public class ControllerConcours {
 
 	@Autowired
 	private UtilisateurService serviceUtil;
+	
+	@Autowired
+	private RecruteurService serviceRcu;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String viewHomePage(Model model) {
@@ -171,7 +178,23 @@ public class ControllerConcours {
 		model.addAttribute("concours", concours);
 		return "NouveauConcours";
 	}
-
+	
+	@RequestMapping("/nouveauRcu")
+	public String newRcu(Model model) {
+		Recruteur recruteur = new Recruteur();
+		model.addAttribute("recruteur", recruteur);
+		return "NouveauRecruteur";
+	}
+	
+	@RequestMapping(value = "/saveRcu", method = RequestMethod.POST)
+	public String saveRcu(@ModelAttribute("recruteur") Recruteur recruteur) {
+		recruteur.getUtilRcu().setStatut_util(recruteur.getStatutrcu());
+		Utilisateur u =  serviceUtil.save(recruteur.getUtilRcu());
+		recruteur.setUtilisateur_ID(u.getUtilisateur_ID());
+		serviceRcu.save(recruteur);
+		return "redirect:/";
+	}
+	
 	@RequestMapping(value = "/save/{imgbArray}", method = RequestMethod.POST)
 	public String saveconcours(@ModelAttribute("concours") concours concours,
 			@PathVariable(name = "imgbArray") byte[] imgbArray) {
