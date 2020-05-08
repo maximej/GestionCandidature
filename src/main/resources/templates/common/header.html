@@ -30,6 +30,9 @@
 							<h6 class="d-flex justify-content-end" th:text="'Session Recruteur : ' + ${session.RcuLogin.email}"></h6>
 							<h6 class="d-flex justify-content-end"><a th:href="@{/logout}">Se déconnecter</a></h6>
 						</span>
+						<span th:if="${session.RcuLogin == null and session.CdaLogin == null}">
+							<a class="d-flex justify-content-end" href="#" th:href="@{/}">Se Connecter</a>
+						</span>
 					</div>
 				</div>
 			</div>
@@ -77,7 +80,7 @@
 							<a class="nav-link" href="#" th:href="@{/concoursListecadidat}">Concours</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">About GeekJob</a>
+							<a class="nav-link" href="#" th:href="@{/}">About GeekJob</a>
 						</li>
 					</ul>
 				</nav>
