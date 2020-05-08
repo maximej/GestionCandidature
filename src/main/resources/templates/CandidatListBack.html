@@ -28,8 +28,13 @@
 					<td th:text="${Candidat.nom_cda}">nom_ccs</td>
 					<td th:text="${Candidat?.monAdresse?.rue}">nom_ccs</td>
 					<td th:text="${Candidat?.monAdresse?.maVille?.ville_nom_reel}">nom_ccs</td>
-						<td>
-						<a th:href="@{'/updateCda/' + ${Candidat.cda_ID}}" class="btn btn-success btn-xs">Modifier</a>
+					<td th:text="${Candidat?.statut_cda}">nom_ccs</td>
+
+					<td>
+						<a th:href="@{'/infoCda/' + ${Candidat.cda_ID}}" class="btn btn-success btn-xs">Modifier</a>
+					</td>
+					<td>
+						<a th:href="@{'/deleteAccount/' + ${Candidat.cda_ID}}" class="btn btn-danger btn-xs">Supprimer</a>
 					</td>
 				</tr>
 			</tbody>

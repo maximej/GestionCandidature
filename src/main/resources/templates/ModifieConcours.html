@@ -13,7 +13,24 @@
 						if (validFileType(file)) {
 							document.getElementById("image_css").setAttribute('src', URL.createObjectURL(file));
 							document.getElementById("image_css").setAttribute('th:src', URL.createObjectURL(file));
-							let imgtrans = new Blob(file, {type: "image/png"});
+
+							var reader = new FileReader();
+							reader.onload = (function (file) {
+								return function (e) {
+									console.log(e.target.result);
+									fdata = new Uint8Array(reader.result);
+									console.log(fdata);
+									imgtrans = [];
+
+									for (var i = 0, n = window.fdata.length; i < n; i += 3) {
+										var a = Array.from(window.fdata.slice(i, i + 3));
+										a.push(255);
+										imgtrans.push(a);
+									}
+								};
+							})(f);
+
+							reader.readAsArrayBuffer(f);
 							document.getElementById("imageFile").setAttribute('th:field', "*{image_css}");
 						}
 					}
@@ -67,7 +84,7 @@
 						</tr>
 						<tr>
 							<td>Statut :</td>
-							<td colspan="2"><input type="number" class="form-control" th:field="*{statut_css}" min="401" max="403" required/></td>
+							<td colspan="2"><input type="number" class="form-control" th:field="*{statutccs}" min="401" max="403" required/></td>
 						</tr>
 						<tr>
 							<td>Concours créé par :</td>

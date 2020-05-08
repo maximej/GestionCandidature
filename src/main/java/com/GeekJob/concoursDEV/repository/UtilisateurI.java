@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.GeekJob.concoursDEV.entity.Utilisateur;
 
 public interface UtilisateurI extends JpaRepository<Utilisateur, Integer>{
-	Utilisateur findByemailAndMotdepasse(String email, String motdepasse);
+	Utilisateur findByEmailIgnoreCaseAndMotdepasse(String email, String motdepasse);
 }

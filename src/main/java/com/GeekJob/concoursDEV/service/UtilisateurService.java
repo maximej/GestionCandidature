@@ -3,10 +3,14 @@ package com.GeekJob.concoursDEV.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.GeekJob.concoursDEV.entity.Utilisateur;
 import com.GeekJob.concoursDEV.repository.UtilisateurI;
 
+@Service
+@Transactional
 public class UtilisateurService {
 
 	@Autowired
@@ -29,8 +33,7 @@ public class UtilisateurService {
 				return utilisateur;
 			}
 		}
-		Utilisateur utilisateur = null;
-		return utilisateur;
+		return null;
 	}
 	
 	public Utilisateur getValidRcu(String email, String mdp) {
@@ -41,7 +44,11 @@ public class UtilisateurService {
 				return utilisateur;
 			}
 		}
-		Utilisateur utilisateur = null;
-		return utilisateur;
+		return null;
+	}
+	
+	public Utilisateur findByEmailIgnoreCaseAndMotdepasse(String email, String motdepasse) {
+		return util.findByEmailIgnoreCaseAndMotdepasse(email, motdepasse);
+		
 	}
 }

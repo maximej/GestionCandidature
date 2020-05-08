@@ -1,11 +1,18 @@
 package com.GeekJob.concoursDEV.controller;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,10 +24,18 @@ import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.servlet.http.HttpSession;
+import javax.sql.rowset.serial.SerialBlob;
+import javax.sql.rowset.serial.SerialException;
 
 import com.GeekJob.concoursDEV.entity.Adresse;
 import com.GeekJob.concoursDEV.entity.Candidat;
@@ -38,10 +53,49 @@ public class ControllerConcours {
 	///////////////////////////////////////////////// Maragatham/////////////////////////////////////////////////
 	@Autowired
 	private ConcoursService service;
+
+	@Autowired
 	private UtilisateurService serviceUtil;
 
-	@RequestMapping("/")
-	public String viewHomePage() {
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String viewHomePage(Model model) {
+		return "index";
+	}
+
+	@RequestMapping(value = "/loginCda", method = RequestMethod.POST)
+	public String validUser(@RequestParam String email, @RequestParam String motdepasse, HttpSession session,
+			Model model) {
+		Utilisateur vUtil = serviceUtil.getValidCda(email, motdepasse);
+		if (vUtil != null) {
+			session.setAttribute("CdaLogin", vUtil);
+			return "redirect:/concoursListecadidat";
+		}
+		if (vUtil == null) {
+			model.addAttribute("msg", "Invalide");
+		}
+		return "index";
+	}
+
+	@RequestMapping(value = "/loginRcu", method = RequestMethod.POST)
+	public String validRcu(@RequestParam String email, @RequestParam String motdepasse, HttpSession session,
+			Model model) {
+		Utilisateur vUtil = serviceUtil.getValidRcu(email, motdepasse);
+		if (vUtil != null) {
+			session.setAttribute("RcuLogin", vUtil);
+			return "redirect:/";
+		}
+		model.addAttribute("msg", "Invalide");
+		return "index";
+	}
+
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String logout(HttpSession session) {
+		if (session.getAttribute("CdaLogin") != null) {
+			session.removeAttribute("CdaLogin");
+			}
+		if (session.getAttribute("RcuLogin") != null) {
+			session.removeAttribute("RcuLogin");
+			}
 		return "index";
 	}
 
@@ -106,10 +160,22 @@ public class ControllerConcours {
 		return "NouveauConcours";
 	}
 
-	@RequestMapping(value = "/save/{imgblob}", method = RequestMethod.POST)
+	@RequestMapping(value = "/save/{imgbArray}", method = RequestMethod.POST)
 	public String saveconcours(@ModelAttribute("concours") concours concours,
-			@PathVariable(name = "imgblob") Blob imgblob) {
-		concours.setImage_css((Blob) imgblob);
+			@PathVariable(name = "imgbArray") byte[] imgbArray) {
+		try {
+			System.out.println(imgbArray);
+			System.out.println(new SerialBlob(imgbArray));
+			concours.setImage_css(new javax.sql.rowset.serial.SerialBlob(imgbArray));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		service.save(concours);
+		return "redirect:/concoursListe";
+	}
+
+	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	public String saveconcours(@ModelAttribute("concours") concours concours) {
 		service.save(concours);
 		return "redirect:/concoursListe";
 	}
@@ -124,69 +190,29 @@ public class ControllerConcours {
 	@RequestMapping("/sessionattributes")
 	@SessionAttributes("login")
 	public class LoginControllerWithSessionAttributes {
-	    // ... other methods
-	}
-	
-	@GetMapping("/login")
-	public String showForm(
-	  Model model,
-	  @ModelAttribute("login") Utilisateur user) {
-	  
-//	    if (user != null) {
-//	        model.addAttribute("todo", todos.peekLast());
-//	    } else {
-//	        model.addAttribute("todo", new TodoItem());
-//	    }
-	    return "sessionattributesform";
-	}
-	
-	@RequestMapping("/loginCda/{email}/{mdp}")
-	public ModelAndView validUser(@PathVariable(name = "email") String email, @PathVariable(name = "mdp") String mdp) {
-		ModelAndView mav = new ModelAndView("AccueilCda");
-		Utilisateur vUtil = serviceUtil.getValidCda(email, mdp);
-		if(vUtil != null) {
-			mav.addObject(vUtil);
-			return mav;
-		}
-		mav = new ModelAndView("index");
-		mav.addObject("msg", "Email ou Mot de passe Invalide");
-		return mav;
-	}
-	
-	@RequestMapping("/loginRcu/{email}/{mdp}")
-	public ModelAndView validRecruteur(@PathVariable(name = "email") String email, @PathVariable(name = "mdp") String mdp) {
-		ModelAndView mav = new ModelAndView("AccueilRcu");
-		Utilisateur vUtil = serviceUtil.getValidCda(email, mdp);
-		if(vUtil != null) {
-			mav.addObject(vUtil);
-			return mav;
-		}
-		mav = new ModelAndView("index");
-		mav.addObject("msg", "Email ou Mot de passe Invalide");
-		return mav;
+		// ... other methods
 	}
 
-/////////////////////////////////////////////////Maxime/////////////////////////////////////////////////
+///////////////////////////////////////////////// Maxime/////////////////////////////////////////////////
 
 	@Autowired
 	private CandidatService serviceCda;
+
+	@Autowired
 	private VilleService serviceVilles;
 
+// Save the uploaded file to this folder
+	@Value("${upload.path}")
+	private String img_path;
+	@Value("${application.folder}")
+	private String appli_path;
 
-	
 	@RequestMapping("/cdaListe")
 	public String listeCda(Model model) {
 		model.addAttribute("listCda", serviceCda.listAll());
 		return "CandidatListBack";
 	}
-	
-	@RequestMapping("/ville")
-	public String listeV(Model model) {
-		VilleService serviceVilles = new VilleService();
-		model.addAttribute("listVilles", serviceVilles.listAll());
-		return "VilleListBack";
-	}
-	
+
 	@RequestMapping("/profil")
 	public String vueProfilCandidat() {
 
@@ -194,38 +220,72 @@ public class ControllerConcours {
 	}
 
 	@RequestMapping("/nouveauCandidat")
-	public String NouveauCandidatPage(Model model) {
+	public String NouveauCandidatPage() {
 		Candidat monCda = new Candidat();
-		Adresse monAdresse = new Adresse();
-		Ville maVille = new Ville();
-		monAdresse.setVille(maVille);
-		monCda.setMonAdresse(monAdresse);
+		monCda.setStatut_cda(201);
+		serviceCda.save(monCda);
+		return "redirect:/infoCda/" + monCda.getCda_ID();
+	}
 
+	@RequestMapping("/infoCda/{id}")
+	public String updateCda(@PathVariable(name = "id") int id, Model model) {
+		Candidat monCda = serviceCda.get(id);
 		model.addAttribute("Candidat", monCda);
-		
-	//	List<Ville> mesVilles = serviceVilles.listAll();
-	 //   model.addAttribute("mesVilles", serviceVilles.listAll());
-	    
-		return "NouveauCandidat";
+		model.addAttribute("mesVilles", serviceVilles.listAll());
+		return "FicheCandidat";
 	}
 
 	@RequestMapping(value = "/saveCda", method = RequestMethod.POST)
 	public String saveCda(@ModelAttribute("Candidat") Candidat monCda) {
+		System.out.println("saveCda id: " + monCda.getCda_ID());
 		serviceCda.save(monCda);
 		return "redirect:/profil";
 	}
-	
-	@RequestMapping("/updateCda/{id}")
-	public ModelAndView updateCda(@PathVariable(name = "id") int id) {
-		ModelAndView mav = new ModelAndView("NouveauCandidat");
+
+	@RequestMapping("/deleteAccount/{id}")
+	public String deleteCda(@PathVariable(name = "id") int id) {
 		Candidat monCda = serviceCda.get(id);
-		mav.addObject("Candidat", monCda);
-		return mav;
-	}
-	
-	@RequestMapping(value = "/uploadCv", method = RequestMethod.POST)
-	public String updateCv(@ModelAttribute("Candidat") Candidat monCda) {
+		monCda.setStatut_cda(203);
 		serviceCda.save(monCda);
 		return "redirect:/profil";
+	}
+
+	@PostMapping("/uploadCv") // //new annotation since 4.3
+	public String singleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
+
+		if (file.isEmpty()) {
+			redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
+			return "redirect:uploadStatus";
+		}
+
+		try {
+// Get the file and save it somewhere
+			byte[] bytes = file.getBytes();
+			ClassPathResource imgFile = new ClassPathResource("static/Logo.png");
+			DateFormat dateFormat = new SimpleDateFormat("yy_MM_dd_HH_mm_ss");
+
+			int index = file.getOriginalFilename().lastIndexOf(".");
+			String extention = file.getOriginalFilename().substring(index, file.getOriginalFilename().length())
+					.toLowerCase();
+
+			String fileNameString = dateFormat.format(new Date()) + extention;
+
+			Path path = Paths.get(appli_path + img_path + fileNameString);
+			Files.write(path, bytes);
+
+			redirectAttributes.addFlashAttribute("message",
+					"You successfully uploaded '" + file.getOriginalFilename() + "'");
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return "redirect:/uploadStatus";
+	}
+
+	@GetMapping("/uploadStatus")
+	public String uploadStatus() {
+
+		return "profil";
 	}
 }

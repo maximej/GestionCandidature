@@ -20,22 +20,11 @@
 				<div class="col">
 					<h1 class="align-middle" style="position: relative; top: 55px;">GeekJob.com</h1>
 				</div>
-				<div class="col"><span id="userLogin" class="align-bottom"></span>
-					<script>
-						// Check browser support
-						if (typeof (Storage) !== "undefined") {
-							// Store
-							//sessionStorage.setItem("lastname", "Smith");
-							// Retrieve
-							if (sessionStorage.getItem("login")) {
-								document.getElementById("userLogin").innerHTML = sessionStorage.getItem("login");
-							}else{
-								document.getElementById("userLogin").innerHTML = "Se connecter"
-							}
-						} else {
-							document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Storage...";
-						}
-					</script>
+				<div class="col">
+				<span th:if="${session.CdaLogin != null}">
+					<h6 th:text="${session.CdaLogin.email}"></h6>
+					<a th:href="@{/logout}">Se déconnecter</a>
+				</span>
 				</div>
 			</div>
 		</div>

@@ -4,152 +4,43 @@
 <head th:replace="common/header :: header"></head>
 
 <body>
-	<div th:replace="common/header :: navbar-candidat"></div>
+	<div th:replace="common/header :: navbar-recruteur"></div>
 	<div class="container">
-		<h1 class="text-uppercase" text="Création d'un nouveau profil de Candidat"></h1>
 
 		<form action="#" th:action="@{/saveCda}" th:object="${Candidat}" method="post">
 			<div class="container">
-				<h2 text="Votre état-civil"> </h2>
-				<div class="form-group">
-					<div class="row">
-						<div class="col">
-							<label for="genre_F">Votre civilité : </label>
-							<select id="genre_F" class="custom-select" th:field="*{genre}">
-								<option value="">
-								<option value="M.">M.
-								<option value="Mme.">Mme.
-							</select> </div>
-						<div class="col">
-							<label for="prenom_F">Prénom : </label>
-							<input id="prenom_F" type="text" class="form-control" th:field="*{prenom_cda}"
-								placeholder="Prénom" required maxlength="127" />
-						</div>
-						<div class="col">
-							<label for="nom_F">Nom : </label>
-							<input id="nom_F" type="text" class="form-control" th:field="*{nom_cda}" placeholder="Nom"
-								required maxlength="127" />
-						</div>
-					</div>
-					<br />
-					<div class="row">
-						<div class="col">
-							<label for="secu_F">Numéro de sécurité sociale : </label>
+				<h1 class="text-uppercase" text="Création d'un nouveau profil de Candidat"></h1>
 
-							<input id="secu_F" type="text" class="form-control" th:field="*{securite_sociale}"
-								placeholder="Numéro de sécurité sociale" maxlength="15" />
-						</div>
-						<div class="col">
-							<label for="date_F">Date de naissance : </label>
-
-							<input id="date_F" type="date" class="form-control" th:field="*{date_naissance}" required />
-						</div>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<div class="row">
-						<div class="col">
-							<label for="num_F">Téléphonne : </label>
-							<input id="num_F" type="text" class="form-control" th:field="*{telephone}"
-								placeholder="Votre numéro de téléphonne" maxlength="15" />
-						</div>
-						<div class="col">
-							<label for="fb_F">Facebook : </label>
-							<input id="fb_F" type="text" class="form-control" th:field="*{facebook} "
-								placeholder="Url de votre page facebook" maxlength="255" />
-						</div>
-					</div>
-					<br />
-
-					<div class="row">
-						<div class="col">
-							<label for="insta_F">Instagram : </label>
-							<input id="insta_F" type="text" class="form-control" th:field="*{instagram}"
-								placeholder="Url de votre page instagram" maxlength="255" />
-						</div>
-						<div class="col">
-							<label for="twitter_F">Twitter : </label>
-							<input id="twitter_F" type="text" class="form-control" th:field="*{twitter}"
-								placeholder="Url de votre page twitter" maxlength="255" />
-						</div>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<div class="row">
-						<div class="col">
-							<label for="cv_F">Fichier CV, format pdf, png, ou jpeg, 15 mo max : </label>
-							<input id="cv_F" type="file" class="form-control-file" th:field="*{cv}"
-								placeholder="Votre numéro de téléphonne" />
-						</div>
-						<div class="col">
-							<label for="etudes_F">Votre niveau d'études : </label>
-							<select id="etudes_F" class="custom-select" th:field="*{etude}">
-								<option value="-3">CAP / BEP
-								<option value="0">BAC
-								<option value="2">BTS (BAC +2)
-								<option value="3">License (BAC +3)
-								<option value="4">Master 1 (BAC +4)
-								<option value="5">Master 2 (BAC +5)
-								<option value="7">Doctorat (BAC +7)
-							</select>
-						</div>
-
-					</div>
-					<br />
-					<div class="row">
-						<div class="col">
-							<label for="bio_F">Biographie : </label>
-							<textarea class="form-control" id="bio_F" th:field="*{biographie}"
-								placeholder="Parlez nous de vous ..." rows="3" maxlength="4095"></textarea>
-						</div>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<div class="row">
-						<div class="col">
-							<label for="numAd_F">Numéro : </label>
-							<input id="numAd_F" type="text" class="form-control" th:field="*{monAdresse.numero}"
-								placeholder="Numéro" maxlength="7" />
-						</div>
-						<div class="col">
-							<label for="rue_F">Rue : </label>
-							<input id="rue_F" type="text" class="form-control" th:field="*{monAdresse.rue}"
-								placeholder="Rue" maxlength="255" />
-						</div>
-					</div>
-					<div class="row">
-						<div class="col">
-							<label for="comp_F">Complément : </label>
-							<input id="comp_F" type="text" class="form-control" th:field="*{monAdresse.complement}"
-								placeholder="Complément d'adresse" maxlength="255" />
-						</div>
-					</div>
+				<table class="table-borderless">
+					<tr>
+						<select ng-model="myVar">
+							<option value=""></option>
+							<option value="M.">M.</option>
+							<option value="Mme.">Mme.</option>
+						</select>
+					</tr>
+					<tr>
+						<td>Prénom :</td>
+						<td colspan="3">
+							<input type="text" class="form-control" th:field="*{prenom_cda}" required />
+						</td>
+					</tr>
+					<tr>
+						<td>Nom :</td>
+						<td colspan="3">
+							<input type="text" class="form-control" th:field="*{nom_cda}" required />
+						</td>
+					</tr>
 
 
-					<!---
-						<div class="col">
-							<label for="ville_F">Ville : </label>
-							<select id="ville_F" class="custom-select" th:field="*{genre}">
-								<option th:each="Ville: ${mesVilles}"
-									th:text="${Ville.ville_nom_reel}" th:value=" ${Ville.ville_id}">
-								</option>
-							</select>
-						</div>
--->
 
+				</table>
+
+				<div style="display: flex; justify-content: space-around">
+					<td><button type="submit" class="btn btn-success btn-xs">Enregistrer</button></td>
 				</div>
 			</div>
-
-			<div style="display: flex; justify-content: space-around">
-				<td><button type="submit" class="btn btn-success btn-xs">Enregistrer</button></td>
-			</div>
-	</div>
-	</form>
-
-
+		</form>
 	</div>
 	<div th:replace="common/header :: footer"></div>
 </body>

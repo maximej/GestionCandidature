@@ -1,23 +1,40 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns="http://www.w3.org/1000/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head th:replace = "common/header :: header"></head>
+
+
+<head th:replace="common/header :: header"></head>
+
 <body>
+
 	<div th:replace="common/header :: navbar-candidat"></div>
 
 	<div class="container" style="background-image:'BgGeekJobs2.jpg';">
-				<br/>
+		<br />
 
 		<div style="display: flex; justify-content: space-around">
-			<a href="nouveauCandidat" class="btn btn-primary btn-xs">Compléter le Profil</a>
+			<a href="nouveauCandidat" class="btn btn-primary btn-xs">Nouveau Candidat</a>
 		</div>
-		<br/>
-		<div style="display: flex; justify-content: space-around">
-			<a href="uploadCv" class="btn btn-primary btn-xs">Ajouter un CV</a>
+				<div style="display: flex; justify-content: space-around">
+			<a href="infoCda/1" class="btn btn-primary btn-xs">Modifier mon Profil</a>
 		</div>
-				<br/>
+			</div>
+				<div style="display: flex; justify-content: space-around">
+			<a href="concoursListecadidat" class="btn btn-primary btn-xs">Postuler aux concours</a>
+		</div>
+		<br />
 
 		<div style="display: flex; justify-content: space-around">
-			<a href="deleteAccount" class="btn btn-danger dBtn">Supprimer le compte</a>
+			<form method="POST" action="/uploadCv" enctype="multipart/form-data" class="btn btn-primary btn-xs">
+				<input type="file" name="file" /><br /><br />
+				<button type="submit" class="btn btn-light btn-xs">Uploader mon CV</button>
+			</form>
+		</div>
+
+		<br />
+
+		<div style="display: flex; justify-content: space-around">
+			<a href="deleteAccount" class="btn btn-danger dBtn">Supprimer mon compte</a>
+
 		</div>
 	</div>
 

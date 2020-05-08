@@ -107,7 +107,7 @@ public class Adresse{
 	public void setVille(int maVilleId) {
 		this.maVille = new Ville(maVilleId);
 	}
-	
+
 	
 }
 	
