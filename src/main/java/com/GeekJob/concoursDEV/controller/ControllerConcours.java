@@ -137,10 +137,31 @@ public class ControllerConcours {
 		model.addAttribute("listConcours", listConcours);
 		return "ConcoursListBack";
 	}
+	
+	@RequestMapping("/sortBydate")
+	public String sortBydate(Model model) {
+		List<concours> listConcours = service.sortBydate();
+		model.addAttribute("listConcours", listConcours);
+		return "ConcoursListBack";
+	}
+	
+	@RequestMapping("/sortByStatut")
+	public String sortByStatut(Model model) {
+		List<concours> listConcours = service.sortByStatut();
+		model.addAttribute("listConcours", listConcours);
+		return "ConcoursListBack";
+	}
 
 	@RequestMapping("/concoursListecadidat")
 	public String viewListeConcourfront(Model model) {
 		List<concours> listConcours = service.listAllCda();
+		model.addAttribute("listConcours", listConcours);
+		return "ConcoursListFront";
+	}
+	
+	@RequestMapping("/concoursListeCdaSortByNom")
+	public String viewListeConcourfrontSortByNom(Model model) {
+		List<concours> listConcours = service.listAllCdaNom();
 		model.addAttribute("listConcours", listConcours);
 		return "ConcoursListFront";
 	}

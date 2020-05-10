@@ -6,18 +6,31 @@
 	<body>
 		<div th:replace="common/header :: navbar"></div>
 		<div class="container">
-			<h1>Liste des Concours</h1>
-			<div style="display: flex; justify-content: space-around"><a href="new"
-					class="btn btn-primary btn-xs">Nouveau
-					Concours</a></div>
-			<table class="table">
+			<div class="row">
+				<div class="col">
+					<h1>Liste des Concours</h1>
+				</div>
+				<div class="col">
+					<div class="d-flex justify-content-end">
+						<div class="d-flex align-items-center">
+							<a  href="new" class="btn btn-primary btn-xs">Nouveau Concours</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<table class="table table-hover">
 				<thead>
 					<div class="row">
 						<div class="col">
-							<h6>Date</h6>
+							<h6 class="d-flex justify-content-center"><a th:href="@{/sortBydate}">Date</a></h6>
 						</div>
 						<div class="col">
-							<h6>Concours</h6>
+							<h6><a th:href="@{/concoursListe}">Concours</a></h6>
+						</div>
+						<div class="col"></div>
+						<div class="col"></div>
+						<div class="col" aria-colspan="2">
+							<h6 class="d-flex justify-content-end"><a th:href="@{/sortByStatut}">Status</a></h6>
 						</div>
 						<div class="col"></div>
 						<div class="col"></div>
@@ -25,17 +38,18 @@
 				</thead>
 				<tbody>
 					<tr th:each="concour : ${listConcours}">
-						<td th:text="${#dates.format(concour.date_css, 'dd-MM-yyyy')}">date_css</td>
-					<td th:text="${concour.nom_ccs}">nom_ccs</td>
-					<td>
-						<a th:href="@{'/edit/' + ${concour.ccs_ID}}" class="btn btn-success btn-xs">Modifier</a>
-					</td>
-					<td>
-						<a th:href="@{'/delete/'+ ${concour.ccs_ID}}" class="btn btn-danger dBtn">Supprimer</a>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+						<td class="d-flex justify-content-end" th:text="${#dates.format(concour.date_css, 'dd-MM-yyyy')}">date_css</td>
+						<td th:text="${concour.nom_ccs}">nom_ccs</td>
+						<td class="d-flex justify-content-start" th:text="${concour.statutccs}">statutccs</td>
+						<td >
+							<a th:href="@{'/edit/' + ${concour.ccs_ID}}" class="btn btn-success btn-xs">Modifier</a>
+						</td>
+						<td>
+							<a th:href="@{'/delete/'+ ${concour.ccs_ID}}" class="btn btn-danger dBtn">Supprimer</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 	</div>
 	<div th:replace="common/header :: footer"></div>
 	<!-- Modal script -->
