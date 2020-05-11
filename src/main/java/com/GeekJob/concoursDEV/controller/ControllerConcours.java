@@ -34,6 +34,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
 import com.GeekJob.concoursDEV.entity.Candidat;
 import com.GeekJob.concoursDEV.entity.Recruteur;
@@ -205,29 +207,26 @@ public class ControllerConcours {
 		return "NouveauConcours";
 	}
 
-//	@RequestMapping(value = "/save", method = RequestMethod.POST)
-//	public String saveconcours(@ModelAttribute("concours") concours concours, HttpSession session) {
-//			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//			try {
-////				BufferedImage originalImage = ImageIO.read(new File("c:\\image\\mypic.jpg"));
-//				BufferedImage bImage = ImageIO.read((File) session.getAttribute("ccsImage"));
-//				ImageIO.write( bImage, "jpg", baos );
-//				baos.flush();
-//				byte[] imageInByte = baos.toByteArray();
-//				baos.close();
-//				concours.setImage_css(new javax.sql.rowset.serial.SerialBlob(imageInByte));
-//			} catch (IOException | SQLException e) {
-//				e.printStackTrace();
-//			}
-//		service.save(concours);
-//		return "redirect:/concoursListe";
-//	}
-
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public String saveconcours(@ModelAttribute("concours") concours concours) {
+	public String saveconcours(@ModelAttribute("concours") concours concours, @RequestParam("imgfile") MultipartFile file, RedirectAttributes redirectAttributes) {
+
+		if (!file.isEmpty()) {
+			try {
+			byte[] imageInByte = file.getBytes();
+			concours.setImage_css(new javax.sql.rowset.serial.SerialBlob(imageInByte));
+		} catch (IOException | SQLException e) {
+			e.printStackTrace();
+		}
+		}
 		service.save(concours);
 		return "redirect:/concoursListe";
 	}
+
+//	@RequestMapping(value = "/save", method = RequestMethod.POST)
+//	public String saveconcours(@ModelAttribute("concours") concours concours) {
+//		service.save(concours);
+//		return "redirect:/concoursListe";
+//	}
 
 	@RequestMapping("/delete/{id}")
 	public String deleteconcours(@PathVariable(name = "id") int id) {
@@ -251,12 +250,14 @@ public class ControllerConcours {
 		model.addAttribute("listRcu", listRcu);
 		return "RecruteursListBack";
 	}
+
 	@RequestMapping("/rcuListeByEmail")
 	public String viewListeRcuByEmail(Model model) {
 		List<Recruteur> listRcu = serviceRcu.listByEmail();
 		model.addAttribute("listRcu", listRcu);
 		return "RecruteursListBack";
 	}
+
 	@RequestMapping("/rcuListeByStatut")
 	public String viewListeRcuByStatut(Model model) {
 		List<Recruteur> listRcu = serviceRcu.listByStatut();
