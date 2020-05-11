@@ -2,6 +2,19 @@
 <html lang="fr" xmlns="http://www.w3.org/1000/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 	<head th:replace="common/header :: header"></head>
+	<script>
+		$(document).ready(function () {
+			var todaysDate = new Date();
+			var year = todaysDate.getFullYear();
+			var month = ("0" + (todaysDate.getMonth() + 1)).slice(-2);
+			var day = ("0" + todaysDate.getDate()).slice(-2);
+			var minDate = (year + "-" + month + "-" + day );
+			document.getElementById("dateccs").setAttribute('min', minDate);
+			$('input').attr('required', true)
+			document.getElementById("nomccs").required = true;
+			document.getElementById("nom_ccs").setAttribute('minlength',4);
+		});
+	</script>
 
 	<body>
 		<div th:replace="common/header :: navbar"></div>
@@ -9,40 +22,42 @@
 
 			<form action="#" th:action="@{/save}" th:object="${concours}" method="post">
 				<div class="container">
-					<h1 class="text-uppercase" th:text="*{nom_ccs}"></h1>
+					<h1 class="text-uppercase"> Formulaire nouveau concours</h1>
+					<hr>
 					<table class="table-borderless">
 						<tr>
 							<td>Nom du Concours :</td>
 							<td colspan="3">
-								<input type="text" class="form-control" th:field="*{nom_ccs}" required />
+								<input type="text" class="form-control" th:field="*{nom_ccs}" required/>
 							</td>
 						</tr>
 						<tr>
 							<td>Date :</td>
 							<td colspan="3">
-								<input type="date" class="form-control" th:field="*{date_css}" required />
+								<input id="dateccs" type="date" class="form-control" th:field="*{date_css}" required/>
 							</td>
 						</tr>
 						<tr>
 							<td>Description :</td>
 							<td colspan="3">
 								<textarea type="text" height="50" class="form-control" th:field="*{description_ccs}" />
-							</td>
+								</td>
 						</tr>
 						<tr>
 							<td>Statut :</td>
-							<td colspan="3"><input type="number" class="form-control" th:field="*{statutccs}" min="401" max="403" required/></td>
+							<td colspan="3"><input type="number" class="form-control" th:field="*{statutccs}" required="true" min="401" max="403" /></td>
 						</tr>
 						<tr>
 							<td>Concours créé par :</td>
-							<td colspan="3"><input type="text" class="form-control" th:field="*{Recruteur_ID}" required/></td>
+							<td colspan="3"><input type="text" class="form-control" th:field="*{Recruteur_ID}" value="${session.RcuLogin.utilisateurId}" required/></td>
 						</tr>
 						<tr>
 							<td>Image :</td>
 								<td >
-									<img src="#" th:src="@{data:image/bmp;base64,${concoursImage}}" alt="Concours image" width="150" height="150" />
+									<img alt="Concours image" width="150" height="150">
 								<input type="file" name="files" class="btn btn-default btn-xs">
 							</td>					
+
 						</tr>
 						<tr>
 						</tr>

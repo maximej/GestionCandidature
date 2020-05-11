@@ -23,6 +23,18 @@ public class RecruteurService {
 		return RcuList.Statutrcu(301);
 	}
 	
+	public List<Recruteur> listByEmail() {
+		return RcuList.sortByEmail();
+	}
+	
+	public List<Recruteur> listByStatut() {
+		return RcuList.sortByStatut();
+	}
+	
+	public List<Recruteur> listByID() {
+		return RcuList.sortByID();
+	}
+	
 	public void save(Recruteur recruteur) {
 		RcuList.save(recruteur);
 	}

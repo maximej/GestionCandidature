@@ -74,7 +74,7 @@
 							<a class="nav-link" href="#" th:href="@{/cdaListe}">Candidats</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">Mon profil</a>
+							<a class="nav-link" href="#" th:href="@{'/editRcu/' + ${session.RcuLogin.utilisateurId}}">Mon profil</a>
 						</li>
 						<span th:if="${session.RcuLogin.email == 'admin@GeekJob.com'}">
 							<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbardrop"

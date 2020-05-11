@@ -31,29 +31,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
-import javax.sql.rowset.serial.SerialBlob;
-import javax.sql.rowset.serial.SerialException;
-
-import com.GeekJob.concoursDEV.entity.Adresse;
 import com.GeekJob.concoursDEV.entity.Candidat;
 import com.GeekJob.concoursDEV.entity.Recruteur;
 import com.GeekJob.concoursDEV.entity.Utilisateur;
-import com.GeekJob.concoursDEV.entity.Ville;
 import com.GeekJob.concoursDEV.entity.concours;
 import com.GeekJob.concoursDEV.service.CandidatService;
 import com.GeekJob.concoursDEV.service.ConcoursService;
 import com.GeekJob.concoursDEV.service.RecruteurService;
 import com.GeekJob.concoursDEV.service.UtilisateurService;
 import com.GeekJob.concoursDEV.service.VilleService;
-
-import ch.qos.logback.classic.pattern.Util;
 
 @Controller
 public class ControllerConcours {
@@ -256,8 +246,20 @@ public class ControllerConcours {
 	}
 
 	@RequestMapping("/rcuListe")
-	public String viewListeRecruteurs(Model model) {
-		List<Recruteur> listRcu = serviceRcu.listAll();
+	public String viewListeRcuByID(Model model) {
+		List<Recruteur> listRcu = serviceRcu.listByID();
+		model.addAttribute("listRcu", listRcu);
+		return "RecruteursListBack";
+	}
+	@RequestMapping("/rcuListeByEmail")
+	public String viewListeRcuByEmail(Model model) {
+		List<Recruteur> listRcu = serviceRcu.listByEmail();
+		model.addAttribute("listRcu", listRcu);
+		return "RecruteursListBack";
+	}
+	@RequestMapping("/rcuListeByStatut")
+	public String viewListeRcuByStatut(Model model) {
+		List<Recruteur> listRcu = serviceRcu.listByStatut();
 		model.addAttribute("listRcu", listRcu);
 		return "RecruteursListBack";
 	}

@@ -11,13 +11,13 @@
 				<thead>
 					<tr>
 						<td>
-							<h6>Recruteur ID</h6>
+							<h6><a th:href="@{/rcuListe}">Recruteur ID</a></h6>
 						</td>
 						<td>
-							<h6>Email</h6>
+							<h6><a th:href="@{/rcuListeByEmail}">Email</a></h6>
 						</td>
 						<td>
-							<h6>Statut</h6>
+							<h6><a th:href="@{/rcuListeByStatut}">Statut</a></h6>
 						</td>
 						<td></td>
 						<td></td>
@@ -25,7 +25,7 @@
 				</thead>
 				<tbody>
 					<tr th:each="recruteur : ${listRcu}">
-						<td class="d-flex justify-content-center" th:text="${recruteur.rcuID}"></td>
+						<td class="d-flex justify-content-start" th:text="${recruteur.rcuID}"></td>
 						<td th:text="${recruteur.utilRcu.email}"></td>
 						<td th:text="${recruteur.statutrcu}"></td>
 						<td>
