@@ -208,25 +208,22 @@ public class ControllerConcours {
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public String saveconcours(@ModelAttribute("concours") concours concours, @RequestParam("imgfile") MultipartFile file, RedirectAttributes redirectAttributes) {
+	public String saveconcours(@ModelAttribute("concours") concours concours,
+			@RequestParam("imgfile") MultipartFile file, RedirectAttributes redirectAttributes) {
 
 		if (!file.isEmpty()) {
 			try {
-			byte[] imageInByte = file.getBytes();
-			concours.setImage_css(new javax.sql.rowset.serial.SerialBlob(imageInByte));
-		} catch (IOException | SQLException e) {
-			e.printStackTrace();
-		}
+				byte[] imageInByte = file.getBytes();
+				concours.setImage_css(new javax.sql.rowset.serial.SerialBlob(imageInByte));
+			} catch (IOException | SQLException e) {
+				e.printStackTrace();
+			}
+		}else if(service.get(concours.getCcs_ID()) != null) {
+			concours.setImage_css(service.get(concours.getCcs_ID()).getImage_css());
 		}
 		service.save(concours);
 		return "redirect:/concoursListe";
 	}
-
-//	@RequestMapping(value = "/save", method = RequestMethod.POST)
-//	public String saveconcours(@ModelAttribute("concours") concours concours) {
-//		service.save(concours);
-//		return "redirect:/concoursListe";
-//	}
 
 	@RequestMapping("/delete/{id}")
 	public String deleteconcours(@PathVariable(name = "id") int id) {
