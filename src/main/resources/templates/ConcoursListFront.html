@@ -9,13 +9,11 @@
 		<h1>Liste des Concours</h1>
 		<table class="table table-hover">
 			<thead>
-				<div class="row">
-					<div class="col"><h6 class="d-flex justify-content-center"><a th:href="@{/concoursListecadidat}">Date</a></h6></div>
-					<div class="col"></div>
-					<div class="col"><h6 class="d-flex justify-content-start"><a th:href="@{/concoursListeCdaSortByNom}">Concours</a></h6></div>
-					<div class="col"></div>
-					<div class="col"></div>
-				</div>
+				<tr>
+					<td><h6 class="d-flex justify-content-center"><a th:href="@{/concoursListecadidat}">Date</a></h6></td>
+					<td><h6 class="d-flex justify-content-start"><a th:href="@{/concoursListeCdaSortByNom}">Concours</a></h6></td>
+					<td></td>
+				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="concour : ${listConcours}">

@@ -1,5 +1,8 @@
 package com.GeekJob.concoursDEV.controller;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -33,6 +36,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
 import javax.sql.rowset.serial.SerialBlob;
 import javax.sql.rowset.serial.SerialException;
@@ -137,17 +141,24 @@ public class ControllerConcours {
 		model.addAttribute("listConcours", listConcours);
 		return "ConcoursListBack";
 	}
-	
+
 	@RequestMapping("/sortBydate")
 	public String sortBydate(Model model) {
 		List<concours> listConcours = service.sortBydate();
 		model.addAttribute("listConcours", listConcours);
 		return "ConcoursListBack";
 	}
-	
+
 	@RequestMapping("/sortByStatut")
 	public String sortByStatut(Model model) {
 		List<concours> listConcours = service.sortByStatut();
+		model.addAttribute("listConcours", listConcours);
+		return "ConcoursListBack";
+	}
+
+	@RequestMapping("/concoursListeActive")
+	public String viewListeConcourActive(Model model) {
+		List<concours> listConcours = service.listAllCda();
 		model.addAttribute("listConcours", listConcours);
 		return "ConcoursListBack";
 	}
@@ -158,7 +169,7 @@ public class ControllerConcours {
 		model.addAttribute("listConcours", listConcours);
 		return "ConcoursListFront";
 	}
-	
+
 	@RequestMapping("/concoursListeCdaSortByNom")
 	public String viewListeConcourfrontSortByNom(Model model) {
 		List<concours> listConcours = service.listAllCdaNom();
@@ -204,19 +215,23 @@ public class ControllerConcours {
 		return "NouveauConcours";
 	}
 
-	@RequestMapping(value = "/save/{imgbArray}", method = RequestMethod.POST)
-	public String saveconcours(@ModelAttribute("concours") concours concours,
-			@PathVariable(name = "imgbArray") byte[] imgbArray) {
-		try {
-			System.out.println(imgbArray);
-			System.out.println(new SerialBlob(imgbArray));
-			concours.setImage_css(new javax.sql.rowset.serial.SerialBlob(imgbArray));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		service.save(concours);
-		return "redirect:/concoursListe";
-	}
+//	@RequestMapping(value = "/save", method = RequestMethod.POST)
+//	public String saveconcours(@ModelAttribute("concours") concours concours, HttpSession session) {
+//			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//			try {
+////				BufferedImage originalImage = ImageIO.read(new File("c:\\image\\mypic.jpg"));
+//				BufferedImage bImage = ImageIO.read((File) session.getAttribute("ccsImage"));
+//				ImageIO.write( bImage, "jpg", baos );
+//				baos.flush();
+//				byte[] imageInByte = baos.toByteArray();
+//				baos.close();
+//				concours.setImage_css(new javax.sql.rowset.serial.SerialBlob(imageInByte));
+//			} catch (IOException | SQLException e) {
+//				e.printStackTrace();
+//			}
+//		service.save(concours);
+//		return "redirect:/concoursListe";
+//	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public String saveconcours(@ModelAttribute("concours") concours concours) {
@@ -263,11 +278,14 @@ public class ControllerConcours {
 			Utilisateur u = serviceUtil.save(recruteur.getUtilRcu());
 			recruteur.setUtilisateurId(u.getUtilisateurId());
 			serviceRcu.save(recruteur);
-		}else {
-			serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail()).setStatut_util(recruteur.getStatutrcu());
+		} else {
+			serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail())
+					.setStatut_util(recruteur.getStatutrcu());
 			serviceRcu.findByRcuID(recruteur.getRcuID()).setStatutrcu(recruteur.getStatutrcu());
-			serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail()).setMotdepasse(recruteur.getUtilRcu().getMotdepasse());
-			serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail()).setStatut_util(recruteur.getStatutrcu());
+			serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail())
+					.setMotdepasse(recruteur.getUtilRcu().getMotdepasse());
+			serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail())
+					.setStatut_util(recruteur.getStatutrcu());
 		}
 		return "redirect:/rcuListe";
 	}
