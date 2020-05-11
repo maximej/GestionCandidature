@@ -13,7 +13,7 @@
 				<div class="col">
 					<div class="d-flex justify-content-end">
 						<div class="d-flex align-items-center">
-							<a  href="new" class="btn btn-primary btn-xs">Nouveau Concours</a>
+							<a href="new" class="btn btn-primary btn-xs">Nouveau Concours</a>
 						</div>
 					</div>
 				</div>
@@ -32,6 +32,9 @@
 						</td>
 						<td></td>
 						<td></td>
+						<span th:if="${session.RcuLogin.email == 'admin@GeekJob.com'}">
+							<td></td>
+						</span>
 					</tr>
 				</thead>
 				<tbody>
@@ -43,8 +46,13 @@
 							<a th:href="@{'/edit/' + ${concour.ccs_ID}}" class="btn btn-success btn-xs">Modifier</a>
 						</td>
 						<td>
-							<a th:href="@{'/delete/'+ ${concour.ccs_ID}}" class="btn btn-danger dBtn">Supprimer</a>
+							<a th:href="@{'/delete/'+ ${concour.ccs_ID}}" class="btn btn-danger aBtn">Annuler</a>
 						</td>
+						<span th:if="${session.RcuLogin.email == 'admin@GeekJob.com'}">
+							<td>
+								<a th:href="@{'/deleteperm/'+ ${concour.ccs_ID}}" class="btn btn-danger dBtn">Supprimer</a>
+							</td>
+						</span>
 					</tr>
 				</tbody>
 			</table>
@@ -62,6 +70,27 @@
 		</div>
 		<div class="modal-body">
 			Confirmez vous la supression ?
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Non</button>
+			<a href="" class="btn btn-danger" id="delref">Oui</a>
+		</div>
+		</div>
+	</div>
+	</div>
+
+	<!-- Modal script -->
+	<div class="modal fade" id="annuleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+		<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="modal-body">
+			Confirmez vous l'anuulation du Concours ?
 		</div>
 		<div class="modal-footer">
 			<button type="button" class="btn btn-secondary" data-dismiss="modal">Non</button>

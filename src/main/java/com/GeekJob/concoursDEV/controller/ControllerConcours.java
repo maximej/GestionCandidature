@@ -230,6 +230,12 @@ public class ControllerConcours {
 		service.delete(id);
 		return "redirect:/concoursListe";
 	}
+	
+	@RequestMapping("/deleteperm/{id}")
+	public String deletePermCcs(@PathVariable(name = "id") int id) {
+		service.deletePerm(id);
+		return "redirect:/concoursListe";
+	}
 
 /////////Concours methods/////////
 

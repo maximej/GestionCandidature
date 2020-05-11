@@ -49,6 +49,10 @@ public class ConcoursService {
 		concour.setStatutccs(403);
 	}
 	
+	public void deletePerm(Integer id) {
+		ccs.deleteById(id);;
+	}
+	
 	public concours getlast() {
 		int c = (int) ccs.count();
 		return ccs.getOne(c);

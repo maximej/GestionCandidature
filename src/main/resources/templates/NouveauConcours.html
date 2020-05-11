@@ -50,7 +50,7 @@
 		<div th:replace="common/header :: navbar"></div>
 		<div class="container">
 
-			<form action="#" th:action="@{/save}" th:object="${concours}" method="post" enctype="multipart/form-data">
+			<form id="NccsForm" action="#" th:action="@{/save}" th:object="${concours}" method="post" enctype="multipart/form-data">
 				<div class="container">
 					<h1 class="text-uppercase"> Formulaire nouveau concours</h1>
 					<hr>
