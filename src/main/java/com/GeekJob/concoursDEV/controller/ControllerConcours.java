@@ -73,6 +73,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
 import ch.qos.logback.core.Context;
 import com.GeekJob.concoursDEV.service.RecruteurService;
+import com.GeekJob.concoursDEV.service.StatutService;
 import com.GeekJob.concoursDEV.service.UtilisateurService;
 import com.GeekJob.concoursDEV.service.VilleService;
 
@@ -246,7 +247,7 @@ public class ControllerConcours {
 			} catch (IOException | SQLException e) {
 				e.printStackTrace();
 			}
-		}else if(service.get(concours.getCcs_ID()) != null) {
+		} else if (service.get(concours.getCcs_ID()) != null) {
 			concours.setImage_css(service.get(concours.getCcs_ID()).getImage_css());
 		}
 		service.save(concours);
@@ -258,13 +259,12 @@ public class ControllerConcours {
 		service.delete(id);
 		return "redirect:/concoursListe";
 	}
-	
+
 	@RequestMapping("/deleteperm/{id}")
 	public String deletePermCcs(@PathVariable(name = "id") int id) {
 		service.deletePerm(id);
 		return "redirect:/concoursListe";
 	}
-
 
 /////////Concours methods/////////
 
@@ -334,21 +334,24 @@ public class ControllerConcours {
 
 ///////////////////////////////////////////////// Maxime/////////////////////////////////////////////////
 
+	////////// Maxime////////// Candidat Mangement
+	@Autowired
+	private VilleService serviceVilles;
+
 	@Autowired
 	private CandidatService serviceCda;
 
 	@Autowired
 	private CandidatureService serviceCdu;
+	
+	@Autowired
+	private StatutService serviceStatut;
 
 	// Save the uploaded file to this folder
 	@Value("${upload.path}")
 	private String img_path;
 	@Value("${application.folder}")
 	private String appli_path;
-
-	////////// Maxime////////// Candidat Mangement
-	private VilleService serviceVilles;
-
 
 	@RequestMapping("/cdaListe")
 	public String listeCda(Model model) {
@@ -358,11 +361,15 @@ public class ControllerConcours {
 
 	@RequestMapping("/profil")
 	public String vueProfilCandidat(Model model, HttpSession session) {
-		Utilisateur u = ((Utilisateur) session.getAttribute("CdaLogin"));
-		Candidat monCda = serviceCda.get(u.getUtilisateurId());
-		monCda.setMesCdu(serviceCdu.listByCda(monCda.getCda_ID()));
-		model.addAttribute("Candidat", serviceCda.get(u.getUtilisateurId()));
-		return "profil";
+		String returnPath = "index";
+		if (null != session.getAttribute("CdaLogin")) {
+			Utilisateur u = ((Utilisateur) session.getAttribute("CdaLogin"));
+			Candidat monCda = serviceCda.get(u.getUtilisateurId());
+			monCda.setMesCdu(serviceCdu.listByCda(monCda.getCda_ID()));
+			model.addAttribute("Candidat", monCda);
+			returnPath = "profil";
+		}
+		return returnPath;
 	}
 
 	@RequestMapping("/nouveauCandidat")
@@ -373,12 +380,17 @@ public class ControllerConcours {
 		return "redirect:/infoCda/" + monCda.getCda_ID();
 	}
 
-	@RequestMapping("/infoCda/{id}")
-	public String updateCda(@PathVariable(name = "id") int id, Model model) {
-		Candidat monCda = serviceCda.get(id);
-		model.addAttribute("Candidat", monCda);
-		model.addAttribute("mesVilles", serviceVilles.listAll());
-		return "FicheCandidat";
+	@RequestMapping("/infoCda")
+	public String updateCda(Model model, HttpSession session) {
+		String returnPath = "index";
+		if (null != session.getAttribute("CdaLogin")) {
+			Utilisateur u = ((Utilisateur) session.getAttribute("CdaLogin"));
+			Candidat monCda = serviceCda.get(u.getUtilisateurId());
+			model.addAttribute("Candidat", monCda);
+			model.addAttribute("mesVilles", serviceVilles.listAll());
+			returnPath = "FicheCandidat";
+		}
+		return returnPath;
 	}
 
 	@RequestMapping(value = "/saveCda", method = RequestMethod.POST)
@@ -458,19 +470,19 @@ public class ControllerConcours {
 	}
 
 	@RequestMapping("/postuler/{id}")
-	public String postulerCdu(@PathVariable(name = "id") int ccs, Model model) {
-		int cda = 1;
-		
-		
-		Candidature maCdu = new Candidature(serviceCda.get(cda), service.get(ccs));
-		
-		
-		model.addAttribute("monCda", serviceCda.get(cda));
-		
-		
-		serviceCdu.save(maCdu);
-		return "redirect:/gestionCandidature/"+cda;
+	public String postulerCdu(@PathVariable(name = "id") int ccs, Model model, HttpSession session) {
+		String returnPath = "index";
+		if (null != session.getAttribute("CdaLogin")) {
+			Utilisateur u = ((Utilisateur) session.getAttribute("CdaLogin"));
+			Candidat monCda = serviceCda.get(u.getUtilisateurId());
+			Candidature maCdu = new Candidature(monCda, service.get(ccs), serviceStatut.get(101));
+			serviceCdu.save(maCdu);
+			returnPath = "redirect:/gestionCandidature";
+
+		}
+		return returnPath;
 	}
+
 
 
 }

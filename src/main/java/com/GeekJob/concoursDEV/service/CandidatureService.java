@@ -22,6 +22,7 @@ public class CandidatureService {
 	
 	public List<Candidature> listByCda(int id) {
 		return mesCdu.findByCda(id);
+		
 	}
 	
 	public void save(Candidature maCdu) {

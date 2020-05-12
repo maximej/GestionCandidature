@@ -1,6 +1,6 @@
 package com.GeekJob.concoursDEV.entity;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 public class Candidature {
 
@@ -18,32 +20,34 @@ public class Candidature {
 	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int cdu_ID;
-/*
+
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "cda")
 	private Candidat cda;
-	*/
-	private int cda;
+
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "ccs")
 	private concours ccs;
 
 	private String fichier_CV;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date date_transmis;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date date_traitement;
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "Statut_cdu")
 	private StatutCandidature Statut_cdu;
-	
+
 	public Candidature() {
-		
+
 	}
-	
-	public Candidature(Candidat cda, concours ccs) {
-		
-		
-		
+
+	public Candidature(Candidat cda, concours ccs, StatutCandidature Statut_cdu) {
+		this.cda = cda;
+		this.ccs = ccs;
+		this.date_transmis = new java.util.Date();
+		this.Statut_cdu = Statut_cdu;
 	}
 
 	public int getCdu_ID() {
@@ -54,15 +58,13 @@ public class Candidature {
 		this.cdu_ID = cdu_ID;
 	}
 
-	public int getCda() {
+	public Candidat getCda() {
 		return cda;
 	}
 
-	public void setCda(int cda) {
+	public void setCda(Candidat cda) {
 		this.cda = cda;
 	}
-
-
 
 	public concours getCcs() {
 		return ccs;
@@ -103,7 +105,5 @@ public class Candidature {
 	public void setStatut_cdu(StatutCandidature statut_cdu) {
 		Statut_cdu = statut_cdu;
 	}
-	
-	
-	
+
 }

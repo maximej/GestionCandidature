@@ -28,6 +28,16 @@ public class StatutCandidature {
     @OneToMany(targetEntity = Candidature.class, mappedBy = "Statut_cdu")
 	private List<Candidature> mesCdu;
 
+    
+	public StatutCandidature() {
+	}
+	
+    
+	public StatutCandidature(int statut_ID) {
+		super();
+		this.statut_ID = statut_ID;
+	}
+
 	public int getStatut_ID() {
 		return statut_ID;
 	}

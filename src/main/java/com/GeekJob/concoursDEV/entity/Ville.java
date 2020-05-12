@@ -43,9 +43,6 @@ public class Ville{
 	}
 
 
-
-
-
 	public String getVille_departement() {
 		return ville_departement;
 	}
@@ -82,7 +79,6 @@ public class Ville{
 		this.ville_id = ville_id;
 	}
 	
-
 	public int getVille_id() {
 		return ville_id;
 	}
