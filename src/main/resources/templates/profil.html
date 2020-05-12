@@ -10,32 +10,53 @@
 
 	<div class="container" style="background-image:'BgGeekJobs2.jpg';">
 		<br />
+		<thead>
+			<div class="row">
+				<div class="col" style="display: flex; justify-content: space-around">
+					<a href="nouveauCandidat" class="btn btn-primary btn-xs">Nouveau Candidat</a>
+				</div>
+				<div class="col" style="display: flex; justify-content: space-around">
+					<a href="infoCda/1" class="btn btn-primary btn-xs">Modifier mon Profil</a>
+				</div>
+				<div class="col" style="display: flex; justify-content: space-around">
+					<a href="deleteAccount" class="btn btn-danger dBtn">Supprimer mon compte</a>
 
-		<div style="display: flex; justify-content: space-around">
-			<a href="nouveauCandidat" class="btn btn-primary btn-xs">Nouveau Candidat</a>
-		</div>
-				<div style="display: flex; justify-content: space-around">
-			<a href="infoCda/1" class="btn btn-primary btn-xs">Modifier mon Profil</a>
-		</div>
+				</div>
+
+
+
+
+
 			</div>
-				<div style="display: flex; justify-content: space-around">
-			<a href="concoursListecadidat" class="btn btn-primary btn-xs">Postuler aux concours</a>
-		</div>
-		<br />
+			<br />
+			<div class="row">
 
-		<div style="display: flex; justify-content: space-around">
-			<form method="POST" action="/uploadCv" enctype="multipart/form-data" class="btn btn-primary btn-xs">
-				<input type="file" name="file" /><br /><br />
-				<button type="submit" class="btn btn-light btn-xs">Uploader mon CV</button>
-			</form>
-		</div>
+				<div class="col" style="display: flex; justify-content: space-around">
+					<a href="concoursListecadidat" class="btn btn-primary btn-xs">Postuler aux concours</a>
+				</div>
+				<div class="col" style="display: flex; justify-content: space-around">
+					<a href="gestionCandidature/" class="btn btn-primary btn-xs">Gérer les candidatures</a>
+				</div>
 
-		<br />
+			</div>
+			<br />
+			<div class="row">
 
-		<div style="display: flex; justify-content: space-around">
-			<a href="deleteAccount" class="btn btn-danger dBtn">Supprimer mon compte</a>
+				<br />
 
-		</div>
+
+
+				<div class="col" style="display: flex; justify-content: space-around">
+					<form method="POST" action="/uploadCv" enctype="multipart/form-data" class="btn btn-primary btn-xs">
+						<input type="file" name="file" /><br /><br />
+						<button type="submit" class="btn btn-light btn-xs">Uploader mon CV</button>
+					</form>
+				</div>
+
+			</div>
+
+		</thead>
+
 	</div>
 
 	<div th:replace="common/header :: footer"></div>

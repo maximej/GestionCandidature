@@ -40,6 +40,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.GeekJob.concoursDEV.entity.Adresse;
 import com.GeekJob.concoursDEV.entity.Candidat;
+import com.GeekJob.concoursDEV.entity.Candidature;
 import com.GeekJob.concoursDEV.entity.Ville;
 
 import com.GeekJob.concoursDEV.entity.Candidat;
@@ -50,11 +51,12 @@ import com.GeekJob.concoursDEV.repository.VilleI;
 import com.GeekJob.concoursDEV.service.AdresseService;
 
 import com.GeekJob.concoursDEV.service.CandidatService;
+import com.GeekJob.concoursDEV.service.CandidatureService;
 import com.GeekJob.concoursDEV.service.ConcoursService;
 import com.GeekJob.concoursDEV.service.VilleService;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
 import ch.qos.logback.core.Context;
-
 
 @Controller
 public class ControllerConcours {
@@ -142,8 +144,13 @@ public class ControllerConcours {
 
 	///////////////////////////////////////////////// Maxime/////////////////////////////////////////////////
 
+	////////// Maxime////////// Variables
+
 	@Autowired
 	private CandidatService serviceCda;
+
+	@Autowired
+	private CandidatureService serviceCdu;
 
 	@Autowired
 	private VilleService serviceVilles;
@@ -153,6 +160,8 @@ public class ControllerConcours {
 	private String img_path;
 	@Value("${application.folder}")
 	private String appli_path;
+
+	////////// Maxime////////// Candidat Mangement
 
 	@RequestMapping("/cdaListe")
 	public String listeCda(Model model) {
@@ -197,6 +206,16 @@ public class ControllerConcours {
 		return "redirect:/profil";
 	}
 
+	@RequestMapping("/reactivateAccount/{id}")
+	public String reactivateCda(@PathVariable(name = "id") int id) {
+		Candidat monCda = serviceCda.get(id);
+		monCda.setStatut_cda(201);
+		serviceCda.save(monCda);
+		return "redirect:/cdaListe";
+	}
+
+	////////// Maxime////////// Upload Management ////
+
 	@PostMapping("/uploadCv") // //new annotation since 4.3
 	public String singleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
 
@@ -234,6 +253,29 @@ public class ControllerConcours {
 	public String uploadStatus() {
 
 		return "profil";
+	}
+
+	////////// Maxime////////// Candidature Mangement
+
+	@RequestMapping("/gestionCandidature/{id}")
+	public String listeCda(@PathVariable(name = "id") int id, Model model) {
+		model.addAttribute("listCdu", serviceCdu.listByCda(id));
+		return "CandidaturesList";
+	}
+
+	@RequestMapping("/postuler/{id}")
+	public String postulerCdu(@PathVariable(name = "id") int ccs, Model model) {
+		int cda = 1;
+		
+		
+		Candidature maCdu = new Candidature(serviceCda.get(cda), service.get(ccs));
+		
+		
+		model.addAttribute("monCda", serviceCda.get(cda));
+		
+		
+		serviceCdu.save(maCdu);
+		return "redirect:/gestionCandidature/"+cda;
 	}
 
 }

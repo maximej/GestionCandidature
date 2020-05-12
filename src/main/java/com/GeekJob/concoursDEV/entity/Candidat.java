@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,6 +17,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.sql.rowset.serial.SerialBlob;
 import javax.sql.rowset.serial.SerialException;
@@ -45,6 +47,8 @@ public class Candidat {
 	private int Statut_cda;
 	private int Utilisateur_ID;
 
+    @OneToMany(targetEntity = Candidature.class, mappedBy = "ccs")
+	private List<Candidature> mesCdu;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "adresse_id")
@@ -140,6 +144,18 @@ public class Candidat {
 	}
 	public void setMonAdresse(Adresse monAdresse) {
 		this.monAdresse = monAdresse;
+	}
+
+
+
+	public List<Candidature> getMesCdu() {
+		return mesCdu;
+	}
+
+
+
+	public void setMesCdu(List<Candidature> mesCdu) {
+		this.mesCdu = mesCdu;
 	}
 
 

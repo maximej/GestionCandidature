@@ -28,14 +28,25 @@
 					<td th:text="${Candidat.nom_cda}">nom_ccs</td>
 					<td th:text="${Candidat?.monAdresse?.rue}">nom_ccs</td>
 					<td th:text="${Candidat?.monAdresse?.maVille?.ville_nom_reel}">nom_ccs</td>
-					<td th:text="${Candidat?.statut_cda}">nom_ccs</td>
+					<td>
+						<span th:if="${Candidat.statut_cda == 201}" class=" badge badge-pill badge-success">Actif</span>
+
+						<span th:unless="${Candidat.statut_cda == 201}" class=" badge badge-pill
+							badge-danger">Inactif</span>
+					</td>
 
 					<td>
-						<a th:href="@{'/infoCda/' + ${Candidat.cda_ID}}" class="btn btn-success btn-xs">Modifier</a>
+						<a th:if="${Candidat.statut_cda == 201}" th:href="@{'/infoCda/' + ${Candidat.cda_ID}}"
+							class="btn btn-primary btn-xs">Modifier</a>
+						<a th:unless="${Candidat.statut_cda == 201}"
+							th:href="@{'/reactivateAccount/' + ${Candidat.cda_ID}}"
+							class="btn btn-success btn-xs">Réactiver</a>
 					</td>
 					<td>
-						<a th:href="@{'/deleteAccount/' + ${Candidat.cda_ID}}" class="btn btn-danger btn-xs">Supprimer</a>
+						<a th:if="${Candidat.statut_cda == 201}" th:href="@{'/deleteAccount/' + ${Candidat.cda_ID}}"
+							class="btn btn-danger btn-xs">Supprimer</a>
 					</td>
+	
 				</tr>
 			</tbody>
 		</table>

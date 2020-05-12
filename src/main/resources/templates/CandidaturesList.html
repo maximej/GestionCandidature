@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns="http://www.w3.org/1000/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="common/header :: header"></head>
+
+<body>
+	<div th:replace="common/header :: navbar-recruteur"></div>
+	<div class="container">
+		<h1>Voici vos Candidatures </h1>
+
+		<table class="table">
+			<thead>
+				<div class="row">
+					<div class="col">
+						<th text="Concours"></th>
+					</div>
+					<div class="col">
+						<th text="Concours">Concours</th>
+					</div>
+					<div class="col">
+						<th text="Date">Date</th>
+					</div>
+					<div class="col">
+						<th text="Statut">Statut</th>
+					</div>
+
+				</div>
+			</thead>
+			<tbody>
+
+				<tr th:each="cdu : ${listCdu}">
+					<td>
+						<span th:if="@{'/image/'+ *{cdu.ccs.ccs_ID}}">
+
+							<img id="img" src="#" th:src="@{'/image/'+ *{cdu.ccs.ccs_ID}}" alt="Concours image"
+								height="50" />
+						</span>
+						<span th:unless="@{'/image/'+ *{ccs_ID}}"></span>
+					</td>
+
+					<td th:text="${cdu.ccs.nom_ccs}"></td></td>
+
+					<td th:text="${cdu.date_transmis}"></td>
+
+					<td>
+						<span th:if="${cdu.Statut_cdu.statut_ID} &lt; 103" class=" badge badge-pill badge-primary"
+							th:text="${cdu.Statut_cdu.nom_statut} "></span>
+						<span th:if="${cdu.Statut_cdu.statut_ID} == 104" class=" badge badge-pill badge-warning"
+							th:text="${cdu.Statut_cdu.nom_statut} "></span>
+						<span th:if="${cdu.Statut_cdu.statut_ID} == 105 or ${cdu.Statut_cdu.statut_ID} == 107"
+							class=" badge badge-pill badge-success" th:text="${cdu.Statut_cdu.nom_statut} "></span>
+						<span th:if="${cdu.Statut_cdu.statut_ID} == 106 or ${cdu.Statut_cdu.statut_ID} == 108"
+							class=" badge badge-pill badge-danger" th:text="${cdu.Statut_cdu.nom_statut} "></span>
+					</td>
+
+					<td width="25%">
+						<a th:if="${cdu.Statut_cdu.statut_ID} &lt; 103" th:href="@{'/updateCdu/' + ${cdu.cdu_ID}}"
+							class="btn btn-primary btn-xs">Modifier</a>
+						<a th:if="${cdu.Statut_cdu.statut_ID} &lt; 103" th:href="@{'/deleteCdu/' + ${cdu.cdu_ID}}"
+							class="btn btn-danger btn-xs">Suprimer</a>
+						<a th:if="${cdu.Statut_cdu.statut_ID} == 104" th:href="@{'/apercu/' + ${cdu.cdu_ID}}"
+							class="btn btn-primary btn-xs">Aperçu</a>
+						<a th:if="${cdu.Statut_cdu.statut_ID} == 105 or ${cdu.Statut_cdu.statut_ID} == 106"
+							th:href="@{'/archiver/' + ${cdu.cdu_ID}}" class="btn btn-primary btn-xs">Archiver</a>
+					</td>
+
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div style="display: flex; justify-content: space-around"><a href="/concoursListecadidat"
+			class="btn btn-primary btn-xs">Nouvelle Candidature</a></div>
+	<div th:replace="common/header :: footer"></div>
+
+</body>
+
+</html>

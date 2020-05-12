@@ -6,10 +6,14 @@ import java.nio.file.Paths;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.sql.rowset.serial.SerialBlob;
 
@@ -20,6 +24,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class concours {
 	
 	@Id
+	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int ccs_ID;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -30,6 +35,8 @@ public class concours {
 	private Blob image_css;
 	private Integer Recruteur_ID;
 	
+    @OneToMany(targetEntity = Candidature.class, mappedBy = "ccs")
+	private List<Candidature> mesCdu;
 	
 	public int getCcs_ID() {
 		return ccs_ID;
@@ -64,6 +71,19 @@ public class concours {
 	public Blob getImage_css() {
 		return image_css;
 	}
+	
+	
+	
+	public List<Candidature> getMesCdu() {
+		return mesCdu;
+	}
+	public void setMesCdu(List<Candidature> mesCdu) {
+		this.mesCdu = mesCdu;
+	}
+	
+	
+	
+	
 	public void setImage_css(String URL) {
 		try {
 			System.out.print(URL);
