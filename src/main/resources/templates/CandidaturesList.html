@@ -6,7 +6,7 @@
 <body>
 	<div th:replace="common/header :: navbar"></div>
 	<div class="container">
-		<h1>Voici vos Candidatures </h1>
+		<h1>Candidatures :</h1>
 
 		<table class="table">
 			<thead>
@@ -43,29 +43,50 @@
 
 					<td th:text="${cdu.date_transmis}"></td>
 
-					<td>
-						<span th:if="${cdu.Statut_cdu.statut_ID} &lt; 103" class=" badge badge-pill badge-primary"
-							th:text="${cdu.Statut_cdu.nom_statut} "></span>
-						<span th:if="${cdu.Statut_cdu.statut_ID} == 104" class=" badge badge-pill badge-warning"
-							th:text="${cdu.Statut_cdu.nom_statut} "></span>
-						<span th:if="${cdu.Statut_cdu.statut_ID} == 105 or ${cdu.Statut_cdu.statut_ID} == 107"
-							class=" badge badge-pill badge-success" th:text="${cdu.Statut_cdu.nom_statut} "></span>
-						<span th:if="${cdu.Statut_cdu.statut_ID} == 106 or ${cdu.Statut_cdu.statut_ID} == 108"
-							class=" badge badge-pill badge-danger" th:text="${cdu.Statut_cdu.nom_statut} "></span>
-					</td>
+					<span th:if="${session.CdaLogin != null}">
 
-					<td width="33%">
-						<a th:href="@{'/apercu/' + ${cdu.cdu_ID}}" class="btn btn-secondary btn-xs pBtn">Aperçu</a>
-						<a th:if="${cdu.Statut_cdu.statut_ID} &lt; 103" th:href="@{'/updateCdu/' + ${cdu.cdu_ID}}"
-							class="btn btn-primary btn-xs mBtn">Modifier</a>
-						<a th:if="${cdu.Statut_cdu.statut_ID} &lt; 103" th:href="@{'/deleteCdu/' + ${cdu.cdu_ID}}"
-							class="btn btn-danger btn-xs dBtn">Suprimer</a>
+						<td>
+							<span th:if="${cdu.Statut_cdu.statut_ID} &lt; 103" class=" badge badge-pill badge-primary"
+								th:text="${cdu.Statut_cdu.nom_statut} "></span>
+							<span th:if="${cdu.Statut_cdu.statut_ID} == 104" class=" badge badge-pill badge-warning"
+								th:text="${cdu.Statut_cdu.nom_statut} "></span>
+							<span th:if="${cdu.Statut_cdu.statut_ID} &gt; 104 and ${cdu.Statut_cdu.statut_ID} &lt; 110"
+								class=" badge badge-pill badge-danger" th:text="${cdu.Statut_cdu.nom_statut} "></span>
+							<span th:if="${cdu.Statut_cdu.statut_ID} &gt; 109"
+								class=" badge badge-pill badge-success" th:text="${cdu.Statut_cdu.nom_statut} "></span>
+						</td>
 
-						<a th:if="${cdu.Statut_cdu.statut_ID} == 105 or ${cdu.Statut_cdu.statut_ID} == 106"
-							th:href="@{'/archiver/' + ${cdu.cdu_ID}}" class="btn btn-primary btn-xs">Archiver</a>
-					</td>
+						<td width="33%">
+							<a th:href="@{'/apercu/' + ${cdu.cdu_ID}}" class="btn btn-secondary btn-xs pBtn">Aperçu</a>
+							<a th:if="${cdu.Statut_cdu.statut_ID} &lt; 103" th:href="@{'/updateCdu/' + ${cdu.cdu_ID}}"
+								class="btn btn-primary btn-xs mBtn">Modifier</a>
+							<a th:if="${cdu.Statut_cdu.statut_ID} &lt; 103" th:href="@{'/deleteCdu/' + ${cdu.cdu_ID}}"
+								class="btn btn-danger btn-xs dBtn">Suprimer</a>
 
+							<a th:if="${cdu.Statut_cdu.statut_ID} &gt; 104"
+								th:href="@{'/archiverCda/' + ${cdu.cdu_ID}}" class="btn btn-primary btn-xs">Archiver</a>
+						</td>
+					</span>
+					<span th:if="${session.RcuLogin != null}">
 
+						<td>
+							<span class=" badge badge-pill badge-secondary"
+								th:text="${cdu.Statut_cdu.nom_statut} "></span>
+
+						</td>
+
+						<td width="33%">
+							<a th:href="@{'/apercu/' + ${cdu.cdu_ID}}" class="btn btn-secondary btn-xs">Aperçu</a>
+							<a th:if="${cdu.Statut_cdu.statut_ID} &lt; 103" th:href="@{'/traiterCdu/' + ${cdu.cdu_ID}}"
+								class="btn btn-primary btn-xs">Traiter la candidature</a>
+							<a th:if="${cdu.Statut_cdu.statut_ID} == 104" th:href="@{'/accepterCdu/' + ${cdu.cdu_ID}}"
+								class="btn btn-success btn-xs">Accepter</a>
+							<a th:if="${cdu.Statut_cdu.statut_ID} == 104" th:href="@{'/refuserCdu/' + ${cdu.cdu_ID}}"
+								class="btn btn-danger btn-xs">Refuser</a>
+							<a th:if="${cdu.Statut_cdu.statut_ID} &gt; 104" th:href="@{'/archiverRcu/' + ${cdu.cdu_ID}}"
+								class="btn btn-primary btn-xs">Archiver la candidature</a>
+						</td>
+					</span>
 
 				</tr>
 			</tbody>

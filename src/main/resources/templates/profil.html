@@ -13,7 +13,23 @@
 		<br />
 		<h1 th:text="'Bonjour ' + ${Candidat.prenom_cda} +' ' + ${Candidat.nom_cda}">Bonjour</h1>
 		<h2 th:text="'Vous avez ' + ${#lists.size(Candidat.mesCdu)} + ' candidatures'">Candidatures</h2>
+			<thead>
+			<div class="row">
+				<div class="col" style="display: flex; justify-content: space-around">
+					<a href="concoursListecadidat" class="btn btn-primary btn-xs">Modifier mon email</a>
+				</div>
+				<div class="col" style="display: flex; justify-content: space-around">
+					<a href="gestionCandidature" class="btn btn-primary btn-xs">Modifier mon mot de passe</a>
+				</div>
+				<div class="col" style="display: flex; justify-content: space-around">
+					<a href="infoCda" class="btn btn-primary btn-xs">Modifier mon Profil</a>
+				</div>
+				<div class="col" style="display: flex; justify-content: space-around">
+					<a href="deleteAccount" class="btn btn-danger dBtn">Supprimer mon compte</a>
 
+				</div>
+			</div>
+			</thead>
 		<div class="container">
 				<h2 text="Votre état-civil"> </h2>
 				<div class="form-group">

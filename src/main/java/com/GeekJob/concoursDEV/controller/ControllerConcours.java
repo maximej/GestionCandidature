@@ -475,6 +475,29 @@ public class ControllerConcours {
 		}
 		return returnPath;
 	}
+	
+	@RequestMapping("/archiveCandidature")
+	public String listeArchiveCda(Model model, HttpSession session) {
+		String returnPath = "index";
+		if (null != session.getAttribute("CdaLogin")) {
+			Utilisateur u = ((Utilisateur) session.getAttribute("CdaLogin"));
+			Candidat monCda = serviceCda.get(u.getUtilisateurId());
+			model.addAttribute("Candidat", monCda);
+			model.addAttribute("listCdu", serviceCdu.archiveByCda(monCda.getCda_ID()));
+			returnPath = "CandidaturesList";
+		}
+		return returnPath;
+	}
+	
+	@RequestMapping("/cduBackListe")
+	public String listeCdu(Model model, HttpSession session) {
+		String returnPath = "index";
+		if (null != session.getAttribute("RcuLogin")) {	
+			model.addAttribute("listCdu", serviceCdu.listAll());
+			returnPath = "CandidaturesList";
+		}
+		return returnPath;
+	}
 
 	@RequestMapping("/postuler/{id}")
 	public String postulerCdu(@PathVariable(name = "id") int ccs, Model model, HttpSession session) {
@@ -488,11 +511,49 @@ public class ControllerConcours {
 		}
 		return returnPath;
 	}
-
+	@RequestMapping("/archiverCda/{id}")
+	public String archiverParCda(@PathVariable(name = "id") int id, HttpSession session) {
+		Candidature maCdu = serviceCdu.get(id);
+		int stat = maCdu.getStatut_cdu().getStatut_ID() ;
+		if (stat == 105) {
+			maCdu.setStatut_cdu(serviceStatut.get(106));
+		}
+		if (stat == 107) {
+			maCdu.setStatut_cdu(serviceStatut.get(108));
+		}
+		if (stat == 110) {
+			maCdu.setStatut_cdu(serviceStatut.get(111));
+		}
+		if (stat == 112) {
+			maCdu.setStatut_cdu(serviceStatut.get(113));
+		}
+		serviceCdu.save(maCdu);
+		return "redirect:/gestionCandidature";
+	}
+	
+	@RequestMapping("/archiverRcu/{id}")
+	public String archiverParRcu(@PathVariable(name = "id") int id, HttpSession session) {
+		Candidature maCdu = serviceCdu.get(id);
+		int stat = maCdu.getStatut_cdu().getStatut_ID() ;
+		if (stat == 105) {
+			maCdu.setStatut_cdu(serviceStatut.get(107));
+		}
+		if (stat == 106) {
+			maCdu.setStatut_cdu(serviceStatut.get(108));
+		}
+		if (stat == 110) {
+			maCdu.setStatut_cdu(serviceStatut.get(112));
+		}
+		if (stat == 111) {
+			maCdu.setStatut_cdu(serviceStatut.get(113));
+		}
+		serviceCdu.save(maCdu);
+		return "redirect:/gestionCandidature";
+	}
+	
 	@RequestMapping("/updateCdu/{id}")
 	public String deleteCdu(@PathVariable(name = "id") int id, HttpSession session) {
 		Candidature maCdu = serviceCdu.get(id);
-
 		maCdu.setStatut_cdu(serviceStatut.get(103));
 		serviceCdu.save(maCdu);
 		return "redirect:/gestionCandidature";
@@ -501,10 +562,31 @@ public class ControllerConcours {
 	@RequestMapping("/deleteCdu/{id}")
 	public String updateCdu(@PathVariable(name = "id") int id, HttpSession session) {
 		Candidature maCdu = serviceCdu.get(id);
-
 		maCdu.setStatut_cdu(serviceStatut.get(103));
 		serviceCdu.save(maCdu);
 		return "redirect:/gestionCandidature";
 	}
+	
+	@RequestMapping("/traiterCdu/{id}")
+	public String traiterCdu(@PathVariable(name = "id") int id, HttpSession session) {
+		Candidature maCdu = serviceCdu.get(id);
+		maCdu.setStatut_cdu(serviceStatut.get(104));
+		serviceCdu.save(maCdu);
+		return "redirect:/cduBackListe";
+	}
 
+	@RequestMapping("/refuserCdu/{id}")
+	public String refuserCdu(@PathVariable(name = "id") int id, HttpSession session) {
+		Candidature maCdu = serviceCdu.get(id);
+		maCdu.setStatut_cdu(serviceStatut.get(105));
+		serviceCdu.save(maCdu);
+		return "redirect:/cduBackListe";
+	}
+	@RequestMapping("/accepterCdu/{id}")
+	public String accepterCdu(@PathVariable(name = "id") int id, HttpSession session) {
+		Candidature maCdu = serviceCdu.get(id);
+		maCdu.setStatut_cdu(serviceStatut.get(110));
+		serviceCdu.save(maCdu);
+		return "redirect:/cduBackListe";
+	}
 }

@@ -25,6 +25,13 @@ public class CandidatureService {
 		
 	}
 	
+	public List<Candidature> archiveByCda(int id) {
+		return mesCdu.findArchiveByCda(id);
+		
+	}
+	
+	
+	
 	public void save(Candidature maCdu) {
 		mesCdu.save(maCdu);
 	}
