@@ -16,7 +16,24 @@ public class ConcoursService {
 	private ConcoursI ccs;
 	
 	public List<concours> listAll() {
-		return ccs.findAll();
+		return ccs.findAllccsSortnom();
+		//return ccs.findAll();
+	}
+	
+	public List<concours> sortByStatut() {
+		return ccs.sortByStatut();
+	}
+	
+	public List<concours> sortBydate() {
+		return ccs.sortBydate();
+	}
+	
+	public List<concours> listAllCda() {
+		return ccs.findBystatutccs(401);
+	}
+	
+	public List<concours> listAllCdaNom() {
+		return ccs.findBystatutccsNom(401);
 	}
 	
 	public void save(concours concour) {
@@ -28,7 +45,12 @@ public class ConcoursService {
 	}
 	
 	public void delete(Integer id) {
-		ccs.deleteById(id);
+		concours concour = ccs.findById(id).get();
+		concour.setStatutccs(403);
+	}
+	
+	public void deletePerm(Integer id) {
+		ccs.deleteById(id);;
 	}
 	
 	public concours getlast() {

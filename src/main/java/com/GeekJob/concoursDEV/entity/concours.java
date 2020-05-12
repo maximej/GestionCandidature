@@ -1,10 +1,7 @@
 package com.GeekJob.concoursDEV.entity;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+
 import java.sql.Blob;
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -15,8 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.sql.rowset.serial.SerialBlob;
-
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -31,7 +26,7 @@ public class concours {
 	private Date date_css;
 	private String nom_ccs;
 	private String description_ccs;
-	private int statut_css;
+	private int statutccs;
 	private Blob image_css;
 	private Integer Recruteur_ID;
 	
@@ -62,17 +57,12 @@ public class concours {
 	public void setDescription_ccs(String description_ccs) {
 		this.description_ccs = description_ccs;
 	}
-	public int getStatut_css() {
-		return statut_css;
+	public int getStatutccs() {
+		return statutccs;
 	}
-	public void setStatut_css(int statut_css) {
-		this.statut_css = statut_css;
+	public void setStatutccs(int statut_css) {
+		this.statutccs = statut_css;
 	}
-	public Blob getImage_css() {
-		return image_css;
-	}
-	
-	
 	
 	public List<Candidature> getMesCdu() {
 		return mesCdu;
@@ -82,23 +72,19 @@ public class concours {
 	}
 	
 	
+	public Blob getImage_css() {
+		return image_css;
+	}
 	
 	
-	public void setImage_css(String URL) {
-		try {
-			System.out.print(URL);
-			this.image_css = new SerialBlob(Files.readAllBytes(Paths.get(URL)));
-		} catch (SQLException | IOException e) {
-			e.printStackTrace();
-		};
+	public void setImage_css(Blob image_css) {
+		this.image_css = image_css;
 	}
 	
 	public Integer getRecruteur_ID() {
-		System.out.print("-------------------------------------."+Recruteur_ID);
 		return Recruteur_ID;
 	}
 	public void setRecruteur_ID(Integer recruteur_ID) {
-		System.out.print(recruteur_ID);
 		Recruteur_ID = recruteur_ID;
 	}
 	
@@ -107,7 +93,7 @@ public class concours {
 		date_css = new Date();
 		nom_ccs = " ";
 		description_ccs = " ";
-		statut_css = 401;
+		statutccs = 401;
 		image_css = null;
 		Recruteur_ID = 1;
 	}	

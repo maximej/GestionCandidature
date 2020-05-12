@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns="http://www.w3.org/1000/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+	<head th:replace="common/header :: header"></head>
+
+	<body>
+		<div th:replace="common/header :: navbar"></div>
+		<div class="container">
+			<h1>Liste des Recruteurs</h1>
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<td>
+							<h6><a th:href="@{/rcuListe}">Recruteur ID</a></h6>
+						</td>
+						<td>
+							<h6><a th:href="@{/rcuListeByEmail}">Email</a></h6>
+						</td>
+						<td>
+							<h6><a th:href="@{/rcuListeByStatut}">Statut</a></h6>
+						</td>
+						<td></td>
+						<td></td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="recruteur : ${listRcu}">
+						<td class="d-flex justify-content-start" th:text="${recruteur.rcuID}"></td>
+						<td th:text="${recruteur.utilRcu.email}"></td>
+						<td th:text="${recruteur.statutrcu}"></td>
+						<td>
+							<a th:href="@{'/editRcu/' + ${recruteur.rcuID}}" class="btn btn-success btn-xs">Modifier</a>
+						</td>
+						<td>
+							<a th:href="@{'/deleteRcu/'+ ${recruteur.rcuID}}" class="btn btn-danger dBtn">Supprimer</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div th:replace="common/header :: footer"></div>
+		<!-- Modal script -->
+		<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						Confirmez vous la supression ?
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Non</button>
+						<a href="" class="btn btn-danger" id="delref">Oui</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>

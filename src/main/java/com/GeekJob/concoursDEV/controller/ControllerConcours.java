@@ -1,6 +1,9 @@
 package com.GeekJob.concoursDEV.controller;
 
 import java.awt.print.Printable;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 
 import java.io.InputStream;
@@ -8,11 +11,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Blob;
 import java.util.Date;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +36,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,16 +44,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.GeekJob.concoursDEV.entity.Adresse;
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpSession;
 import com.GeekJob.concoursDEV.entity.Candidat;
 import com.GeekJob.concoursDEV.entity.Candidature;
 import com.GeekJob.concoursDEV.entity.Ville;
 
 import com.GeekJob.concoursDEV.entity.Candidat;
 
+import com.GeekJob.concoursDEV.entity.Recruteur;
+import com.GeekJob.concoursDEV.entity.Utilisateur;
 import com.GeekJob.concoursDEV.entity.concours;
 
 import com.GeekJob.concoursDEV.repository.VilleI;
@@ -57,6 +72,9 @@ import com.GeekJob.concoursDEV.service.VilleService;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
 import ch.qos.logback.core.Context;
+import com.GeekJob.concoursDEV.service.RecruteurService;
+import com.GeekJob.concoursDEV.service.UtilisateurService;
+import com.GeekJob.concoursDEV.service.VilleService;
 
 @Controller
 public class ControllerConcours {
@@ -64,10 +82,11 @@ public class ControllerConcours {
 	@Autowired
 	private ConcoursService service;
 
-	@RequestMapping("/")
-	public String viewHomePage() {
-		return "index";
-	}
+	@Autowired
+	private UtilisateurService serviceUtil;
+
+	@Autowired
+	private RecruteurService serviceRcu;
 
 	@RequestMapping(value = "/logo", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
 	public ResponseEntity<byte[]> getImage() throws IOException {
@@ -78,8 +97,87 @@ public class ControllerConcours {
 		return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(bytes);
 	}
 
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String viewHomePage(Model model) {
+		return "index";
+	}
+
+/////////Login check methods/////////
+	@RequestMapping(value = "/loginCda", method = RequestMethod.POST)
+	public String validUser(@RequestParam String email, @RequestParam String motdepasse, HttpSession session,
+			Model model) {
+		if (session.getAttribute("CdaLogin") != null) {
+			session.removeAttribute("CdaLogin");
+		}
+		if (session.getAttribute("RcuLogin") != null) {
+			session.removeAttribute("RcuLogin");
+		}
+		Utilisateur vUtil = serviceUtil.getValidCda(email, motdepasse);
+		if (vUtil != null) {
+			session.setAttribute("CdaLogin", vUtil);
+			return "redirect:/concoursListecadidat";
+		}
+		if (vUtil == null) {
+			model.addAttribute("msg", "Invalide");
+		}
+		return "index";
+	}
+
+	@RequestMapping(value = "/loginRcu", method = RequestMethod.POST)
+	public String validRcu(@RequestParam String email, @RequestParam String motdepasse, HttpSession session,
+			Model model) {
+		if (session.getAttribute("CdaLogin") != null) {
+			session.removeAttribute("CdaLogin");
+		}
+		if (session.getAttribute("RcuLogin") != null) {
+			session.removeAttribute("RcuLogin");
+		}
+		Utilisateur vUtil = serviceUtil.getValidRcu(email, motdepasse);
+		if (vUtil != null) {
+			session.setAttribute("RcuLogin", vUtil);
+			return "redirect:/concoursListe";
+		}
+		model.addAttribute("msg", "Invalide");
+		return "index";
+	}
+
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String logout(HttpSession session) {
+		if (session.getAttribute("CdaLogin") != null) {
+			session.removeAttribute("CdaLogin");
+		}
+		if (session.getAttribute("RcuLogin") != null) {
+			session.removeAttribute("RcuLogin");
+		}
+		return "index";
+	}
+
+/////////Login check methods/////////
+
+/////////Concours methods/////////
 	@RequestMapping("/concoursListe")
 	public String viewListeConcours(Model model) {
+		List<concours> listConcours = service.listAll();
+		model.addAttribute("listConcours", listConcours);
+		return "ConcoursListBack";
+	}
+
+	@RequestMapping("/sortBydate")
+	public String sortBydate(Model model) {
+		List<concours> listConcours = service.sortBydate();
+		model.addAttribute("listConcours", listConcours);
+		return "ConcoursListBack";
+	}
+
+	@RequestMapping("/sortByStatut")
+	public String sortByStatut(Model model) {
+		List<concours> listConcours = service.sortByStatut();
+		model.addAttribute("listConcours", listConcours);
+		return "ConcoursListBack";
+	}
+
+	@RequestMapping("/concoursListeActive")
+	public String viewListeConcourActive(Model model) {
 		List<concours> listConcours = service.listAll();
 		model.addAttribute("listConcours", listConcours);
 		return "ConcoursListBack";
@@ -88,6 +186,13 @@ public class ControllerConcours {
 	@RequestMapping("/concoursListecadidat")
 	public String viewListeConcourfront(Model model) {
 		List<concours> listConcours = service.listAll();
+		model.addAttribute("listConcours", listConcours);
+		return "ConcoursListFront";
+	}
+
+	@RequestMapping("/concoursListeCdaSortByNom")
+	public String viewListeConcourfrontSortByNom(Model model) {
+		List<concours> listConcours = service.listAllCdaNom();
 		model.addAttribute("listConcours", listConcours);
 		return "ConcoursListFront";
 	}
@@ -116,7 +221,7 @@ public class ControllerConcours {
 	}
 
 	@RequestMapping("/edit/{id}")
-	public ModelAndView editConcours(@PathVariable(name = "id") int id) {
+	public ModelAndView ModifieConcours(@PathVariable(name = "id") int id) {
 		ModelAndView mav = new ModelAndView("ModifieConcours");
 		concours concoursDemande = service.get(id);
 		mav.addObject("concoursDemande", concoursDemande);
@@ -131,7 +236,19 @@ public class ControllerConcours {
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public String saveconcours(@ModelAttribute("concours") concours concours) {
+	public String saveconcours(@ModelAttribute("concours") concours concours,
+			@RequestParam("imgfile") MultipartFile file, RedirectAttributes redirectAttributes) {
+
+		if (!file.isEmpty()) {
+			try {
+				byte[] imageInByte = file.getBytes();
+				concours.setImage_css(new javax.sql.rowset.serial.SerialBlob(imageInByte));
+			} catch (IOException | SQLException e) {
+				e.printStackTrace();
+			}
+		}else if(service.get(concours.getCcs_ID()) != null) {
+			concours.setImage_css(service.get(concours.getCcs_ID()).getImage_css());
+		}
 		service.save(concours);
 		return "redirect:/concoursListe";
 	}
@@ -141,19 +258,87 @@ public class ControllerConcours {
 		service.delete(id);
 		return "redirect:/concoursListe";
 	}
+	
+	@RequestMapping("/deleteperm/{id}")
+	public String deletePermCcs(@PathVariable(name = "id") int id) {
+		service.deletePerm(id);
+		return "redirect:/concoursListe";
+	}
 
-	///////////////////////////////////////////////// Maxime/////////////////////////////////////////////////
 
-	////////// Maxime////////// Variables
+/////////Concours methods/////////
+
+///////// Recruteur/////////
+	@RequestMapping("/nouveauRcu")
+	public String newRcu(Model model) {
+		Recruteur recruteur = new Recruteur();
+		model.addAttribute("recruteur", recruteur);
+		return "NouveauRecruteur";
+	}
+
+	@RequestMapping("/rcuListe")
+	public String viewListeRcuByID(Model model) {
+		List<Recruteur> listRcu = serviceRcu.listByID();
+		model.addAttribute("listRcu", listRcu);
+		return "RecruteursListBack";
+	}
+
+	@RequestMapping("/rcuListeByEmail")
+	public String viewListeRcuByEmail(Model model) {
+		List<Recruteur> listRcu = serviceRcu.listByEmail();
+		model.addAttribute("listRcu", listRcu);
+		return "RecruteursListBack";
+	}
+
+	@RequestMapping("/rcuListeByStatut")
+	public String viewListeRcuByStatut(Model model) {
+		List<Recruteur> listRcu = serviceRcu.listByStatut();
+		model.addAttribute("listRcu", listRcu);
+		return "RecruteursListBack";
+	}
+
+	@RequestMapping("/editRcu/{id}")
+	public ModelAndView ModifieRecruteur(@PathVariable(name = "id") int id) {
+		ModelAndView mav = new ModelAndView("ModifieRecruteur");
+		Recruteur recruteurDemande = serviceRcu.get(id);
+		mav.addObject("recruteurDemande", recruteurDemande);
+		return mav;
+	}
+
+	@RequestMapping(value = "/saveRcu", method = RequestMethod.POST)
+	public String saveRcu(@ModelAttribute("recruteur") Recruteur recruteur) {
+		// Check existing user
+		if (serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail()) == null) {
+			recruteur.getUtilRcu().setStatut_util(recruteur.getStatutrcu());
+			Utilisateur u = serviceUtil.save(recruteur.getUtilRcu());
+			recruteur.setUtilisateurId(u.getUtilisateurId());
+			serviceRcu.save(recruteur);
+		} else {
+			serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail())
+					.setStatut_util(recruteur.getStatutrcu());
+			serviceRcu.findByRcuID(recruteur.getRcuID()).setStatutrcu(recruteur.getStatutrcu());
+			serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail())
+					.setMotdepasse(recruteur.getUtilRcu().getMotdepasse());
+			serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail())
+					.setStatut_util(recruteur.getStatutrcu());
+		}
+		return "redirect:/rcuListe";
+	}
+
+	@RequestMapping("/deleteRcu/{id}")
+	public String deleterecruteur(@PathVariable(name = "id") int id) {
+		serviceRcu.delete(id);
+		return "redirect:/rcuListe";
+	}
+///////// Recruteur/////////
+
+///////////////////////////////////////////////// Maxime/////////////////////////////////////////////////
 
 	@Autowired
 	private CandidatService serviceCda;
 
 	@Autowired
 	private CandidatureService serviceCdu;
-
-	@Autowired
-	private VilleService serviceVilles;
 
 	// Save the uploaded file to this folder
 	@Value("${upload.path}")
@@ -162,6 +347,8 @@ public class ControllerConcours {
 	private String appli_path;
 
 	////////// Maxime////////// Candidat Mangement
+	private VilleService serviceVilles;
+
 
 	@RequestMapping("/cdaListe")
 	public String listeCda(Model model) {
@@ -170,8 +357,11 @@ public class ControllerConcours {
 	}
 
 	@RequestMapping("/profil")
-	public String vueProfilCandidat() {
-
+	public String vueProfilCandidat(Model model, HttpSession session) {
+		Utilisateur u = ((Utilisateur) session.getAttribute("CdaLogin"));
+		Candidat monCda = serviceCda.get(u.getUtilisateurId());
+		monCda.setMesCdu(serviceCdu.listByCda(monCda.getCda_ID()));
+		model.addAttribute("Candidat", serviceCda.get(u.getUtilisateurId()));
 		return "profil";
 	}
 
@@ -203,7 +393,7 @@ public class ControllerConcours {
 		Candidat monCda = serviceCda.get(id);
 		monCda.setStatut_cda(203);
 		serviceCda.save(monCda);
-		return "redirect:/profil";
+		return "redirect:/cdaListe";
 	}
 
 	@RequestMapping("/reactivateAccount/{id}")
@@ -257,9 +447,13 @@ public class ControllerConcours {
 
 	////////// Maxime////////// Candidature Mangement
 
-	@RequestMapping("/gestionCandidature/{id}")
-	public String listeCda(@PathVariable(name = "id") int id, Model model) {
-		model.addAttribute("listCdu", serviceCdu.listByCda(id));
+	@RequestMapping("/gestionCandidature")
+	public String listeCda(Model model, HttpSession session) {
+		Utilisateur u = ((Utilisateur) session.getAttribute("CdaLogin"));
+		Candidat monCda = serviceCda.get(u.getUtilisateurId());
+
+		model.addAttribute("Candidat", monCda);
+		model.addAttribute("listCdu", serviceCdu.listByCda(monCda.getCda_ID()));
 		return "CandidaturesList";
 	}
 
@@ -277,5 +471,6 @@ public class ControllerConcours {
 		serviceCdu.save(maCdu);
 		return "redirect:/gestionCandidature/"+cda;
 	}
+
 
 }

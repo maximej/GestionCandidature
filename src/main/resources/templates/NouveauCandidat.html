@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns="http://www.w3.org/1000/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="common/header :: header"></head>
+
+<body>
+	<div th:replace="common/header :: navbar"></div>
+	<div class="container">
+
+		<form action="#" th:action="@{/saveCda}" th:object="${Candidat}" method="post">
+			<div class="container">
+				<h1 class="text-uppercase" text="Création d'un nouveau profil de Candidat"></h1>
+
+				<table class="table-borderless">
+					<tr>
+						<select ng-model="myVar">
+							<option value=""></option>
+							<option value="M.">M.</option>
+							<option value="Mme.">Mme.</option>
+						</select>
+					</tr>
+					<tr>
+						<td>Prénom :</td>
+						<td colspan="3">
+							<input type="text" class="form-control" th:field="*{prenom_cda}" required />
+						</td>
+					</tr>
+					<tr>
+						<td>Nom :</td>
+						<td colspan="3">
+							<input type="text" class="form-control" th:field="*{nom_cda}" required />
+						</td>
+					</tr>
+
+
+
+				</table>
+
+				<div style="display: flex; justify-content: space-around">
+					<td><button type="submit" class="btn btn-success btn-xs">Enregistrer</button></td>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div th:replace="common/header :: footer"></div>
+</body>
+
+</html>

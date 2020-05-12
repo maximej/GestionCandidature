@@ -6,6 +6,7 @@ $(document).ready(function () {
 		$('#deleteModal #delref').attr('href', href);
 		$('#deleteModal').modal();
 	});
+<<<<<<< HEAD
 });
 
 function autocomplete(inp, arr) {
@@ -104,3 +105,13 @@ document.addEventListener("click", function (e) {
     closeAllLists(e.target);
 });
 } 
+=======
+
+	$('.table .aBtn').on('click', function (event) {
+		event.preventDefault();
+		var href = $(this).attr('href');
+		$('#annuleModal #delref').attr('href', href);
+		$('#annuleModal').modal();
+	});
+});
+>>>>>>> refs/remotes/origin/Maragatham

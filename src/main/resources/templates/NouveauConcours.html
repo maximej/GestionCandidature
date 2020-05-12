@@ -2,14 +2,58 @@
 <html lang="fr" xmlns="http://www.w3.org/1000/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 	<head th:replace="common/header :: header"></head>
+	<script>
+		$(document).ready(function () {
+			var todaysDate = new Date();
+			var year = todaysDate.getFullYear();
+			var month = ("0" + (todaysDate.getMonth() + 1)).slice(-2);
+			var day = ("0" + todaysDate.getDate()).slice(-2);
+			var minDate = (year + "-" + month + "-" + day);
+			document.getElementById("dateccs").setAttribute('min', minDate);
+			$('input').attr('required', true)
+			document.getElementById("nomccs").required = true;
+			document.getElementById("nom_ccs").setAttribute('minlength', 4);
+		});
+	</script>
+	<script>
+		$(document).ready().click(function () {
+			const input = document.getElementById("imageFile");
+			input.addEventListener('change', updateURL);
+			function updateURL() {
+				const curFiles = input.files;
+				if (curFiles.length > 0) {
+					for (const file of curFiles) {
+						if (validFileType(file)) {
+							document.getElementById("image_css").setAttribute('src', URL.createObjectURL(file));
+							document.getElementById("image_css").setAttribute('th:src', URL.createObjectURL(file));
+							sessionStorage.setItem("ccsImage", file);
+							document.getElementById("imageFile").setAttribute('th:field', "*{image_css}");
+						}
+					}
+				}
+			}
+
+			const fileTypes = [
+				"image/jpeg",
+				"image/pjpeg",
+				"image/png"
+			];
+
+			function validFileType(file) {
+				return fileTypes.includes(file.type);
+			}
+
+		});
+	</script>
 
 	<body>
-		<div th:replace="common/header :: navbar-recruteur"></div>
+		<div th:replace="common/header :: navbar"></div>
 		<div class="container">
 
-			<form action="#" th:action="@{/save}" th:object="${concours}" method="post">
+			<form id="NccsForm" action="#" th:action="@{/save}" th:object="${concours}" method="post" enctype="multipart/form-data">
 				<div class="container">
-					<h1 class="text-uppercase" th:text="*{nom_ccs}"></h1>
+					<h1 class="text-uppercase"> Formulaire nouveau concours</h1>
+					<hr>
 					<table class="table-borderless">
 						<tr>
 							<td>Nom du Concours :</td>
@@ -20,36 +64,37 @@
 						<tr>
 							<td>Date :</td>
 							<td colspan="3">
-								<input type="date" class="form-control" th:field="*{date_css}" required />
+								<input id="dateccs" type="date" class="form-control" th:field="*{date_css}" required />
 							</td>
 						</tr>
 						<tr>
 							<td>Description :</td>
 							<td colspan="3">
 								<textarea type="text" height="50" class="form-control" th:field="*{description_ccs}" />
-							</td>
+								</td>
 						</tr>
 						<tr>
 							<td>Statut :</td>
-							<td colspan="3"><input type="number" class="form-control" th:field="*{statut_css}" min="401" max="403" required/></td>
+							<td colspan="3"><input type="number" class="form-control" th:field="*{statutccs}" required="true" min="401" max="403" /></td>
 						</tr>
 						<tr>
 							<td>Concours créé par :</td>
-							<td colspan="3"><input type="text" class="form-control" th:field="*{Recruteur_ID}" required/></td>
+							<td colspan="3"><input type="text" class="form-control" th:field="*{Recruteur_ID}" value="${session.RcuLogin.utilisateurId}" required/></td>
 						</tr>
 						<tr>
 							<td>Image :</td>
 								<td >
-									<img src="#" th:src="@{data:image/bmp;base64,${concoursImage}}" alt="Concours image" width="150" height="150" />
-								<input type="file" name="files" class="btn btn-default btn-xs">
+									<img th:id="image_css" th:name="image_css" alt="Concours image" width="150" height="150">
+								<input id ="imageFile" type="file" name="imgfile" class="btn btn-default btn-xs">
 							</td>					
+
 						</tr>
 						<tr>
 						</tr>
 						<tr>
 							<td ></td>	
 							<td><button type="submit" class="btn btn-success btn-xs">Enregistrer</button></td>
-							<td><button type="button" class="btn btn-primary" onclick="window.history.back();">Abandonner l'ajout de concours'</button></td>
+							<td><button type="button" class="btn btn-primary" onclick="window.history.back();">Abandonner l'ajout de concours</button></td>
 						</tr>
 					</table>
 				</div>

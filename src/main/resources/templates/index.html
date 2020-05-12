@@ -1,37 +1,68 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns="http://www.w3.org/1000/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head th:replace = "common/header :: header"></head>
-<body>
-	<div th:replace="common/header :: navbar-candidat"></div>
 
-	<div class="container" style="background-image:'BgGeekJobs2.jpg';">
-		<form action="#">
-			<div class="form-group">
-				<label for="email">Email:</label> 
-				<input type="email" class="form-control" id="email" placeholder="Email" name="email">
-			</div>
-			<div class="form-group">
-				<label for="pwd">Password:</label> 
-				<input type="password" class="form-control" id="mdp" placeholder="Mot de Passe" name="pwd">
-			</div>
-			<div class="checkbox">
-				<label><input type="checkbox" name="remember">
-					Remember me</label>
-			</div>
-			<div class="row">
-				<div class="col"></div>
-				<div class="col"><button type="submit" class="btn btn-primary btn-lg" formaction="#" th:formaction="@{/loginCda/{email}/{mdp}}">Candidat</button></div>
-				<div class="col"><button type="submit" class="btn btn-success btn-lg" formaction="#" th:formaction="@{/loginRcu/{email}/{mdp}}">Recruteur</button></div>
-				<div class="col"></div>
-			</div>
-		</form>
+	<head th:replace="common/header :: header"></head>
 
-		<a href="concoursListe">Liste des concours</a>
-	</br><a href="cdaListe">Liste des candidats</a>
 
-	</div>
+	<body>
+		<div th:replace="common/header :: navbar"></div>
 
-	<div th:replace="common/header :: footer"></div>
-</body>
+		<div class="container">
+
+			<span th:if="${msg != null}">Email ou Mot de passe Invalide</span>
+			<div class="col"><span id="userLogin" class="align-bottom"></span>
+				<span th:if="${session.CdaLogin == null and session.RcuLogin == null}">
+					<form action="#" method="post">
+						<div class="form-group">
+							<label for="email">Email:</label>
+							<input type="email" class="form-control" id="email" name="email" placeholder="Email">
+						</div>
+						<div class="form-group">
+							<label for="pwd">Password:</label>
+							<input type="password" class="form-control" id="motdepasse" name="motdepasse"
+								placeholder="Mot de Passe">
+						</div>
+						<!-- <div class="checkbox">
+									<label><input type="checkbox" name="remember">
+									Remember me</label>
+								</div> -->
+						<div class="row">
+							<div class="col"></div>
+							<div class="col">
+								<div class="d-flex justify-content-center">
+								<button type="submit" class="btn btn-primary btn-lg" formaction="#"
+									th:formaction="@{/loginCda}">Candidat
+								</button>
+								</div>
+							</div>
+							<div class="col">
+								<div class="d-flex justify-content-center">
+								<button type="submit" class="btn btn-success btn-lg" formaction="#"
+									th:formaction="@{/loginRcu}">Recruteur
+								</button>
+								</div>
+							</div>
+							<div class="col"></div>
+
+						</div>
+						<div class="row">
+							<div class="col"></div>
+							<div class="col">
+								<div class="d-flex justify-content-center">
+									<a class="btn btn-default btn-xs" href="nouveauCandidat">Nouveau Candidat</a>
+								</div>
+							</div>
+							<div class="col"></div>
+						</div>
+					</form>
+				</span>
+			</div>
+
+			<h1>About Us</h1>
+			Welcome to GeekJob
+		</div>
+
+		<div th:replace="common/header :: footer"></div>
+	</body>
 
 </html>

@@ -6,10 +6,14 @@
 
 <body>
 
-	<div th:replace="common/header :: navbar-candidat"></div>
+
+	<div th:replace="common/header :: navbar"></div>
 
 	<div class="container" style="background-image:'BgGeekJobs2.jpg';">
 		<br />
+		<h1 th:text="'Bonjour ' + ${Candidat.prenom_cda} +' ' + ${Candidat.nom_cda}">Bonjour</h1>
+				<h2 th:text="'Vous avez ' + ${#lists.size(Candidat.mesCdu)} + ' candidatures'">Candidatures</h2>
+
 		<thead>
 			<div class="row">
 				<div class="col" style="display: flex; justify-content: space-around">
@@ -35,7 +39,7 @@
 					<a href="concoursListecadidat" class="btn btn-primary btn-xs">Postuler aux concours</a>
 				</div>
 				<div class="col" style="display: flex; justify-content: space-around">
-					<a href="gestionCandidature/" class="btn btn-primary btn-xs">Gérer les candidatures</a>
+					<a href="gestionCandidature" class="btn btn-primary btn-xs">Gérer les candidatures</a>
 				</div>
 
 			</div>
@@ -57,7 +61,6 @@
 
 		</thead>
 
-	</div>
 
 	<div th:replace="common/header :: footer"></div>
 </body>

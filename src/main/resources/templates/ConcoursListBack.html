@@ -4,38 +4,58 @@
 	<head th:replace="common/header :: header"></head>
 
 	<body>
-		<div th:replace="common/header :: navbar-recruteur"></div>
+		<div th:replace="common/header :: navbar"></div>
 		<div class="container">
-			<h1>Liste des Concours</h1>
-			<div style="display: flex; justify-content: space-around"><a href="new"
-					class="btn btn-primary btn-xs">Nouveau
-					Concours</a></div>
-			<table class="table">
-				<thead>
-					<div class="row">
-						<div class="col">
-							<h6>Date</h6>
+			<div class="row">
+				<div class="col">
+					<h1>Liste des Concours</h1>
+				</div>
+				<div class="col">
+					<div class="d-flex justify-content-end">
+						<div class="d-flex align-items-center">
+							<a href="new" class="btn btn-primary btn-xs">Nouveau Concours</a>
 						</div>
-						<div class="col">
-							<h6>Concours</h6>
-						</div>
-						<div class="col"></div>
-						<div class="col"></div>
 					</div>
+				</div>
+			</div>
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<td>
+							<h6 class="d-flex justify-content-center"><a th:href="@{/sortBydate}">Date</a></h6>
+						</td>
+						<td>
+							<h6><a th:href="@{/concoursListe}">Concours</a></h6>
+						</td>
+						<td>
+							<h6 class="d-flex justify-content-start"><a th:href="@{/sortByStatut}">Status</a></h6>
+						</td>
+						<td></td>
+						<td></td>
+						<span th:if="${session.RcuLogin.email == 'admin@GeekJob.com'}">
+							<td></td>
+						</span>
+					</tr>
 				</thead>
 				<tbody>
 					<tr th:each="concour : ${listConcours}">
-						<td th:text="${#dates.format(concour.date_css, 'dd-MM-yyyy')}">date_css</td>
-					<td th:text="${concour.nom_ccs}">nom_ccs</td>
-					<td>
-						<a th:href="@{'/edit/' + ${concour.ccs_ID}}" class="btn btn-success btn-xs">Modifier</a>
-					</td>
-					<td>
-						<a th:href="@{'/delete/'+ ${concour.ccs_ID}}" class="btn btn-danger dBtn">Supprimer</a>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+						<td class="d-flex justify-content-end" th:text="${#dates.format(concour.date_css, 'dd-MM-yyyy')}">date_css</td>
+						<td th:text="${concour.nom_ccs}">nom_ccs</td>
+						<td class="d-flex justify-content-center" th:text="${concour.statutccs}">statutccs</td>
+						<td >
+							<a th:href="@{'/edit/' + ${concour.ccs_ID}}" class="btn btn-success btn-xs">Modifier</a>
+						</td>
+						<td>
+							<a th:href="@{'/delete/'+ ${concour.ccs_ID}}" class="btn btn-danger aBtn">Annuler</a>
+						</td>
+						<span th:if="${session.RcuLogin.email == 'admin@GeekJob.com'}">
+							<td>
+								<a th:href="@{'/deleteperm/'+ ${concour.ccs_ID}}" class="btn btn-danger dBtn">Supprimer</a>
+							</td>
+						</span>
+					</tr>
+				</tbody>
+			</table>
 	</div>
 	<div th:replace="common/header :: footer"></div>
 	<!-- Modal script -->
@@ -50,6 +70,27 @@
 		</div>
 		<div class="modal-body">
 			Confirmez vous la supression ?
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Non</button>
+			<a href="" class="btn btn-danger" id="delref">Oui</a>
+		</div>
+		</div>
+	</div>
+	</div>
+
+	<!-- Modal script -->
+	<div class="modal fade" id="annuleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+		<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="modal-body">
+			Confirmez vous l'anuulation du Concours ?
 		</div>
 		<div class="modal-footer">
 			<button type="button" class="btn btn-secondary" data-dismiss="modal">Non</button>

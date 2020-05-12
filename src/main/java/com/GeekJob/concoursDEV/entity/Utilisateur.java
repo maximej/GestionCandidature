@@ -4,50 +4,66 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "utilisateur",schema = "targetSchemaName")
 public class Utilisateur {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int utilisateur_ID ;
+	private int utilisateurId;
 	private String email;
-	private String mot_de_passe;
+	private String motdepasse;
 	private int Statut_util;
-	
-	public int getUtilisateur_ID() {
-		return utilisateur_ID;
+
+	@Override
+	public String toString() {
+		return "Utilisateur [utilisateurId=" + utilisateurId + ", email=" + email + ", motdepasse=" + motdepasse
+				+ ", Statut_util=" + Statut_util + "]";
 	}
-	public void setUtilisateur_ID(int utilisateur_ID) {
-		this.utilisateur_ID = utilisateur_ID;
+
+	public int getUtilisateurId() {
+		return utilisateurId;
 	}
+
+	public void setUtilisateurId(int utilisateur_ID) {
+		this.utilisateurId = utilisateur_ID;
+	}
+
 	public String getEmail() {
 		return email;
 	}
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getMot_de_passe() {
-		return mot_de_passe;
+
+	public String getMotdepasse() {
+		return motdepasse;
 	}
-	public void setMot_de_passe(String mot_de_passe) {
-		this.mot_de_passe = mot_de_passe;
+
+	public void setMotdepasse(String motdepasse) {
+		this.motdepasse = motdepasse;
 	}
+
 	public int getStatut_util() {
 		return Statut_util;
 	}
+
 	public void setStatut_util(int statut_util) {
 		Statut_util = statut_util;
 	}
-	
-	public Utilisateur(String email, String mot_de_passe, int statut_util) {
+
+	public Utilisateur(int utilisateur_ID, String email, String motdepasse, int statut_util) {
 		super();
+		this.utilisateurId = utilisateur_ID;
 		this.email = email;
-		this.mot_de_passe = mot_de_passe;
+		this.motdepasse = motdepasse;
 		Statut_util = statut_util;
 	}
+
 	public Utilisateur() {
 		super();
 	}
-	
-	
+
 }
