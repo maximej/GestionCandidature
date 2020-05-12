@@ -343,7 +343,7 @@ public class ControllerConcours {
 
 	@Autowired
 	private CandidatureService serviceCdu;
-	
+
 	@Autowired
 	private StatutService serviceStatut;
 
@@ -419,54 +419,61 @@ public class ControllerConcours {
 	////////// Maxime////////// Upload Management ////
 
 	@PostMapping("/uploadCv") // //new annotation since 4.3
-	public String singleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
+	public String singleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes,
+			HttpSession session) {
+		String returnPath = "index";
 
-		if (file.isEmpty()) {
-			redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
-			return "redirect:uploadStatus";
+		if (null != session.getAttribute("CdaLogin")) {
+
+			Utilisateur u = ((Utilisateur) session.getAttribute("CdaLogin"));
+			Candidat monCda = serviceCda.get(u.getUtilisateurId());
+
+			if (file.isEmpty()) {
+				redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
+				return "redirect:uploadStatus";
+			}
+			try {
+				// Get the file and save it somewhere
+				byte[] bytes = file.getBytes();
+				ClassPathResource imgFile = new ClassPathResource("static/Logo.png");
+				DateFormat dateFormat = new SimpleDateFormat("yy_MM_dd_HH_mm_ss");
+
+				int index = file.getOriginalFilename().lastIndexOf(".");
+				String extention = file.getOriginalFilename().substring(index, file.getOriginalFilename().length())
+						.toLowerCase();
+
+				String fileNameString = "CV_" + monCda.getPrenom_cda() + "_" + monCda.getNom_cda() + "_"
+						+ dateFormat.format(new Date()) + extention;
+				monCda.setCv(fileNameString);
+				Path path = Paths.get(appli_path + img_path + fileNameString);
+				Files.write(path, bytes);
+				serviceCda.save(monCda);
+
+				redirectAttributes.addFlashAttribute("message",
+						"You successfully uploaded '" + file.getOriginalFilename() + "'");
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			returnPath = "redirect:/profil";
 		}
 
-		try {
-			// Get the file and save it somewhere
-			byte[] bytes = file.getBytes();
-			ClassPathResource imgFile = new ClassPathResource("static/Logo.png");
-			DateFormat dateFormat = new SimpleDateFormat("yy_MM_dd_HH_mm_ss");
-
-			int index = file.getOriginalFilename().lastIndexOf(".");
-			String extention = file.getOriginalFilename().substring(index, file.getOriginalFilename().length())
-					.toLowerCase();
-
-			String fileNameString = dateFormat.format(new Date()) + extention;
-
-			Path path = Paths.get(appli_path + img_path + fileNameString);
-			Files.write(path, bytes);
-
-			redirectAttributes.addFlashAttribute("message",
-					"You successfully uploaded '" + file.getOriginalFilename() + "'");
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return "redirect:/uploadStatus";
-	}
-
-	@GetMapping("/uploadStatus")
-	public String uploadStatus() {
-
-		return "profil";
+		return returnPath;
 	}
 
 	////////// Maxime////////// Candidature Mangement
 
 	@RequestMapping("/gestionCandidature")
 	public String listeCda(Model model, HttpSession session) {
-		Utilisateur u = ((Utilisateur) session.getAttribute("CdaLogin"));
-		Candidat monCda = serviceCda.get(u.getUtilisateurId());
-
-		model.addAttribute("Candidat", monCda);
-		model.addAttribute("listCdu", serviceCdu.listByCda(monCda.getCda_ID()));
-		return "CandidaturesList";
+		String returnPath = "index";
+		if (null != session.getAttribute("CdaLogin")) {
+			Utilisateur u = ((Utilisateur) session.getAttribute("CdaLogin"));
+			Candidat monCda = serviceCda.get(u.getUtilisateurId());
+			model.addAttribute("Candidat", monCda);
+			model.addAttribute("listCdu", serviceCdu.listByCda(monCda.getCda_ID()));
+			returnPath = "CandidaturesList";
+		}
+		return returnPath;
 	}
 
 	@RequestMapping("/postuler/{id}")
@@ -478,11 +485,26 @@ public class ControllerConcours {
 			Candidature maCdu = new Candidature(monCda, service.get(ccs), serviceStatut.get(101));
 			serviceCdu.save(maCdu);
 			returnPath = "redirect:/gestionCandidature";
-
 		}
 		return returnPath;
 	}
 
+	@RequestMapping("/updateCdu/{id}")
+	public String deleteCdu(@PathVariable(name = "id") int id, HttpSession session) {
+		Candidature maCdu = serviceCdu.get(id);
 
+		maCdu.setStatut_cdu(serviceStatut.get(103));
+		serviceCdu.save(maCdu);
+		return "redirect:/gestionCandidature";
+	}
+	
+	@RequestMapping("/deleteCdu/{id}")
+	public String updateCdu(@PathVariable(name = "id") int id, HttpSession session) {
+		Candidature maCdu = serviceCdu.get(id);
+
+		maCdu.setStatut_cdu(serviceStatut.get(103));
+		serviceCdu.save(maCdu);
+		return "redirect:/gestionCandidature";
+	}
 
 }

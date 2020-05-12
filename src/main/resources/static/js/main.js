@@ -1,14 +1,42 @@
 $(document).ready(function () {
 
+	$('.table .mBtn').on('click', function (event) {
+		event.preventDefault();
+		var href = $(this).attr('href');
+		$('#editModal #editref').attr('href', href);
+		$('#editModal').modal();
+	});
+
 	$('.table .dBtn').on('click', function (event) {
 		event.preventDefault();
 		var href = $(this).attr('href');
 		$('#deleteModal #delref').attr('href', href);
 		$('#deleteModal').modal();
+  });
+
+  $('.table .aBtn').on('click', function (event) {
+		event.preventDefault();
+		var href = $(this).attr('href');
+		$('#annuleModal #delref').attr('href', href);
+		$('#annuleModal').modal();
 	});
-<<<<<<< HEAD
+  $('.table .pBtn').on('click', function (event) {
+		event.preventDefault();
+		var href = '#prModal'+$(this).attr('href');
+		$(href).modal();
+	});
+
 });
 
+
+
+
+
+
+
+
+
+ 
 function autocomplete(inp, arr) {
   /*the autocomplete function takes two arguments,
   the text field element and an array of possible autocompleted values:*/
@@ -105,13 +133,4 @@ document.addEventListener("click", function (e) {
     closeAllLists(e.target);
 });
 } 
-=======
 
-	$('.table .aBtn').on('click', function (event) {
-		event.preventDefault();
-		var href = $(this).attr('href');
-		$('#annuleModal #delref').attr('href', href);
-		$('#annuleModal').modal();
-	});
-});
->>>>>>> refs/remotes/origin/Maragatham

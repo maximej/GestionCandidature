@@ -1,116 +1,125 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-	<head th:fragment="header">
-		<title>GeekJob.com</title>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-		<script type="text/javascript" th:src="@{js/main.js}" src="../../static/js/main.js"></script>
-	</head>
+<head th:fragment="header">
+	<title>GeekJob.com</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+	<script type="text/javascript" th:src="@{js/main.js}" src="../../static/js/main.js"></script>
+</head>
 
-	<body>
+<body>
 
-		<div th:fragment="header">
-			<div class="container">
-				<div class="row">
-					<div class="col"><a href="#" th:href="@{/}"><img src="#" th:src="@{/logo}" alt="Logo"></a></div>
-					<div class="col">
-						<h1 class="align-middle" style="position: relative; top: 55px;">GeekJob.com</h1>
-					</div>
-					<div class="col">
-						<span th:if="${session.CdaLogin != null}">
-							<h6 class="d-flex justify-content-end"
-								th:text="'Session Candidat : ' +${session.CdaLogin.email}"></h6>
-							<h6 class="d-flex justify-content-end"><a th:href="@{/logout}">Se déconnecter</a></h6>
-						</span>
-						<span th:if="${session.RcuLogin != null}">
-							<h6 class="d-flex justify-content-end"
-								th:text="'Session Recruteur : ' + ${session.RcuLogin.email}"></h6>
-							<h6 class="d-flex justify-content-end"><a th:href="@{/logout}">Se déconnecter</a></h6>
-						</span>
-						<span th:if="${session.RcuLogin == null and session.CdaLogin == null}">
-							<a class="d-flex justify-content-end" href="#" th:href="@{/}">Se Connecter</a>
-						</span>
-					</div>
+	<div th:fragment="header">
+		<div class="container">
+			<div class="row">
+				<div class="col"><a href="#" th:href="@{/}"><img src="#" th:src="@{/logo}" alt="Logo"></a></div>
+				<div class="col">
+					<h1 class="align-middle" style="position: relative; top: 55px;">GeekJob.com</h1>
+				</div>
+				<div class="col">
+					<span th:if="${session.CdaLogin != null}">
+						<h6 class="d-flex justify-content-end"
+							th:text="'Session Candidat : ' +${session.CdaLogin.email}"></h6>
+						<h6 class="d-flex justify-content-end"><a th:href="@{/logout}">Se déconnecter</a></h6>
+					</span>
+					<span th:if="${session.RcuLogin != null}">
+						<h6 class="d-flex justify-content-end"
+							th:text="'Session Recruteur : ' + ${session.RcuLogin.email}"></h6>
+						<h6 class="d-flex justify-content-end"><a th:href="@{/logout}">Se déconnecter</a></h6>
+					</span>
+					<span th:if="${session.RcuLogin == null and session.CdaLogin == null}">
+						<a class="d-flex justify-content-end" href="#" th:href="@{/}">Se Connecter</a>
+					</span>
 				</div>
 			</div>
 		</div>
+	</div>
 
 
-		<div th:fragment="navbar">
-			<span th:if="${session.CdaLogin != null}">
-				<nav class="navbar navbar-expand-sm  bg-light">
-					<ul class="navbar-nav">
-						<li class="nav-item">
-							<a class="nav-link" href="#" th:href="@{/concoursListecadidat}">Concours</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#" th:href="@{/profil}">Espace Candidat</a>
-						</li>
+	<div th:fragment="navbar">
+		<span th:if="${session.CdaLogin != null}">
+			<nav class="navbar navbar-expand-sm  bg-light">
+				<ul class="navbar-nav">
 
-						<li class="nav-item">
-							<a class="nav-link" href="gestionCandidature">Candidatures</a>
-						</li>
-					</ul>
-				</nav>
-			</span>
-			<span th:if="${session.RcuLogin != null }">
-				<nav class="navbar navbar-expand-sm  bg-light">
-					<ul class="navbar-nav">
+					<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbardrop"
+							data-toggle="dropdown">Espace candidat</a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" href="#" th:href="@{/profil}">Votre Profil</a>
+							<a class="dropdown-item" href="#" th:href="@{/infoCda}">Modifier votre profil</a>
+
+						</div>
+					</li>
+					<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbardrop"
+							data-toggle="dropdown">Concours</a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" href="#" th:href="@{/concoursListecadidat}">Postuler aux concours</a>
+							<a class="dropdown-item" href="#" th:href="@{/gestionCandidature}">Consulter vos
+								candidatures</a>
+						</div>
+					</li>
+
+				</ul>
+			</nav>
+		</span>
+		<span th:if="${session.RcuLogin != null }">
+			<nav class="navbar navbar-expand-sm  bg-light">
+				<ul class="navbar-nav">
+					<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbardrop"
+							data-toggle="dropdown">Concours</a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" href="#" th:href="@{/concoursListeActive}">Concours Actives</a>
+							<a class="dropdown-item" href="#" th:href="@{/concoursListe}">Liste complet</a>
+						</div>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Candidatures</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#" th:href="@{/cdaListe}">Candidats</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#" th:href="@{'/editRcu/' + ${session.RcuLogin.utilisateurId}}">Mon
+							profil</a>
+					</li>
+					<span th:if="${session.RcuLogin.email == 'admin@GeekJob.com'}">
 						<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbardrop"
-									data-toggle="dropdown">Concours</a>
+								data-toggle="dropdown">Recruteurs</a>
 							<div class="dropdown-menu">
-								<a class="dropdown-item" href="#" th:href="@{/concoursListeActive}">Concours Actives</a>
-								<a class="dropdown-item" href="#" th:href="@{/concoursListe}">Liste complet</a>
+								<a class="dropdown-item" href="#" th:href="@{/rcuListe}">Recruteurs Liste</a>
+								<a class="dropdown-item" href="#" th:href="@{/nouveauRcu}">Nouveau Recruteur</a>
 							</div>
 						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">Candidatures</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#" th:href="@{/cdaListe}">Candidats</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#" th:href="@{'/editRcu/' + ${session.RcuLogin.utilisateurId}}">Mon profil</a>
-						</li>
-						<span th:if="${session.RcuLogin.email == 'admin@GeekJob.com'}">
-							<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbardrop"
-									data-toggle="dropdown">Recruteurs</a>
-								<div class="dropdown-menu">
-									<a class="dropdown-item" href="#" th:href="@{/rcuListe}">Recruteurs Liste</a>
-									<a class="dropdown-item" href="#" th:href="@{/nouveauRcu}">Nouveau Recruteur</a>
-								</div>
-							</li>
-						</span>
-					</ul>
-				</nav>
-			</span>
+					</span>
+				</ul>
+			</nav>
+		</span>
 
-			<span th:if="${session.RcuLogin == null and session.CdaLogin == null}">
-				<nav class="navbar navbar-expand-sm  bg-light">
-					<ul class="navbar-nav">
-						<li class="nav-item">
-							<a class="nav-link" href="#" th:href="@{/concoursListecadidat}">Concours</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#" th:href="@{/}">About GeekJob</a>
-						</li>
-					</ul>
-				</nav>
-			</span>
-		</div>
+		<span th:if="${session.RcuLogin == null and session.CdaLogin == null}">
+			<nav class="navbar navbar-expand-sm  bg-light">
+				<ul class="navbar-nav">
+					<li class="nav-item">
+						<a class="nav-link" href="#" th:href="@{/concoursListecadidat}">Concours</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#" th:href="@{/}">About GeekJob</a>
+					</li>
+				</ul>
+			</nav>
+		</span>
+	</div>
 
-	
-		<div th:fragment="footer">
-			<hr>
-			<div class="footer-copyright text-center py-3">© 2020 Copyright :
-				<a href="#" th:href="@{/}"> GeekJob.com</a>
-			</div>
+
+	<div th:fragment="footer">
+		<hr>
+		<div class="footer-copyright text-center py-3">© 2020 Copyright :
+			<a href="#" th:href="@{/}"> GeekJob.com</a>
 		</div>
-	</body>
+	</div>
+</body>
 
 </html>

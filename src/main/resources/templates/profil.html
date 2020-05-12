@@ -9,15 +9,147 @@
 
 	<div th:replace="common/header :: navbar"></div>
 
-	<div class="container" style="background-image:'BgGeekJobs2.jpg';">
+	<div class="container" th:object="${Candidat}">
 		<br />
 		<h1 th:text="'Bonjour ' + ${Candidat.prenom_cda} +' ' + ${Candidat.nom_cda}">Bonjour</h1>
-				<h2 th:text="'Vous avez ' + ${#lists.size(Candidat.mesCdu)} + ' candidatures'">Candidatures</h2>
+		<h2 th:text="'Vous avez ' + ${#lists.size(Candidat.mesCdu)} + ' candidatures'">Candidatures</h2>
+
+		<div class="container">
+				<h2 text="Votre état-civil"> </h2>
+				<div class="form-group">
+					<input id="id_F" type="hidden" th:field="*{cda_ID}">
+					<input id="stat_F" type="hidden" th:field="*{Statut_cda}">
+
+										<br />
+					<div class="row">
+						<div class="col" th:if="${Candidat.securite_sociale} != null">
+							<label for="secu_F">Numéro de sécurité sociale : </label>
+
+							<input id="secu_F" type="text" class="form-control" th:field="*{securite_sociale}"
+								placeholder="Numéro de sécurité sociale" maxlength="15" readonly/>
+						</div>
+						<div class="col">
+							<label for="date_F">Date de naissance : </label>
+
+							<input id="date_F" type="date" class="form-control" th:field="*{date_naissance}" required readonly/>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="row">
+						<div class="col" th:if="${Candidat.telephone} != null">
+							<label for="num_F">Téléphonne : </label>
+							<input id="num_F" type="text" class="form-control" th:field="*{telephone}"
+								placeholder="Votre numéro de téléphonne" maxlength="15" readonly/>
+						</div>
+						<div class="col" th:if="${Candidat.facebook} != null">
+							<label for="fb_F">Facebook : </label>
+							<input id="fb_F" type="text" class="form-control" th:field="*{facebook} "
+								placeholder="Url de votre page facebook" maxlength="255" readonly/>
+						</div>
+					</div>
+					<br />
+
+					<div class="row">
+						<div class="col" th:if="${Candidat?.instagram}">
+							<label for="insta_F">Instagram : </label>
+							<input id="insta_F" type="text" class="form-control" th:field="*{instagram}"
+								placeholder="Url de votre page instagram" maxlength="255" readonly/>
+						</div>
+						<div class="col" th:if="${Candidat.twitter} != null">
+							<label for="twitter_F">Twitter : </label>
+							<input id="twitter_F" type="text" class="form-control" th:field="*{twitter}"
+								placeholder="Url de votre page twitter" maxlength="255" readonly/>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="row">
+					<!--	<div class="col">
+							<label for="cv_F">Fichier CV, format pdf, png, ou jpeg, 15 mo max : </label>
+							<input id="cv_F" type="file" class="form-control-file" th:field="*{cv}"
+								placeholder="Votre numéro de téléphonne" />
+						</div>-->
+						<div class="col">
+							<label for="etudes_F">Votre niveau d'études : </label>
+							<select id="etudes_F" class="custom-select" th:field="*{etude}">
+								<option value="-3">CAP / BEP
+								<option value="0">BAC
+								<option value="2">BTS (BAC +2)
+								<option value="3">License (BAC +3)
+								<option value="4">Master 1 (BAC +4)
+								<option value="5">Master 2 (BAC +5)
+								<option value="7">Doctorat (BAC +7)
+							</select>
+						</div>
+
+					</div>
+					<br />
+					<div class="row">
+						<div class="col">
+							<label for="bio_F">Biographie : </label>
+							<textarea class="form-control" id="bio_F" th:field="*{biographie}"
+								placeholder="Parlez nous de vous ..." rows="3" maxlength="4095" readonly></textarea>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="row">
+						<div class="col">
+							<label for="numAd_F">Numéro : </label>
+							<input id="numAd_F" type="text" class="form-control" th:field="*{monAdresse.numero}"
+								placeholder="Numéro" maxlength="7" readonly/>
+						</div>
+						<div class="col">
+							<label for="rue_F">Rue : </label>
+							<input id="rue_F" type="text" class="form-control" th:field="*{monAdresse.rue}"
+								placeholder="Rue" maxlength="255" readonly/>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col">
+							<label for="comp_F">Complément : </label>
+							<input id="comp_F" type="text" class="form-control" th:field="*{monAdresse.complement}"
+								placeholder="Complément d'adresse" maxlength="255" readonly/>
+						</div>
+
+
+
+						<div class="col">
+							<label for="ville_F">Ville : </label>
+							<div class="autocomplete" style="width:300px;">
+								<input id="ville_F" type="text" class="form-control" 
+									placeholder="Ville">
+																<!--	th:field="*{monAdresse.maVille.ville_nom_reel}"-->
+
+							</div>
+
+						</div>
+
+						<!--
+						<label for="ville_F">Ville : </label>
+						<select id="ville_F" class="custom-select" th:field="*{genre}">
+							<option th:each="Ville: ${mesVilles}" th:text="${Ville.ville_nom_reel}"
+								th:value=" ${Ville.ville_id}">
+							</option>
+						</select>-->
+					</div>
+
+
+				</div>
+			</div>
+
 
 		<thead>
 			<div class="row">
 				<div class="col" style="display: flex; justify-content: space-around">
-					<a href="nouveauCandidat" class="btn btn-primary btn-xs">Nouveau Candidat</a>
+					<a href="concoursListecadidat" class="btn btn-primary btn-xs">Modifier mon email</a>
+				</div>
+				<div class="col" style="display: flex; justify-content: space-around">
+					<a href="gestionCandidature" class="btn btn-primary btn-xs">Modifier mon mot de passe</a>
 				</div>
 				<div class="col" style="display: flex; justify-content: space-around">
 					<a href="infoCda" class="btn btn-primary btn-xs">Modifier mon Profil</a>
@@ -26,29 +158,9 @@
 					<a href="deleteAccount" class="btn btn-danger dBtn">Supprimer mon compte</a>
 
 				</div>
-
-
-
-
-
 			</div>
 			<br />
 			<div class="row">
-
-				<div class="col" style="display: flex; justify-content: space-around">
-					<a href="concoursListecadidat" class="btn btn-primary btn-xs">Postuler aux concours</a>
-				</div>
-				<div class="col" style="display: flex; justify-content: space-around">
-					<a href="gestionCandidature" class="btn btn-primary btn-xs">Gérer les candidatures</a>
-				</div>
-
-			</div>
-			<br />
-			<div class="row">
-
-				<br />
-
-
 
 				<div class="col" style="display: flex; justify-content: space-around">
 					<form method="POST" action="/uploadCv" enctype="multipart/form-data" class="btn btn-primary btn-xs">

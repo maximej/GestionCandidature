@@ -45,6 +45,7 @@ public class Candidature {
 
 	public Candidature(Candidat cda, concours ccs, StatutCandidature Statut_cdu) {
 		this.cda = cda;
+		this.fichier_CV = cda.getCv();
 		this.ccs = ccs;
 		this.date_transmis = new java.util.Date();
 		this.Statut_cdu = Statut_cdu;
