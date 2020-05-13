@@ -35,6 +35,8 @@
 								</button>
 								</div>
 							</div>
+														<div class="col"></div>
+
 							<div class="col">
 								<div class="d-flex justify-content-center">
 								<button type="submit" class="btn btn-success btn-lg" formaction="#"
@@ -44,13 +46,11 @@
 							</div>
 							<div class="col"></div>
 
-						</div>
-						<div class="row">
-							<div class="col"></div>
 							<div class="col">
-								<div class="d-flex justify-content-center">
-									<a class="btn btn-default btn-xs" href="nouveauCandidat">Nouveau Candidat</a>
-								</div>
+								<button type="submit" class="btn btn-secondary btn-lg" formaction="#"
+									th:formaction="@{/newCda}">S'incrire
+								</button>
+								
 							</div>
 							<div class="col"></div>
 						</div>
@@ -58,8 +58,6 @@
 				</span>
 			</div>
 
-			<h1>About Us</h1>
-			Welcome to GeekJob
 		</div>
 
 		<div th:replace="common/header :: footer"></div>

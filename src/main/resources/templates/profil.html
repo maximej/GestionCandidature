@@ -11,8 +11,10 @@
 
 	<div class="container" th:object="${Candidat}">
 		<br />
-		<h1 th:text="'Bonjour ' + ${Candidat.prenom_cda} +' ' + ${Candidat.nom_cda}">Bonjour</h1>
-		<h2 th:text="'Vous avez ' + ${#lists.size(Candidat.mesCdu)} + ' candidatures'">Candidatures</h2>
+		<div class="container">
+
+			<h1 th:text="'Bonjour ' + ${Candidat.prenom_cda} +' ' + ${Candidat.nom_cda}">Bonjour</h1>
+			<h2 th:text="'Vous avez ' + ${#lists.size(Candidat.mesCdu)} + ' candidatures'">Candidatures</h2>
 			<thead>
 			<div class="row">
 				<div class="col" style="display: flex; justify-content: space-around">
@@ -30,27 +32,10 @@
 				</div>
 			</div>
 			</thead>
+		</div>
 		<div class="container">
-				<h2 text="Votre état-civil"> </h2>
-				<div class="form-group">
-					<input id="id_F" type="hidden" th:field="*{cda_ID}">
-					<input id="stat_F" type="hidden" th:field="*{Statut_cda}">
+						<h2 >Vos coordonées :</h2>
 
-										<br />
-					<div class="row">
-						<div class="col" th:if="${Candidat.securite_sociale} != null">
-							<label for="secu_F">Numéro de sécurité sociale : </label>
-
-							<input id="secu_F" type="text" class="form-control" th:field="*{securite_sociale}"
-								placeholder="Numéro de sécurité sociale" maxlength="15" readonly/>
-						</div>
-						<div class="col">
-							<label for="date_F">Date de naissance : </label>
-
-							<input id="date_F" type="date" class="form-control" th:field="*{date_naissance}" required readonly/>
-						</div>
-					</div>
-				</div>
 
 				<div class="form-group">
 					<div class="row">
@@ -81,36 +66,6 @@
 					</div>
 				</div>
 
-				<div class="form-group">
-					<div class="row">
-					<!--	<div class="col">
-							<label for="cv_F">Fichier CV, format pdf, png, ou jpeg, 15 mo max : </label>
-							<input id="cv_F" type="file" class="form-control-file" th:field="*{cv}"
-								placeholder="Votre numéro de téléphonne" />
-						</div>-->
-						<div class="col">
-							<label for="etudes_F">Votre niveau d'études : </label>
-							<select id="etudes_F" class="custom-select" th:field="*{etude}">
-								<option value="-3">CAP / BEP
-								<option value="0">BAC
-								<option value="2">BTS (BAC +2)
-								<option value="3">License (BAC +3)
-								<option value="4">Master 1 (BAC +4)
-								<option value="5">Master 2 (BAC +5)
-								<option value="7">Doctorat (BAC +7)
-							</select>
-						</div>
-
-					</div>
-					<br />
-					<div class="row">
-						<div class="col">
-							<label for="bio_F">Biographie : </label>
-							<textarea class="form-control" id="bio_F" th:field="*{biographie}"
-								placeholder="Parlez nous de vous ..." rows="3" maxlength="4095" readonly></textarea>
-						</div>
-					</div>
-				</div>
 
 				<div class="form-group">
 					<div class="row">
@@ -136,22 +91,13 @@
 
 						<div class="col">
 							<label for="ville_F">Ville : </label>
-							<div class="autocomplete" style="width:300px;">
+							<div class="autocomplete" >
 								<input id="ville_F" type="text" class="form-control" 
-									placeholder="Ville">
-																<!--	th:field="*{monAdresse.maVille.ville_nom_reel}"-->
+									placeholder="Ville" th:field="*{monAdresse.maVille.ville_nom_reel}" readonly>
+															
 
 							</div>
 
-						</div>
-
-						<!--
-						<label for="ville_F">Ville : </label>
-						<select id="ville_F" class="custom-select" th:field="*{genre}">
-							<option th:each="Ville: ${mesVilles}" th:text="${Ville.ville_nom_reel}"
-								th:value=" ${Ville.ville_id}">
-							</option>
-						</select>-->
 					</div>
 
 
@@ -160,24 +106,16 @@
 
 
 		<thead>
-			<div class="row">
-				<div class="col" style="display: flex; justify-content: space-around">
-					<a href="concoursListecadidat" class="btn btn-primary btn-xs">Modifier mon email</a>
-				</div>
-				<div class="col" style="display: flex; justify-content: space-around">
-					<a href="gestionCandidature" class="btn btn-primary btn-xs">Modifier mon mot de passe</a>
-				</div>
-				<div class="col" style="display: flex; justify-content: space-around">
-					<a href="infoCda" class="btn btn-primary btn-xs">Modifier mon Profil</a>
-				</div>
-				<div class="col" style="display: flex; justify-content: space-around">
-					<a href="deleteAccount" class="btn btn-danger dBtn">Supprimer mon compte</a>
-
-				</div>
-			</div>
+			
 			<br />
 			<div class="row">
 
+				<img id="monCv" th:src="@{${upload} + *{cv}}" alt="Mon CV"
+								width="500" />
+			</div>
+			<div class="row">
+				
+					
 				<div class="col" style="display: flex; justify-content: space-around">
 					<form method="POST" action="/uploadCv" enctype="multipart/form-data" class="btn btn-primary btn-xs">
 						<input type="file" name="file" /><br /><br />

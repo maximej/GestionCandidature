@@ -46,7 +46,8 @@ public class Candidat {
 	private String biographie;
 	private int etude;
 	private int Statut_cda;
-	private int Utilisateur_ID;
+	
+	private int utilisateur_id;
 
     @OneToMany(targetEntity = Candidature.class, mappedBy = "ccs")
 	private List<Candidature> mesCdu;
@@ -68,15 +69,18 @@ public class Candidat {
 		Statut_cda = statut_cda;
 	}
 
-	public int getUtilisateur_ID() {
-		return Utilisateur_ID;
+
+
+
+
+
+	public int getUtilisateur_id() {
+		return utilisateur_id;
 	}
 
-
-	public void setUtilisateur_ID(int utilisateur_ID) {
-		Utilisateur_ID = utilisateur_ID;
+	public void setUtilisateur_id(int utilisateur_id) {
+		this.utilisateur_id = utilisateur_id;
 	}
-
 
 	public int getCda_ID() {
 		return cda_ID;

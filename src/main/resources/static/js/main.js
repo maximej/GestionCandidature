@@ -19,7 +19,8 @@ $(document).ready(function () {
 		var href = $(this).attr('href');
 		$('#annuleModal #delref').attr('href', href);
 		$('#annuleModal').modal();
-	});
+  });
+  
   $('.table .pBtn').on('click', function (event) {
 		event.preventDefault();
 		var href = '#prModal'+$(this).attr('href');
@@ -27,13 +28,6 @@ $(document).ready(function () {
 	});
 
 });
-
-
-
-
-
-
-
 
 
  

@@ -104,6 +104,7 @@ public class ControllerConcours {
 	}
 
 /////////Login check methods/////////
+
 	@RequestMapping(value = "/loginCda", method = RequestMethod.POST)
 	public String validUser(@RequestParam String email, @RequestParam String motdepasse, HttpSession session,
 			Model model) {
@@ -154,6 +155,27 @@ public class ControllerConcours {
 	}
 
 /////////Login check methods/////////
+
+	@RequestMapping(value = "/newCda", method = RequestMethod.POST)
+	public String createUser(@RequestParam String email, @RequestParam String motdepasse, HttpSession session,
+			Model model) {
+		if (session.getAttribute("CdaLogin") != null) {
+			session.removeAttribute("CdaLogin");
+		}
+		if (session.getAttribute("RcuLogin") != null) {
+			session.removeAttribute("RcuLogin");
+		}
+
+		Utilisateur vUtil = serviceUtil.save(new Utilisateur(email, motdepasse));
+		if (vUtil != null) {
+			session.setAttribute("CdaLogin", vUtil);
+			return "redirect:/nouveauCandidat";
+		}
+		if (vUtil == null) {
+			model.addAttribute("msg", "Invalide");
+		}
+		return "redirect:/profil";
+	}
 
 /////////Concours methods/////////
 	@RequestMapping("/concoursListe")
@@ -350,8 +372,8 @@ public class ControllerConcours {
 	// Save the uploaded file to this folder
 	@Value("${upload.path}")
 	private String img_path;
-	@Value("${application.folder}")
-	private String appli_path;
+	@Value("${upload.folder}")
+	private String upload;
 
 	@RequestMapping("/cdaListe")
 	public String listeCda(Model model) {
@@ -362,22 +384,36 @@ public class ControllerConcours {
 	@RequestMapping("/profil")
 	public String vueProfilCandidat(Model model, HttpSession session) {
 		String returnPath = "index";
+
+		System.out.println(((Utilisateur) session.getAttribute("CdaLogin")).getUtilisateurId());
+
 		if (null != session.getAttribute("CdaLogin")) {
+
 			Utilisateur u = ((Utilisateur) session.getAttribute("CdaLogin"));
+
 			Candidat monCda = serviceCda.get(u.getUtilisateurId());
 			monCda.setMesCdu(serviceCdu.listByCda(monCda.getCda_ID()));
 			model.addAttribute("Candidat", monCda);
+			model.addAttribute("upload", "hello" + img_path);
 			returnPath = "profil";
 		}
 		return returnPath;
 	}
 
 	@RequestMapping("/nouveauCandidat")
-	public String NouveauCandidatPage() {
-		Candidat monCda = new Candidat();
-		monCda.setStatut_cda(201);
-		serviceCda.save(monCda);
-		return "redirect:/infoCda/" + monCda.getCda_ID();
+	public String NouveauCandidatPage(HttpSession session) {
+		String returnPath = "index";
+		if (null != session.getAttribute("CdaLogin")) {
+			Utilisateur u = ((Utilisateur) session.getAttribute("CdaLogin"));
+
+			
+			Candidat monCda = new Candidat();
+			monCda.setStatut_cda(201);
+			monCda.setUtilisateur_id(u.getUtilisateurId());
+			serviceCda.save(monCda);
+			returnPath = "redirect:/infoCda";
+		}
+		return returnPath;
 	}
 
 	@RequestMapping("/infoCda")
@@ -396,6 +432,8 @@ public class ControllerConcours {
 	@RequestMapping(value = "/saveCda", method = RequestMethod.POST)
 	public String saveCda(@ModelAttribute("Candidat") Candidat monCda) {
 		System.out.println("saveCda id: " + monCda.getCda_ID());
+		monCda.getMonAdresse().setVille(serviceVilles.get(monCda.getMonAdresse().getMaVille().getVille_nom_reel()));
+
 		serviceCda.save(monCda);
 		return "redirect:/profil";
 	}
@@ -445,7 +483,7 @@ public class ControllerConcours {
 				String fileNameString = "CV_" + monCda.getPrenom_cda() + "_" + monCda.getNom_cda() + "_"
 						+ dateFormat.format(new Date()) + extention;
 				monCda.setCv(fileNameString);
-				Path path = Paths.get(appli_path + img_path + fileNameString);
+				Path path = Paths.get(img_path + fileNameString);
 				Files.write(path, bytes);
 				serviceCda.save(monCda);
 
@@ -475,7 +513,7 @@ public class ControllerConcours {
 		}
 		return returnPath;
 	}
-	
+
 	@RequestMapping("/archiveCandidature")
 	public String listeArchiveCda(Model model, HttpSession session) {
 		String returnPath = "index";
@@ -488,11 +526,11 @@ public class ControllerConcours {
 		}
 		return returnPath;
 	}
-	
+
 	@RequestMapping("/cduBackListe")
 	public String listeCdu(Model model, HttpSession session) {
 		String returnPath = "index";
-		if (null != session.getAttribute("RcuLogin")) {	
+		if (null != session.getAttribute("RcuLogin")) {
 			model.addAttribute("listCdu", serviceCdu.listAll());
 			returnPath = "CandidaturesList";
 		}
@@ -511,10 +549,11 @@ public class ControllerConcours {
 		}
 		return returnPath;
 	}
+
 	@RequestMapping("/archiverCda/{id}")
 	public String archiverParCda(@PathVariable(name = "id") int id, HttpSession session) {
 		Candidature maCdu = serviceCdu.get(id);
-		int stat = maCdu.getStatut_cdu().getStatut_ID() ;
+		int stat = maCdu.getStatut_cdu().getStatut_ID();
 		if (stat == 105) {
 			maCdu.setStatut_cdu(serviceStatut.get(106));
 		}
@@ -530,11 +569,11 @@ public class ControllerConcours {
 		serviceCdu.save(maCdu);
 		return "redirect:/gestionCandidature";
 	}
-	
+
 	@RequestMapping("/archiverRcu/{id}")
 	public String archiverParRcu(@PathVariable(name = "id") int id, HttpSession session) {
 		Candidature maCdu = serviceCdu.get(id);
-		int stat = maCdu.getStatut_cdu().getStatut_ID() ;
+		int stat = maCdu.getStatut_cdu().getStatut_ID();
 		if (stat == 105) {
 			maCdu.setStatut_cdu(serviceStatut.get(107));
 		}
@@ -550,7 +589,7 @@ public class ControllerConcours {
 		serviceCdu.save(maCdu);
 		return "redirect:/gestionCandidature";
 	}
-	
+
 	@RequestMapping("/updateCdu/{id}")
 	public String deleteCdu(@PathVariable(name = "id") int id, HttpSession session) {
 		Candidature maCdu = serviceCdu.get(id);
@@ -558,7 +597,7 @@ public class ControllerConcours {
 		serviceCdu.save(maCdu);
 		return "redirect:/gestionCandidature";
 	}
-	
+
 	@RequestMapping("/deleteCdu/{id}")
 	public String updateCdu(@PathVariable(name = "id") int id, HttpSession session) {
 		Candidature maCdu = serviceCdu.get(id);
@@ -566,7 +605,7 @@ public class ControllerConcours {
 		serviceCdu.save(maCdu);
 		return "redirect:/gestionCandidature";
 	}
-	
+
 	@RequestMapping("/traiterCdu/{id}")
 	public String traiterCdu(@PathVariable(name = "id") int id, HttpSession session) {
 		Candidature maCdu = serviceCdu.get(id);
@@ -582,6 +621,7 @@ public class ControllerConcours {
 		serviceCdu.save(maCdu);
 		return "redirect:/cduBackListe";
 	}
+
 	@RequestMapping("/accepterCdu/{id}")
 	public String accepterCdu(@PathVariable(name = "id") int id, HttpSession session) {
 		Candidature maCdu = serviceCdu.get(id);

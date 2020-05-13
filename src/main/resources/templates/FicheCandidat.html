@@ -14,6 +14,8 @@
 			<div class="container">
 				<h2 text="Votre état-civil"> </h2>
 				<div class="form-group">
+					<input id="uid_F" type="hidden" th:field="*{utilisateur_id}">
+
 					<input id="id_F" type="hidden" th:field="*{cda_ID}">
 					<input id="stat_F" type="hidden" th:field="*{Statut_cda}">
 
@@ -83,7 +85,7 @@
 
 				<div class="form-group">
 					<div class="row">
-					<!--	<div class="col">
+						<!--	<div class="col">
 							<label for="cv_F">Fichier CV, format pdf, png, ou jpeg, 15 mo max : </label>
 							<input id="cv_F" type="file" class="form-control-file" th:field="*{cv}"
 								placeholder="Votre numéro de téléphonne" />
@@ -136,22 +138,15 @@
 
 						<div class="col">
 							<label for="ville_F">Ville : </label>
-							<div class="autocomplete" style="width:300px;">
-								<input id="ville_F" type="text" class="form-control" 
-									placeholder="Ville">
-																<!--	th:field="*{monAdresse.maVille.ville_nom_reel}"-->
+							<div class="autocomplete">
+								<input id="ville_F" type="text" class="form-control"
+									th:field="*{monAdresse.maVille.ville_nom_reel}" placeholder="Ville">
 
 							</div>
 
 						</div>
 
-						<!--
-						<label for="ville_F">Ville : </label>
-						<select id="ville_F" class="custom-select" th:field="*{genre}">
-							<option th:each="Ville: ${mesVilles}" th:text="${Ville.ville_nom_reel}"
-								th:value=" ${Ville.ville_id}">
-							</option>
-						</select>-->
+
 					</div>
 
 
@@ -167,6 +162,7 @@
 	</div>
 	<div th:replace="common/header :: footer"></div>
 </body>
+
 <script type="text/javascript" th:inline="javascript">
 	var jsaVilles = [];
 	/*[# th:each="villes : ${mesVilles}"]*/

@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -15,6 +16,8 @@ public class Utilisateur {
 	private String email;
 	private String motdepasse;
 	private int Statut_util;
+	
+
 
 	@Override
 	public String toString() {
@@ -53,6 +56,8 @@ public class Utilisateur {
 	public void setStatut_util(int statut_util) {
 		Statut_util = statut_util;
 	}
+	
+	
 
 	public Utilisateur(int utilisateur_ID, String email, String motdepasse, int statut_util) {
 		super();
@@ -60,6 +65,13 @@ public class Utilisateur {
 		this.email = email;
 		this.motdepasse = motdepasse;
 		Statut_util = statut_util;
+	}
+	
+	public Utilisateur(String email, String motdepasse) {
+		super();
+		this.email = email;
+		this.motdepasse = motdepasse;
+		Statut_util = 301;
 	}
 
 	public Utilisateur() {

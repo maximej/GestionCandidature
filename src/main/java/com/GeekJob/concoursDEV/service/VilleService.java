@@ -22,5 +22,9 @@ public class VilleService {
 	public Ville get(Integer id) {
 		return mesVilles.findById(id).get();
 	}
+	
+	public Ville get(String nom) {
+		return mesVilles.findByName(nom).get(0);
+	}
 
 }
