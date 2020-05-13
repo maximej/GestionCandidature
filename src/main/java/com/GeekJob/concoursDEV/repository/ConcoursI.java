@@ -16,6 +16,9 @@ public interface ConcoursI extends JpaRepository<concours, Integer> {
 	@Query(value = "SELECT ccs FROM concours ccs WHERE ccs.statutccs = ?1 ORDER BY nom_ccs")
 	List<concours> findBystatutccsNom(int statutccs);
 	
+	@Query(value = "SELECT ccs FROM concours ccs WHERE ccs.nom_ccs like CONCAT('%',?1,'%') ORDER BY nom_ccs")
+	List<concours> findByNom(String nom);
+	
 	@Query(value = "SELECT ccs FROM concours ccs ORDER BY nom_ccs")
 	List<concours> findAllccsSortnom();
 	

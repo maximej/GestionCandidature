@@ -4,6 +4,7 @@ import java.awt.print.Printable;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+
 import java.io.IOException;
 
 import java.io.InputStream;
@@ -52,6 +53,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.GeekJob.concoursDEV.entity.Adresse;
 import javax.imageio.ImageIO;
+
 import javax.servlet.http.HttpSession;
 import com.GeekJob.concoursDEV.entity.Candidat;
 import com.GeekJob.concoursDEV.entity.Candidature;
@@ -238,6 +240,14 @@ public class ControllerConcours {
 		model.addAttribute("listConcours", listConcours);
 		return "ConcoursListBack";
 	}
+	
+	@RequestMapping(value = "/rechercheccs")
+	public String rechercheccs(@RequestParam("nom") String nom, Model model) {
+		List<concours> searchResult = service.findByNom(nom);
+		model.addAttribute("listConcours", searchResult);
+		return "ConcoursListFront";
+	}
+			
 
 	@RequestMapping("/concoursListeActive")
 	public String viewListeConcourActive(Model model) {
@@ -529,6 +539,7 @@ public class ControllerConcours {
 			returnPath = "CandidaturesList";
 		}
 		return returnPath;
+
 	}
 
 	@RequestMapping("/archiveCandidature")

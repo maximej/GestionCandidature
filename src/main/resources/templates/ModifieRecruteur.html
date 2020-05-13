@@ -13,29 +13,39 @@
 					<table class="table-borderless">
 						<tr>
 							<td>Recruteur ID :</td>
-							<td colspan="3"><input type="text" class="form-control" th:field="*{rcuID}" readonly="readonly"/></td>
+							<td colspan="3"><input type="text" class="form-control" th:field="*{rcuID}"
+									readonly="readonly" /></td>
 						</tr>
 						<tr>
 							<td>Email :</td>
-							<td colspan="3"><input type="text" class="form-control" th:field="*{utilRcu.email}" readonly="readonly"/></td>
+							<td colspan="3"><input type="text" class="form-control" th:field="*{utilRcu.email}"
+									readonly="readonly" /></td>
 						</tr>
 						<tr>
 							<td>Mot de passe :</td>
-							<td colspan="3"><input type="text" class="form-control" th:field="*{utilRcu.motdepasse}" required/></td>
+							<td colspan="3"><input type="password" class="form-control" th:field="*{utilRcu.motdepasse}"
+									required /></td>
 						</tr>
 						<!-- <tr>
 							<td>Confirmer Mot de passe :</td>
 							<td><input type="text" class="form-control" th:field="*{Utilisateur_ID}"  required/></td>
 						</tr> -->
-						<tr>
-							<td>Statut :</td>
-							<td colspan="3"><input type="number" class="form-control" th:field="*{statutrcu}" min="301" max="303" required/></td>
-						</tr>
-						<tr>
-							<td><button id = "svBtn" type="submit" class="btn btn-success btn-xs" >Enregistrer</button></td>
-							<td><button type="button" class="btn btn-primary" onclick="window.history.back();">Abandonner les modifications</button></td>
-						</tr>
+						<span th:if="${session.RcuLogin.email == 'admin@GeekJob.com'}">
+							<tr>
+								<td>Statut :</td>
+								<td colspan="3"><input type="number" class="form-control" th:field="*{statutrcu}"
+										min="301" max="303" required /></td>
+							</tr>
+						</span>
 					</table>
+					<div class="row">
+						<div class="col">
+							<button id="svBtn" type="submit" class="btn btn-success btn-xs" style="width: 100px;">Enregistrer</button>
+						</div>
+						<div class="col">
+							<button type="button" class="btn btn-primary btn-xs" onclick="window.history.back();" style="width: 100px;">Annuler</button>
+						</div>
+					</div>
 				</div>
 			</form>
 		</div>
