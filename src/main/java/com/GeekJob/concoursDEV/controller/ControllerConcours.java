@@ -405,8 +405,6 @@ public class ControllerConcours {
 		String returnPath = "index";
 		if (null != session.getAttribute("CdaLogin")) {
 			Utilisateur u = ((Utilisateur) session.getAttribute("CdaLogin"));
-
-			
 			Candidat monCda = new Candidat();
 			monCda.setStatut_cda(201);
 			monCda.setUtilisateur_id(u.getUtilisateurId());

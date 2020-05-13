@@ -71,7 +71,7 @@ public class Utilisateur {
 		super();
 		this.email = email;
 		this.motdepasse = motdepasse;
-		Statut_util = 301;
+		Statut_util = 201;
 	}
 
 	public Utilisateur() {
