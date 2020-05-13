@@ -134,7 +134,7 @@
 					</button>
 				</div>
 				<div class="modal-body"
-					th:text="'Vous pouvez mettre à jour cette candidature avec votre fichier CV actuel. Confirmez vous que vous voulez utiliser '  + ${cdu?.cda?.cv}">
+					th:text="'Vous pouvez mettre à jour cette candidature avec votre fichier CV actuel. Confirmez vous que vous voulez utiliser '  + ${Candidat?.cv}">
 					Vous pouvez mettre à jour cette candidature avec votre fichier CV actuel.
 				</div>
 				<div class="modal-footer">
@@ -188,8 +188,7 @@
 						<a th:text="'Twitter : ' + ${cdu.cda.twitter}" th:href="${cdu.cda.twitter}"></a>
 					</div>
 					<hr />
-					<div
-						th:text="'Votre adresse : ' + ${cdu.cda.monAdresse.numero} + ' ' + ${cdu.cda.monAdresse.rue}">
+					<div th:text="'Votre adresse : ' + ${cdu.cda.monAdresse.numero} + ' ' + ${cdu.cda.monAdresse.rue}">
 					</div>
 					<div
 						th:text="${cdu.cda.monAdresse.maVille.ville_code_postal} + ' ' + ${cdu.cda.monAdresse.maVille.ville_nom_reel}">
@@ -201,6 +200,11 @@
 					<div th:text="'Date du concours : ' + ${cdu.ccs.date_css}">
 					</div>
 					<div th:text="'Concours : ' + ${cdu.ccs.description_ccs}">
+					</div>
+					<hr />
+					<div>
+						<img th:id="'cv' + ${cdu.cdu_ID}" th:src="'uploads/' + ${cdu.fichier_CV}" alt="Mon CV"
+							width="500" />
 					</div>
 				</div>
 				<div class="modal-footer">

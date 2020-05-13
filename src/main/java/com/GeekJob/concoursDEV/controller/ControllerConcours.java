@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -54,11 +55,13 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
 import com.GeekJob.concoursDEV.entity.Candidat;
 import com.GeekJob.concoursDEV.entity.Candidature;
+import com.GeekJob.concoursDEV.entity.FileInfo;
 import com.GeekJob.concoursDEV.entity.Ville;
 
 import com.GeekJob.concoursDEV.entity.Candidat;
 
 import com.GeekJob.concoursDEV.entity.Recruteur;
+import com.GeekJob.concoursDEV.entity.ResponseMessage;
 import com.GeekJob.concoursDEV.entity.Utilisateur;
 import com.GeekJob.concoursDEV.entity.concours;
 
@@ -68,6 +71,7 @@ import com.GeekJob.concoursDEV.service.AdresseService;
 import com.GeekJob.concoursDEV.service.CandidatService;
 import com.GeekJob.concoursDEV.service.CandidatureService;
 import com.GeekJob.concoursDEV.service.ConcoursService;
+import com.GeekJob.concoursDEV.service.FilesStorageService;
 import com.GeekJob.concoursDEV.service.VilleService;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
@@ -76,6 +80,42 @@ import com.GeekJob.concoursDEV.service.RecruteurService;
 import com.GeekJob.concoursDEV.service.StatutService;
 import com.GeekJob.concoursDEV.service.UtilisateurService;
 import com.GeekJob.concoursDEV.service.VilleService;
+
+import java.io.IOException;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 @Controller
 public class ControllerConcours {
@@ -369,12 +409,6 @@ public class ControllerConcours {
 	@Autowired
 	private StatutService serviceStatut;
 
-	// Save the uploaded file to this folder
-	@Value("${upload.path}")
-	private String img_path;
-	@Value("${upload.folder}")
-	private String upload;
-
 	@RequestMapping("/cdaListe")
 	public String listeCda(Model model) {
 		model.addAttribute("listCda", serviceCda.listAll());
@@ -394,7 +428,7 @@ public class ControllerConcours {
 			Candidat monCda = serviceCda.get(u.getUtilisateurId());
 			monCda.setMesCdu(serviceCdu.listByCda(monCda.getCda_ID()));
 			model.addAttribute("Candidat", monCda);
-			model.addAttribute("upload", "hello" + img_path);
+			model.addAttribute("upload", img_path);
 			returnPath = "profil";
 		}
 		return returnPath;
@@ -454,48 +488,33 @@ public class ControllerConcours {
 
 	////////// Maxime////////// Upload Management ////
 
-	@PostMapping("/uploadCv") // //new annotation since 4.3
-	public String singleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes,
-			HttpSession session) {
-		String returnPath = "index";
+	// Save the uploaded file to this folder
+	@Value("${upload.path}")
+	private String img_path;
+	@Value("${upload.folder}")
+	private String upload;
 
-		if (null != session.getAttribute("CdaLogin")) {
+	@Autowired
+	FilesStorageService storageService;
 
+	@PostMapping("/uploadCv")
+	public String uploadFile(@RequestParam("file") MultipartFile file, HttpSession session) {
+		String message = "";
+		try {
+			storageService.save(file);
 			Utilisateur u = ((Utilisateur) session.getAttribute("CdaLogin"));
 			Candidat monCda = serviceCda.get(u.getUtilisateurId());
-
-			if (file.isEmpty()) {
-				redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
-				return "redirect:uploadStatus";
-			}
-			try {
-				// Get the file and save it somewhere
-				byte[] bytes = file.getBytes();
-				ClassPathResource imgFile = new ClassPathResource("static/Logo.png");
-				DateFormat dateFormat = new SimpleDateFormat("yy_MM_dd_HH_mm_ss");
-
-				int index = file.getOriginalFilename().lastIndexOf(".");
-				String extention = file.getOriginalFilename().substring(index, file.getOriginalFilename().length())
-						.toLowerCase();
-
-				String fileNameString = "CV_" + monCda.getPrenom_cda() + "_" + monCda.getNom_cda() + "_"
-						+ dateFormat.format(new Date()) + extention;
-				monCda.setCv(fileNameString);
-				Path path = Paths.get(img_path + fileNameString);
-				Files.write(path, bytes);
-				serviceCda.save(monCda);
-
-				redirectAttributes.addFlashAttribute("message",
-						"You successfully uploaded '" + file.getOriginalFilename() + "'");
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			returnPath = "redirect:/profil";
+			monCda.setCv(file.getOriginalFilename());
+			serviceCda.save(monCda);
+			message = "Uploaded the file successfully: " + file.getOriginalFilename();
+			//return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+		} catch (Exception e) {
+			message = "Could not upload the file: " + file.getOriginalFilename() + "!";
+			//return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
 		}
-
-		return returnPath;
+		return "redirect:/profil";
 	}
+
 
 	////////// Maxime////////// Candidature Mangement
 
@@ -591,7 +610,8 @@ public class ControllerConcours {
 	@RequestMapping("/updateCdu/{id}")
 	public String deleteCdu(@PathVariable(name = "id") int id, HttpSession session) {
 		Candidature maCdu = serviceCdu.get(id);
-		maCdu.setStatut_cdu(serviceStatut.get(103));
+		maCdu.setFichier_CV(maCdu.getCda().getCv());
+		maCdu.setStatut_cdu(serviceStatut.get(102));
 		serviceCdu.save(maCdu);
 		return "redirect:/gestionCandidature";
 	}
@@ -608,6 +628,7 @@ public class ControllerConcours {
 	public String traiterCdu(@PathVariable(name = "id") int id, HttpSession session) {
 		Candidature maCdu = serviceCdu.get(id);
 		maCdu.setStatut_cdu(serviceStatut.get(104));
+		maCdu.setDate_traitement(new java.util.Date());
 		serviceCdu.save(maCdu);
 		return "redirect:/cduBackListe";
 	}
@@ -615,6 +636,8 @@ public class ControllerConcours {
 	@RequestMapping("/refuserCdu/{id}")
 	public String refuserCdu(@PathVariable(name = "id") int id, HttpSession session) {
 		Candidature maCdu = serviceCdu.get(id);
+		maCdu.setDate_traitement(new java.util.Date());
+
 		maCdu.setStatut_cdu(serviceStatut.get(105));
 		serviceCdu.save(maCdu);
 		return "redirect:/cduBackListe";
@@ -623,6 +646,8 @@ public class ControllerConcours {
 	@RequestMapping("/accepterCdu/{id}")
 	public String accepterCdu(@PathVariable(name = "id") int id, HttpSession session) {
 		Candidature maCdu = serviceCdu.get(id);
+		maCdu.setDate_traitement(new java.util.Date());
+
 		maCdu.setStatut_cdu(serviceStatut.get(110));
 		serviceCdu.save(maCdu);
 		return "redirect:/cduBackListe";
