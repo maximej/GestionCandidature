@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-	$('.table .mBtn').on('click', function (event) {
+	$('.mBtn').on('click', function (event) {
 		event.preventDefault();
 		var href = $(this).attr('href');
 		$('#editModal #editref').attr('href', href);
@@ -20,12 +20,13 @@ $(document).ready(function () {
 		$('#annuleModal #delref').attr('href', href);
 		$('#annuleModal').modal();
   });
-  
-  $('.table .pBtn').on('click', function (event) {
+
+    $('.table .pBtn').on('click', function (event) {
 		event.preventDefault();
-		var href = '#prModal'+$(this).attr('href');
-		$(href).modal();
-	});
+		var href = $(this).attr('href');
+		$('#prModal'+ href).modal();
+  });
+
 
 });
 
