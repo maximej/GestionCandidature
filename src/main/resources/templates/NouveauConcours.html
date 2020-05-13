@@ -10,10 +10,11 @@
 			var day = ("0" + todaysDate.getDate()).slice(-2);
 			var minDate = (year + "-" + month + "-" + day);
 			document.getElementById("dateccs").setAttribute('min', minDate);
-			$('input').attr('required', true)
-			document.getElementById("nomccs").required = true;
-			document.getElementById("nom_ccs").setAttribute('minlength', 4);
+			// document.getElementById("nom").setAttribute('minlength','2');
 		});
+	</script>
+	<script>
+	$("#NccsForm").validate();
 	</script>
 	<script>
 		$(document).ready().click(function () {
@@ -58,13 +59,13 @@
 						<tr>
 							<td>Nom du Concours :</td>
 							<td colspan="3">
-								<input type="text" class="form-control" th:field="*{nom_ccs}" required />
+								<input id="nom" type="text" class="form-control" th:field="*{nom_ccs}" required>
 							</td>
 						</tr>
 						<tr>
 							<td>Date :</td>
 							<td colspan="3">
-								<input id="dateccs" type="date" class="form-control" th:field="*{date_css}" required />
+								<input id="dateccs" type="date" class="form-control" th:field="*{date_css}" required>
 							</td>
 						</tr>
 						<tr>
@@ -75,11 +76,11 @@
 						</tr>
 						<tr>
 							<td>Statut :</td>
-							<td colspan="3"><input type="number" class="form-control" th:field="*{statutccs}" required="true" min="401" max="403" /></td>
+							<td colspan="3"><input type="number" class="form-control" th:field="*{statutccs}" required="true" min="401" max="403" ></td>
 						</tr>
 						<tr>
 							<td>Concours créé par :</td>
-							<td colspan="3"><input type="text" class="form-control" th:field="*{Recruteur_ID}" value="${session.RcuLogin.utilisateurId}" required/></td>
+							<td colspan="3"><input type="text" class="form-control" th:field="*{Recruteur_ID}" value="${session.RcuLogin.utilisateurId}" required></td>
 						</tr>
 						<tr>
 							<td>Image :</td>
@@ -94,7 +95,7 @@
 						<tr>
 							<td ></td>	
 							<td><button type="submit" class="btn btn-success btn-xs">Enregistrer</button></td>
-							<td><button type="button" class="btn btn-primary" onclick="window.history.back();">Abandonner l'ajout de concours</button></td>
+							<td><button type="button" class="btn btn-primary btn-xs" onclick="window.history.back();">Abandonner l'ajout de concours</button></td>
 						</tr>
 					</table>
 				</div>

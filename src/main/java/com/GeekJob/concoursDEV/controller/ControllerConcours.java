@@ -1,8 +1,5 @@
 package com.GeekJob.concoursDEV.controller;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -35,7 +32,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
 import com.GeekJob.concoursDEV.entity.Candidat;
 import com.GeekJob.concoursDEV.entity.Recruteur;
@@ -147,6 +143,14 @@ public class ControllerConcours {
 		model.addAttribute("listConcours", listConcours);
 		return "ConcoursListBack";
 	}
+	
+	@RequestMapping(value = "/rechercheccs")
+	public String rechercheccs(@RequestParam("nom") String nom, Model model) {
+		List<concours> searchResult = service.findByNom(nom);
+		model.addAttribute("listConcours", searchResult);
+		return "ConcoursListFront";
+	}
+			
 
 	@RequestMapping("/concoursListeActive")
 	public String viewListeConcourActive(Model model) {
@@ -369,7 +373,7 @@ public class ControllerConcours {
 		}
 
 		try {
-// Get the file and save it somewhere
+
 			byte[] bytes = file.getBytes();
 			ClassPathResource imgFile = new ClassPathResource("static/Logo.png");
 			DateFormat dateFormat = new SimpleDateFormat("yy_MM_dd_HH_mm_ss");

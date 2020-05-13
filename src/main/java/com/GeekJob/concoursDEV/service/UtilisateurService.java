@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.GeekJob.concoursDEV.entity.Recruteur;
 import com.GeekJob.concoursDEV.entity.Utilisateur;
 import com.GeekJob.concoursDEV.repository.UtilisateurI;
 
