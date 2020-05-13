@@ -1,65 +1,91 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns="http://www.w3.org/1000/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-	<head th:replace="common/header :: header"></head>
+<head th:replace="common/header :: header"></head>
 
 
-	<body>
-		<div th:replace="common/header :: navbar"></div>
+<body>
+	<div th:replace="common/header :: navbar"></div>
 
-		<div class="container">
+	<div class="container">
 
-			<span th:if="${msg != null}">Email ou Mot de passe Invalide</span>
-			<div class="col"><span id="userLogin" class="align-bottom"></span>
-				<span th:if="${session.CdaLogin == null and session.RcuLogin == null}">
-					<h1>Connexion</h1>
-					<form action="#" method="post">
-						<div class="form-group">
-							<input type="email" class="form-control" id="email" name="email" placeholder="Email">
-						</div>
-						<div class="form-group">
-							<input type="password" class="form-control" id="motdepasse" name="motdepasse"
-								placeholder="Mot de Passe">
-						</div>
-						<!-- <div class="checkbox">
+		<span th:if="${msg != null}">Email ou Mot de passe Invalide</span>
+		<div class="col"><span id="userLogin" class="align-bottom"></span>
+			<span th:if="${session.CdaLogin == null and session.RcuLogin == null}">
+				<h1>Connexion</h1>
+				<form action="#" method="post">
+					<div class="form-group">
+						<input type="email" class="form-control" id="email" name="email" placeholder="Email">
+					</div>
+					<div class="form-group">
+						<input type="password" class="form-control" id="motdepasse" name="motdepasse"
+							placeholder="Mot de Passe">
+					</div>
+					<!-- <div class="checkbox">
 									<label><input type="checkbox" name="remember">
 									Remember me</label>
 								</div> -->
-						<div class="row">
-							<div class="col"></div>
-							<div class="col">
-								<div class="d-flex justify-content-center">
+					<div class="row">
+						<div class="col"></div>
+						<div class="col">
+							<div class="d-flex justify-content-center">
 								<button type="submit" class="btn btn-primary btn-lg" formaction="#"
 									th:formaction="@{/loginCda}">Candidat
 								</button>
-								</div>
 							</div>
-														<div class="col"></div>
+						</div>
+						<div class="col"></div>
 
-							<div class="col">
-								<div class="d-flex justify-content-center">
+						<div class="col">
+							<div class="d-flex justify-content-center">
 								<button type="submit" class="btn btn-success btn-lg" formaction="#"
 									th:formaction="@{/loginRcu}">Recruteur
 								</button>
-								</div>
 							</div>
-							<div class="col"></div>
-
-							<div class="col">
-								<button type="submit" class="btn btn-secondary btn-lg" formaction="#"
-									th:formaction="@{/newCda}">S'incrire
-								</button>
-								
-							</div>
-							<div class="col"></div>
 						</div>
-					</form>
-				</span>
-			</div>
+						<div class="col"></div>
 
+						<div class="col">
+							<button type="submit" class="btn btn-secondary btn-lg" formaction="#"
+								th:formaction="@{/newCda}">S'incrire
+							</button>
+
+						</div>
+						<div class="col"></div>
+					</div>
+				</form>
+			</span>
+			<span th:if="${session.CdaLogin != null or session.RcuLogin != null}">
+				<h1>Bienvenue sur GeekJob</h1>
+				<div>
+					<h3>Fonction :</h3>
+					Cette application doit répondre au besoin de gestion des processus de candidatures à des concours.
+					Pour cela, il faut mettre en place un système d’information qui permette d’enregistrer une liste de
+					concours par les gestionnaires, et permettre aux candidats de créer une demande de candidature aux
+					concours qui lui sont accessibles à partir de son espace personnel. Le processus de candidature se
+					déroule en trois phases qui ne peuvent être validées que par des membres de l’équipe de gestion et
+					qui ont chacunes des spécificités administratives.
+				</div>
+				<div>
+					<h3>Interface :</h3>
+					La création d’une candidature passe par le renseignement d’une fiche d’information du candidat qui
+					doit inclure l’import de son fichier de CV. L’interface des utilisateurs, doit permetre de suivre
+					l'évolution du statut de la canidature.
+				</div>
+				<div>
+					<h3>Deploiement :</h3>
+					L’application doit être accessible depuis le web en proposant une interface pour les candidats et
+					les gestionnaires et s’assurer de l’intégrité des données avec une base stockée sur un serveur
+					sécurisé.
+
+
+				</div>
+			</span>
 		</div>
 
-		<div th:replace="common/header :: footer"></div>
-	</body>
+	</div>
+
+	<div th:replace="common/header :: footer"></div>
+</body>
 
 </html>

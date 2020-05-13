@@ -615,7 +615,7 @@ public class ControllerConcours {
 			maCdu.setStatut_cdu(serviceStatut.get(113));
 		}
 		serviceCdu.save(maCdu);
-		return "redirect:/gestionCandidature";
+		return "redirect:/cduBackListe";
 	}
 
 	@RequestMapping("/updateCdu/{id}")
