@@ -1,6 +1,7 @@
 package com.GeekJob.concoursDEV.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,7 +41,7 @@ public class RecruteurService {
 	}
 	
 	public Recruteur get(Integer id) {
-		return RcuList.findByRcuID(id).get();
+		return RcuList.findByRcuID(id);
 	}
 	
 	public void delete(Integer id) {
@@ -54,8 +55,14 @@ public class RecruteurService {
 	}
 
 	public Recruteur findByRcuID(int rcuID) {
-		return RcuList.findByRcuID(rcuID).get();
+		if(rcuID != 0) {
+		return RcuList.findByRcuID(rcuID);
+		}
+		return null;
 	}
 
+	public Recruteur finfByUtilID(int utilId){
+		return RcuList.finfByUtilID(utilId);
+	}
 	
 }

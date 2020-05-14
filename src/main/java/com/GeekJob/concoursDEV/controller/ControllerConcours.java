@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -179,6 +180,7 @@ public class ControllerConcours {
 		Utilisateur vUtil = serviceUtil.getValidRcu(email, motdepasse);
 		if (vUtil != null) {
 			session.setAttribute("RcuLogin", vUtil);
+			session.setAttribute("Vrcu", serviceRcu.finfByUtilID(vUtil.getUtilisateurId()));
 			return "redirect:/concoursListe";
 		}
 		model.addAttribute("msg", "Invalide");
@@ -240,14 +242,18 @@ public class ControllerConcours {
 		model.addAttribute("listConcours", listConcours);
 		return "ConcoursListBack";
 	}
-	
+
 	@RequestMapping(value = "/rechercheccs")
-	public String rechercheccs(@RequestParam("nom") String nom, Model model) {
+	public String rechercheccs(@RequestParam("nom") String nom, Model model, HttpSession session) {
 		List<concours> searchResult = service.findByNom(nom);
 		model.addAttribute("listConcours", searchResult);
+		if (session.getAttribute("CdaLogin") != null) {
+			return "ConcoursListFront";
+		} else if (session.getAttribute("RcuLogin") != null) {
+			return "ConcoursListBack";
+		}
 		return "ConcoursListFront";
 	}
-			
 
 	@RequestMapping("/concoursListeActive")
 	public String viewListeConcourActive(Model model) {
@@ -378,7 +384,8 @@ public class ControllerConcours {
 	}
 
 	@RequestMapping(value = "/saveRcu", method = RequestMethod.POST)
-	public String saveRcu(@ModelAttribute("recruteur") Recruteur recruteur) {
+	public String saveRcu(@ModelAttribute("recruteur") Recruteur recruteur, HttpSession session) {
+		System.out.println(((Utilisateur) session.getAttribute("RcuLogin")).getEmail());
 		// Check existing user
 		if (serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail()) == null) {
 			recruteur.getUtilRcu().setStatut_util(recruteur.getStatutrcu());
@@ -386,15 +393,23 @@ public class ControllerConcours {
 			recruteur.setUtilisateurId(u.getUtilisateurId());
 			serviceRcu.save(recruteur);
 		} else {
-			serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail())
-					.setStatut_util(recruteur.getStatutrcu());
-			serviceRcu.findByRcuID(recruteur.getRcuID()).setStatutrcu(recruteur.getStatutrcu());
-			serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail())
-					.setMotdepasse(recruteur.getUtilRcu().getMotdepasse());
-			serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail())
-					.setStatut_util(recruteur.getStatutrcu());
+			if (((Utilisateur) session.getAttribute("RcuLogin")).getEmail().equalsIgnoreCase("admin@GeekJob.com")) {
+				System.out.println("Admin staus modif"+serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail()));
+				serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail())
+						.setStatut_util(recruteur.getStatutrcu());
+				serviceRcu.findByRcuID(recruteur.getRcuID()).setStatutrcu(recruteur.getStatutrcu());
+				serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail())
+						.setMotdepasse(recruteur.getUtilRcu().getMotdepasse());
+				System.out.println("Admin modif"+serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail()));
+				return "redirect:/rcuListe";
+			} else {
+				System.out.println("Common recruteur"+((Utilisateur) session.getAttribute("RcuLogin")).getEmail());
+				serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail())
+				.setMotdepasse(recruteur.getUtilRcu().getMotdepasse());
+				System.out.println("Common recruteur nouveau user"+serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail()));
+			}
 		}
-		return "redirect:/rcuListe";
+		return "redirect:/";
 	}
 
 	@RequestMapping("/deleteRcu/{id}")
@@ -402,6 +417,14 @@ public class ControllerConcours {
 		serviceRcu.delete(id);
 		return "redirect:/rcuListe";
 	}
+
+	@RequestMapping("/getRcuId/{id}")
+	public int returnRcuId(@PathVariable(name = "id") int id) {
+		Recruteur rcu = serviceRcu.finfByUtilID(id);
+		System.out.println(rcu.getRcuID());
+		return rcu.getRcuID();
+	}
+
 ///////// Recruteur/////////
 
 ///////////////////////////////////////////////// Maxime/////////////////////////////////////////////////
