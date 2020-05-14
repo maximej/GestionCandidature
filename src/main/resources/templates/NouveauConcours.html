@@ -10,8 +10,10 @@
 			var day = ("0" + todaysDate.getDate()).slice(-2);
 			var minDate = (year + "-" + month + "-" + day);
 			document.getElementById("dateccs").setAttribute('min', minDate);
-			// document.getElementById("nom").setAttribute('minlength','2');
 		});
+	</script>
+	<script>
+		document.getElementById("nom").setAttribute('minlength','2');
 	</script>
 	<script>
 	$("#NccsForm").validate();
@@ -80,7 +82,7 @@
 						</tr>
 						<tr>
 							<td>Concours créé par :</td>
-							<td colspan="3"><input type="text" class="form-control" th:field="*{Recruteur_ID}" value="${session.RcuLogin.utilisateurId}" required></td>
+							<td colspan="3"><input type="text" class="form-control" id="Recruteur_ID" name="Recruteur_ID" th:value="${session.Vrcu.rcuID}" readonly="readonly"></td>
 						</tr>
 						<tr>
 							<td>Image :</td>

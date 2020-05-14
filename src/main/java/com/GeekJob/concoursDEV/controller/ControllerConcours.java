@@ -10,6 +10,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -103,6 +104,7 @@ public class ControllerConcours {
 		Utilisateur vUtil = serviceUtil.getValidRcu(email, motdepasse);
 		if (vUtil != null) {
 			session.setAttribute("RcuLogin", vUtil);
+			session.setAttribute("Vrcu",serviceRcu.finfByUtilID(vUtil.getUtilisateurId()));
 			return "redirect:/concoursListe";
 		}
 		model.addAttribute("msg", "Invalide");
@@ -283,6 +285,7 @@ public class ControllerConcours {
 	@RequestMapping(value = "/saveRcu", method = RequestMethod.POST)
 	public String saveRcu(@ModelAttribute("recruteur") Recruteur recruteur) {
 		// Check existing user
+		System.out.println(serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail()));
 		if (serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail()) == null) {
 			recruteur.getUtilRcu().setStatut_util(recruteur.getStatutrcu());
 			Utilisateur u = serviceUtil.save(recruteur.getUtilRcu());
@@ -305,6 +308,14 @@ public class ControllerConcours {
 		serviceRcu.delete(id);
 		return "redirect:/rcuListe";
 	}
+	
+	@RequestMapping("/getRcuId/{id}")
+	public int returnRcuId(@PathVariable(name = "id") int id) {
+		Recruteur rcu = serviceRcu.finfByUtilID(id);
+		System.out.println(rcu.getRcuID());
+		return rcu.getRcuID();
+	}
+	
 ///////// Recruteur/////////
 
 ///////////////////////////////////////////////// Maxime/////////////////////////////////////////////////

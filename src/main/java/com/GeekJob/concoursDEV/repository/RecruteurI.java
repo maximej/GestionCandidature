@@ -12,7 +12,10 @@ import com.GeekJob.concoursDEV.entity.concours;
 public interface RecruteurI extends JpaRepository<Recruteur, Integer>{
 
 	List<Recruteur> Statutrcu(int i);
-	Optional<Recruteur> findByRcuID(Integer id);
+	Recruteur findByRcuID(Integer id);
+	
+	@Query(value = "SELECT rcu FROM Recruteur rcu where rcu.utilRcu.utilisateurId = ?1")
+	Recruteur finfByUtilID(Integer id);
 	
 	@Query(value = "SELECT rcu FROM Recruteur rcu ORDER BY rcuID")
 	List<Recruteur> sortByID();
@@ -22,4 +25,6 @@ public interface RecruteurI extends JpaRepository<Recruteur, Integer>{
 	
 	@Query(value = "SELECT rcu FROM Recruteur rcu ORDER BY utilRcu.email")
 	List<Recruteur> sortByEmail();
+	
+	
 }
