@@ -1,4 +1,6 @@
-# GeekJob             
+# GeekJob
+[Source code on GitHub](https://github.com/maximej/GestionCandidature)
+[Documents de travail](https://drive.google.com/open?id=1OoIKnG5pOkRZXcZgfIKC1kfTELeFv63v)
 
 ### Description  
 
@@ -13,11 +15,11 @@ Pour compiler et utiliser l'application, il vous faut :
 - [Xampp](https://www.apachefriends.org/fr/index.html)
 
 Les étapes pour installer GeekJobs :
-    • Clonez le dépot GitHub sur votre ordinateur
-    • Lancer un serveur Web local avec Xampp et assurez vous d'avoir des ports d'accés ouverts 
-    • Créez votre base de donnée (GeekJobDataBase) sur votre SGBD (nous avons utilisé MySQL) 
-    • Exécuter le fichier de requète de création et d'insertion des tables (GeekJobDataBase.sql)
-    • Parametrez le fichier src/main/resources/application.properties en vous assurant d'avoir un port ouvert pour l'application, la bonne URL pour la Base de Donnée, ainsi que le **username et password** associés à la base.
+- Clonez le dépot GitHub sur votre ordinateur
+- Lancer un serveur Web local avec Xampp et assurez vous d'avoir des ports d'accés ouverts 
+- Créez votre base de donnée (GeekJobDataBase) sur votre SGBD (nous avons utilisé MySQL) 
+- Exécuter le fichier de requète de création et d'insertion des tables (GeekJobDataBase.sql)
+- Parametrez le fichier src/main/resources/application.properties en vous assurant d'avoir un port ouvert pour l'application, la bonne URL pour la Base de Donnée, ainsi que le **username et password** associés à la base.
 
 
 ### Utilisation 
@@ -28,14 +30,16 @@ Les applications Spring Boot peuvent aussi être lancées en ligne de commande a
 
 ### Developement  
 
-Ce projet à été fait dans le cadre de la formation de **Concepteur / Developpeur Informatique** de l'AFPA Paris en 2020 encadrée par Marc Lambert, Duc-Anh Pham et Constant Matsima. Pour le developpement nous avons utilisé les ressources suivantes:
-    • Draw IO
-    • Eclipse IDE
-    • JEE
-    • Xampp
-    • phpMyAdmin
-    • mySql
-    • Spring Boot
+Ce projet à été fait dans le cadre de la formation de **Concepteur / Developpeur Informatique** de l'AFPA Paris en 2020 encadrée par Marc Lambert, Duc-Anh Pham et Constant Matsima. Pour le developpement nous avons utilisé les ressources technologiques suivantes:
+- Draw IO
+- Eclipse IDE
+- JEE
+- Xampp
+- phpMyAdmin
+- MySql
+- Spring Boot
+- BLOB
+- JPA
 
 ### Auteurs  
 
