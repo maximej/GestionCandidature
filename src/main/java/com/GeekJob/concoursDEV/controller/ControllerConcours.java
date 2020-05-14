@@ -303,6 +303,7 @@ public class ControllerConcours {
 				serviceRcu.findByRcuID(recruteur.getRcuID()).setStatutrcu(recruteur.getStatutrcu());
 				serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail())
 						.setMotdepasse(recruteur.getUtilRcu().getMotdepasse());
+				System.out.println("Admin modif"+serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail()));
 				return "redirect:/rcuListe";
 			} else {
 				System.out.println("Common recruteur"+((Utilisateur) session.getAttribute("RcuLogin")).getEmail());
