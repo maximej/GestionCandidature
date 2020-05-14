@@ -1,6 +1,6 @@
 # GeekJob
-[Source code on GitHub](https://github.com/maximej/GestionCandidature)
-[Documents de travail](https://drive.google.com/open?id=1OoIKnG5pOkRZXcZgfIKC1kfTELeFv63v)
+- [Source code on GitHub](https://github.com/maximej/GestionCandidature)
+- [Documents de travail](https://drive.google.com/open?id=1OoIKnG5pOkRZXcZgfIKC1kfTELeFv63v)
 
 ### Description  
 
