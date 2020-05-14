@@ -147,9 +147,14 @@ public class ControllerConcours {
 	}
 	
 	@RequestMapping(value = "/rechercheccs")
-	public String rechercheccs(@RequestParam("nom") String nom, Model model) {
+	public String rechercheccs(@RequestParam("nom") String nom, Model model, HttpSession session) {
 		List<concours> searchResult = service.findByNom(nom);
 		model.addAttribute("listConcours", searchResult);
+		if (session.getAttribute("CdaLogin") != null) {
+			return "ConcoursListFront";
+		}else if (session.getAttribute("RcuLogin") != null) {
+			return "ConcoursListBack";
+		}
 		return "ConcoursListFront";
 	}
 			
