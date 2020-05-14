@@ -2,7 +2,7 @@
 
 ### Description  
 
-Fonction : Cette application permet de gerer des candidatures à des concours. Un système d’information qui permet d’enregistrer une liste de concours par les recruteurs, et permet aux candidats de créer une demande de candidature aux concours qui lui sont accessibles à partir de son espace personnel. Le processus de candidature se déroule en plusieurs phases : Transmis par le candidat, En traitement, puis Accepté ou Refusé par le recruteur. Les candidatures peuvent ensuite etre archivées. La création d’une candidature passe par le renseignement d’une fiche d’information du candidat qui doit inclure l’import de son fichier de CV. L’interface des utilisateurs permet de suivre l'évolution du statut de la canidature.  
+Fonction : Cette application permet de gerer des candidatures à des concours. Un système d’information qui permet d’enregistrer une liste de concours par les recruteurs, et permet aux candidats de créer une demande de candidature aux concours qui lui sont accessibles à partir de son espace personnel. Le processus de candidature se déroule en plusieurs phases : Transmis par le candidat, En traitement, puis Accepté ou Refusé par le recruteur. Les candidatures peuvent ensuite etre archivées. La création d’une candidature passe par le renseignement d’une fiche d’information du candidat qui doit inclure l’import de son fichier de CV. L’interface des utilisateurs et des recruteurs permet de suivre l'évolution du statut de la canidature.  
 
 
 ### Installation  
@@ -10,11 +10,11 @@ Fonction : Cette application permet de gerer des candidatures à des concours. U
 Pour compiler et utiliser l'application, il vous faut :
 - [JDK 1.8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 - [Maven 3](https://maven.apache.org)
-- [Xamp](https://www.apachefriends.org/fr/index.html)
+- [Xampp](https://www.apachefriends.org/fr/index.html)
 
 Les étapes pour installer GeekJobs :
     • Clonez le dépot GitHub sur votre ordinateur
-    • Lancer un serveur Web local avec Xamp et assurez vous d'avoir des ports d'accés ouverts 
+    • Lancer un serveur Web local avec Xampp et assurez vous d'avoir des ports d'accés ouverts 
     • Créez votre base de donnée (GeekJobDataBase) sur votre SGBD (nous avons utilisé MySQL) 
     • Exécuter le fichier de requète de création et d'insertion des tables (GeekJobDataBase.sql)
     • Parametrez le fichier src/main/resources/application.properties en vous assurant d'avoir un port ouvert pour l'application, la bonne URL pour la Base de Donnée, ainsi que le **username et password** associés à la base.
@@ -28,11 +28,11 @@ Les applications Spring Boot peuvent aussi être lancées en ligne de commande a
 
 ### Developement  
 
-Ce projet à été initialisé dans le cadre de la formation de Concepteur / Developpeur Informatique de l'AFPA Paris en 2020 encadrée par Marc Lambert, Duc-Anh Pham et Constant Matsima. Pour le develppement nous avons utilisé les ressources suivantes:
+Ce projet à été fait dans le cadre de la formation de **Concepteur / Developpeur Informatique** de l'AFPA Paris en 2020 encadrée par Marc Lambert, Duc-Anh Pham et Constant Matsima. Pour le developpement nous avons utilisé les ressources suivantes:
     • Draw IO
     • Eclipse IDE
     • JEE
-    • Xamp
+    • Xampp
     • phpMyAdmin
     • mySql
     • Spring Boot
@@ -41,7 +41,7 @@ Ce projet à été initialisé dans le cadre de la formation de Concepteur / Dev
 
 [Voici l'équipe du projet :](https://github.com/maximej/GestionCandidature/contributors)
 - [Maragatham](https://github.com/MaragathamJAYARAM)
-- [Gueny](hhttps://github.com/little-devop)
+- [Gueni](hhttps://github.com/little-devop)
 - [MaximeJ](https://github.com/maximej)
 
 
