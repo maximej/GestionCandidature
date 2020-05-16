@@ -257,14 +257,14 @@ public class ControllerConcours {
 
 	@RequestMapping("/concoursListeActive")
 	public String viewListeConcourActive(Model model) {
-		List<concours> listConcours = service.listAll();
+		List<concours> listConcours = service.listAllCda();
 		model.addAttribute("listConcours", listConcours);
 		return "ConcoursListBack";
 	}
 
 	@RequestMapping("/concoursListecadidat")
 	public String viewListeConcourfront(Model model) {
-		List<concours> listConcours = service.listAll();
+		List<concours> listConcours = service.listAllCda();
 		model.addAttribute("listConcours", listConcours);
 		return "ConcoursListFront";
 	}
