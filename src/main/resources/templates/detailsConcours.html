@@ -34,9 +34,9 @@
 				</tr>
 				<tr>
 					<td></td>
-					<td >
-						<a th:href="@{'/postuler/' + *{ccs_ID}}"
-							class="btn btn-primary btn-xs">Postuler</button></td>
+					<span th:if="${session.CdaLogin != null}">
+					<td ><a th:href="@{'/postuler/' + *{ccs_ID}}" class="btn btn-primary btn-xs">Postuler</a></td>
+					</span>
 					<td><button type="button" class="btn btn-primary btn-xs" onclick="window.history.back();">Liste des concours</button></td>
 				</tr>			
 			</table>
