@@ -1,35 +1,14 @@
 package com.GeekJob.concoursDEV.controller;
 
-import java.awt.print.Printable;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-
 import java.io.IOException;
 
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.Blob;
-import java.util.Date;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -38,87 +17,29 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StreamUtils;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.GeekJob.concoursDEV.entity.Adresse;
-import javax.imageio.ImageIO;
-
 import javax.servlet.http.HttpSession;
 import com.GeekJob.concoursDEV.entity.Candidat;
 import com.GeekJob.concoursDEV.entity.Candidature;
-import com.GeekJob.concoursDEV.entity.FileInfo;
-import com.GeekJob.concoursDEV.entity.Ville;
-
-import com.GeekJob.concoursDEV.entity.Candidat;
-
 import com.GeekJob.concoursDEV.entity.Recruteur;
-import com.GeekJob.concoursDEV.entity.ResponseMessage;
+import com.GeekJob.concoursDEV.entity.Statut;
 import com.GeekJob.concoursDEV.entity.Utilisateur;
 import com.GeekJob.concoursDEV.entity.concours;
-
-import com.GeekJob.concoursDEV.repository.VilleI;
-import com.GeekJob.concoursDEV.service.AdresseService;
 
 import com.GeekJob.concoursDEV.service.CandidatService;
 import com.GeekJob.concoursDEV.service.CandidatureService;
 import com.GeekJob.concoursDEV.service.ConcoursService;
 import com.GeekJob.concoursDEV.service.FilesStorageService;
 import com.GeekJob.concoursDEV.service.VilleService;
-import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
-
-import ch.qos.logback.core.Context;
 import com.GeekJob.concoursDEV.service.RecruteurService;
 import com.GeekJob.concoursDEV.service.StatutService;
 import com.GeekJob.concoursDEV.service.UtilisateurService;
-import com.GeekJob.concoursDEV.service.VilleService;
-
-import java.io.IOException;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 @Controller
 public class ControllerConcours {
@@ -351,6 +272,8 @@ public class ControllerConcours {
 	public String newRcu(Model model) {
 		Recruteur recruteur = new Recruteur();
 		model.addAttribute("recruteur", recruteur);
+		List<Statut> stuRcu = serviceStatut.findStatutListe("Recruteur");
+		model.addAttribute("stuRcu", stuRcu);
 		return "NouveauRecruteur";
 	}
 
@@ -380,6 +303,8 @@ public class ControllerConcours {
 		ModelAndView mav = new ModelAndView("ModifieRecruteur");
 		Recruteur recruteurDemande = serviceRcu.get(id);
 		mav.addObject("recruteurDemande", recruteurDemande);
+		List<Statut> stuRcu = serviceStatut.findStatutListe("Recruteur");
+		mav.addObject("stuRcu", stuRcu);
 		return mav;
 	}
 
@@ -388,25 +313,28 @@ public class ControllerConcours {
 		System.out.println(((Utilisateur) session.getAttribute("RcuLogin")).getEmail());
 		// Check existing user
 		if (serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail()) == null) {
-			recruteur.getUtilRcu().setStatut_util(recruteur.getStatutrcu());
+			recruteur.getUtilRcu().setStatut_util(recruteur.getStatutrcu().getStatut_ID());
 			Utilisateur u = serviceUtil.save(recruteur.getUtilRcu());
 			recruteur.setUtilisateurId(u.getUtilisateurId());
 			serviceRcu.save(recruteur);
 		} else {
 			if (((Utilisateur) session.getAttribute("RcuLogin")).getEmail().equalsIgnoreCase("admin@GeekJob.com")) {
-				System.out.println("Admin staus modif"+serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail()));
+				System.out.println(
+						"Admin staus modif" + serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail()));
 				serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail())
-						.setStatut_util(recruteur.getStatutrcu());
+						.setStatut_util(recruteur.getStatutrcu().getStatut_ID());
 				serviceRcu.findByRcuID(recruteur.getRcuID()).setStatutrcu(recruteur.getStatutrcu());
 				serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail())
 						.setMotdepasse(recruteur.getUtilRcu().getMotdepasse());
-				System.out.println("Admin modif"+serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail()));
+				System.out
+						.println("Admin modif" + serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail()));
 				return "redirect:/rcuListe";
 			} else {
-				System.out.println("Common recruteur"+((Utilisateur) session.getAttribute("RcuLogin")).getEmail());
+				System.out.println("Common recruteur" + ((Utilisateur) session.getAttribute("RcuLogin")).getEmail());
 				serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail())
-				.setMotdepasse(recruteur.getUtilRcu().getMotdepasse());
-				System.out.println("Common recruteur nouveau user"+serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail()));
+						.setMotdepasse(recruteur.getUtilRcu().getMotdepasse());
+				System.out.println("Common recruteur nouveau user"
+						+ serviceUtil.findByEmailIgnoreCase(recruteur.getUtilRcu().getEmail()));
 			}
 		}
 		return "redirect:/";

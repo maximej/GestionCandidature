@@ -1,13 +1,13 @@
 package com.GeekJob.concoursDEV.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.GeekJob.concoursDEV.entity.Recruteur;
 import com.GeekJob.concoursDEV.repository.RecruteurI;
+import com.GeekJob.concoursDEV.repository.StatutI;
 
 @Service
 @Transactional
@@ -15,6 +15,9 @@ public class RecruteurService {
 	
 	@Autowired
 	private RecruteurI RcuList;
+	
+	@Autowired
+	private StatutI stuList;
 	
 	public List<Recruteur> listAll() {
 		return RcuList.findAll();
@@ -46,7 +49,7 @@ public class RecruteurService {
 	
 	public void delete(Integer id) {
 		Recruteur recruteur = RcuList.findById(id).get();
-		recruteur.setStatutrcu(303);
+		recruteur.setStatutrcu(stuList.finfByStatutID(303));
 	}
 	
 	public Recruteur getlast() {

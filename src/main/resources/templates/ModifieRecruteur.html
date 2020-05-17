@@ -1,56 +1,61 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns="http://www.w3.org/1000/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-	<head th:replace="common/header :: header"></head>
+<head th:replace="common/header :: header"></head>
 
-	<body>
-		<div th:replace="common/header :: navbar"></div>
-		<div class="d-flex justify-content-center">
-			<form action="#" th:action="@{/saveRcu}" th:object="${recruteurDemande}" method="post">
-				<div class="container">
-					<h1 class="text-uppercase">Détails recruteur</h1>
-					<hr>
-					<table class="table-borderless">
-						<tr>
-							<td>Recruteur ID :</td>
-							<td colspan="3"><input type="text" class="form-control" th:field="*{rcuID}"
-									readonly="readonly" /></td>
-						</tr>
-						<tr>
-							<td>Email :</td>
-							<td colspan="3"><input type="text" class="form-control" th:field="*{utilRcu.email}"
-									readonly="readonly" /></td>
-						</tr>
-						<tr>
-							<td>Mot de passe :</td>
-							<td colspan="3"><input type="password" class="form-control" th:field="*{utilRcu.motdepasse}"
-									required /></td>
-						</tr>
-						<!-- <tr>
+<body>
+	<div th:replace="common/header :: navbar"></div>
+	<div class="d-flex justify-content-center">
+		<form action="#" th:action="@{/saveRcu}" th:object="${recruteurDemande}" method="post">
+			<div class="container">
+				<h1 class="text-uppercase">Détails recruteur</h1>
+				<hr>
+				<table class="table-borderless">
+					<tr>
+						<td>Recruteur ID :</td>
+						<td colspan="3"><input type="text" class="form-control" th:field="*{rcuID}"
+								readonly="readonly" /></td>
+					</tr>
+					<tr>
+						<td>Email :</td>
+						<td colspan="3"><input type="text" class="form-control" th:field="*{utilRcu.email}"
+								readonly="readonly" /></td>
+					</tr>
+					<tr>
+						<td>Mot de passe :</td>
+						<td colspan="3"><input type="password" class="form-control" th:field="*{utilRcu.motdepasse}"
+								required /></td>
+					</tr>
+					<!-- <tr>
 							<td>Confirmer Mot de passe :</td>
 							<td><input type="text" class="form-control" th:field="*{Utilisateur_ID}"  required/></td>
 						</tr> -->
-						<span th:if="${session.RcuLogin.email == 'admin@GeekJob.com'}">
-							<tr>
-								<td>Statut :</td>
-								<td colspan="3"><input type="number" class="form-control" th:field="*{statutrcu}"
-										min="301" max="303" required /></td>
-							</tr>
-						</span>
-					</table>
-					<div class="row">
-						<div class="col">
-							<button id="svBtn" type="submit" class="btn btn-success btn-xs" style="width: 100px;">Enregistrer</button>
-						</div>
-						<div class="col">
-							<button type="button" class="btn btn-primary btn-xs" onclick="window.history.back();" style="width: 100px;">Annuler</button>
-						</div>
+					<span th:if="${session.RcuLogin.email == 'admin@GeekJob.com'}">
+						<tr>
+							<td>Statut :</td>
+							<td colspan="3"><select id="statutrcu" class="custom-select" th:field="*{statutrcu}">
+									<option th:each="dropDownItem : ${stuRcu}" th:value="${dropDownItem.getStatut_ID()}"
+										th:text="${dropDownItem.toString()}" />
+								</select>
+							</td>
+						</tr>
+					</span>
+				</table>
+				<div class="row">
+					<div class="col">
+						<button id="svBtn" type="submit" class="btn btn-success btn-xs"
+							style="width: 100px;">Enregistrer</button>
+					</div>
+					<div class="col">
+						<button type="button" class="btn btn-primary btn-xs" onclick="window.history.back();"
+							style="width: 100px;">Annuler</button>
 					</div>
 				</div>
-			</form>
-		</div>
+			</div>
+		</form>
+	</div>
 
-		<div th:replace="common/header :: footer"></div>
-	</body>
+	<div th:replace="common/header :: footer"></div>
+</body>
 
 </html>

@@ -16,7 +16,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "statut") 
-public class StatutCandidature {
+public class Statut {
 	
 	@Id
 	@Column
@@ -29,11 +29,11 @@ public class StatutCandidature {
 	private List<Candidature> mesCdu;
 
     
-	public StatutCandidature() {
+	public Statut() {
 	}
 	
     
-	public StatutCandidature(int statut_ID) {
+	public Statut(int statut_ID) {
 		super();
 		this.statut_ID = statut_ID;
 	}
@@ -68,6 +68,12 @@ public class StatutCandidature {
 
 	public void setMesCdu(List<Candidature> mesCdu) {
 		this.mesCdu = mesCdu;
+	}
+
+
+	@Override
+	public String toString() {
+		return nom_statut;
 	}
 	
     

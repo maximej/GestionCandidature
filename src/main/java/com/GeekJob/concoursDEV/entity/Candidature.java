@@ -37,13 +37,13 @@ public class Candidature {
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "Statut_cdu")
-	private StatutCandidature Statut_cdu;
+	private Statut Statut_cdu;
 
 	public Candidature() {
 
 	}
 
-	public Candidature(Candidat cda, concours ccs, StatutCandidature Statut_cdu) {
+	public Candidature(Candidat cda, concours ccs, Statut Statut_cdu) {
 		this.cda = cda;
 		this.fichier_CV = cda.getCv();
 		this.ccs = ccs;
@@ -99,11 +99,11 @@ public class Candidature {
 		this.date_traitement = date_traitement;
 	}
 
-	public StatutCandidature getStatut_cdu() {
+	public Statut getStatut_cdu() {
 		return Statut_cdu;
 	}
 
-	public void setStatut_cdu(StatutCandidature statut_cdu) {
+	public void setStatut_cdu(Statut statut_cdu) {
 		Statut_cdu = statut_cdu;
 	}
 
